@@ -1,6 +1,7 @@
 package com.zcsoft.rc.bms.app.runtime;
 
 import com.sharingif.cube.context.annotation.ExtendedAnnotationBeanNameGenerator;
+import com.sharingif.cube.core.util.UUIDUtils;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Bootstrap {
 
     public static void main(String[] args) {
+        System.out.println(UUIDUtils.generateUUID());
         new SpringApplicationBuilder()
                 .parent(ApplicationContext.class)
                 .child(Bootstrap.class)
