@@ -29,7 +29,6 @@ public class ChainAutoconfigure {
             UserLoginReqConvertToUserCommand userLoginReqConvertToUserCommand
             , SecurityAuthenticationCommand securityAuthenticationCommand
             , RoleAuthenticationCommand roleAuthenticationCommand
-            , RemoveUserPasswordCommand removeUserPasswordCommand
             , SessionConcurrentWebCommand sessionConcurrentWebCommand
             , InvalidateHttpSessionWebCommand invalidateHttpSessionWebCommand
             , CoreUserHttpSessionManageWebCommand coreUserHttpSessionManageWebCommand
@@ -40,7 +39,6 @@ public class ChainAutoconfigure {
         commands.add(userLoginReqConvertToUserCommand);
         commands.add(securityAuthenticationCommand);
         commands.add(roleAuthenticationCommand);
-        commands.add(removeUserPasswordCommand);
         commands.add(sessionConcurrentWebCommand);
         commands.add(invalidateHttpSessionWebCommand);
         commands.add(coreUserHttpSessionManageWebCommand);
