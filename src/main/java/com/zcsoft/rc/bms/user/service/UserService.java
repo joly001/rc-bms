@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.user.service;
 
 
 import com.sharingif.cube.support.service.base.IBaseService;
+import com.zcsoft.rc.bms.api.user.entity.UserLoginReq;
+import com.zcsoft.rc.bms.api.user.entity.UserLoginRsp;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.User;
 
@@ -24,6 +26,11 @@ public interface UserService extends IBaseService<User, java.lang.String> {
      */
     List<Authority> getAuthoritiesByUserId(String userId);
 
-
+    /**
+     * 用户登录
+     * @param req
+     * @return
+     */
+    UserLoginRsp login(UserLoginReq req);
 	
 }

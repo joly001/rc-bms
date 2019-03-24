@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.api.user.entity.UserLoginReq;
+import com.zcsoft.rc.bms.api.user.entity.UserLoginRsp;
 import com.zcsoft.rc.bms.user.service.UserRoleService;
 import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.dao.UserDAO;
@@ -41,5 +43,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	@Override
 	public List<Authority> getAuthoritiesByUserId(String userId) {
 		return userRoleService.getAuthorityByUserId(userId);
+	}
+
+	@Override
+	public UserLoginRsp login(UserLoginReq req) {
+		UserLoginRsp userLoginRsp = new UserLoginRsp();
+		userLoginRsp.setUsername(req.getUsername());
+		return userLoginRsp;
 	}
 }
