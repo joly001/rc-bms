@@ -2,8 +2,10 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
 import com.zcsoft.rc.bms.api.user.entity.*;
+import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.user.service.OrganizationService;
 import com.zcsoft.rc.bms.user.service.UserService;
@@ -12,9 +14,10 @@ import com.zcsoft.rc.user.model.entity.Organization;
 import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.lang.String> implements OrganizationService {
@@ -73,6 +76,16 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 		return organizationAddRsp;
 	}
 
+	@Transactional
+	protected void delete(Organization organization) {
+		int number = organizationDAO.deleteById(organization.getId());
+		if(number == 0) {
+			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_NOT_EXIST);
+		}
+
+		organizationDAO.updateDecrementSequenceNumberByParentIdSequenceNumber(organization.getParentId(), organization.getSequenceNumber());
+	}
+
 	@Override
 	public OrganizationDeleteRsp delete(OrganizationDeleteReq req) {
 		Organization queryOrganization = new Organization();
@@ -88,10 +101,9 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_HAS_CHILD_USER);
 		}
 
-		int number = organizationDAO.deleteById(req.getId());
-		if(number == 0) {
-			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_NOT_EXIST);
-		}
+		Organization organization = organizationDAO.queryById(req.getId());
+
+		delete(organization);
 
 		OrganizationDeleteRsp rsp = new OrganizationDeleteRsp();
 		rsp.setId(req.getId());
@@ -112,5 +124,81 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 		organizationUpdateRsp.setId(organization.getId());
 
 		return organizationUpdateRsp;
+	}
+
+	protected void sortOrganization(Map<OrganizationAllRsp,List<OrganizationAllRsp>> organizationMap, OrganizationAllRsp rootOrganizationAllRsp, List<OrganizationAllRsp> rootOrganizationAllRspList){
+		// 权限列表根据排序字段进行排序
+		Collections.sort(rootOrganizationAllRspList, new Comparator<OrganizationAllRsp>(){
+			public int compare(OrganizationAllRsp a, OrganizationAllRsp b) {
+				return a.getSequenceNumber()-b.getSequenceNumber();
+			}
+		});
+
+		rootOrganizationAllRspList.forEach(organizationAllRsp ->{
+			List<OrganizationAllRsp> childs = organizationMap.get(organizationAllRsp);
+			if(null != childs){
+				sortOrganization(organizationMap, organizationAllRsp, childs);
+			}
+			rootOrganizationAllRsp.getChildOrgList().add(organizationAllRsp);
+		});
+	}
+
+	@Override
+	public OrganizationAllRsp all() {
+		List<Organization> organizationList = organizationDAO.queryAll();
+
+		Map<String, OrganizationAllRsp> organizationAllRspMap = new HashMap<>();
+		organizationList.forEach(organization -> {
+			OrganizationAllRsp organizationAllRsp = new OrganizationAllRsp();
+			organizationAllRsp.setId(organization.getId());
+			organizationAllRsp.setOrgName(organization.getOrgName());
+			organizationAllRsp.setSequenceNumber(organization.getSequenceNumber());
+			organizationAllRsp.setChildOrgList(new ArrayList<>());
+			organizationAllRspMap.put(organization.getId(), organizationAllRsp);
+		});
+
+		Map<OrganizationAllRsp,List<OrganizationAllRsp>> organizationMap = new HashMap<>();
+
+		OrganizationAllRsp rootOrganizationAllRsp = new OrganizationAllRsp();
+		rootOrganizationAllRsp.setId(Constants.ROOT_KEY);
+		rootOrganizationAllRsp.setOrgName(Constants.ROOT_KEY);
+		rootOrganizationAllRsp.setSequenceNumber(0);
+		rootOrganizationAllRsp.setChildOrgList(new ArrayList<>());
+
+		organizationList.forEach(organization -> {
+			OrganizationAllRsp organizationAllRsp = new OrganizationAllRsp();
+			organizationAllRsp.setId(organization.getId());
+			organizationAllRsp.setOrgName(organization.getOrgName());
+			organizationAllRsp.setSequenceNumber(organization.getSequenceNumber());
+			organizationAllRsp.setChildOrgList(new ArrayList<>());
+
+			OrganizationAllRsp parentOrganizationAllRsp;
+			if(StringUtils.isTrimEmpty(organization.getParentId())) {
+				parentOrganizationAllRsp = rootOrganizationAllRsp;
+			} else {
+				parentOrganizationAllRsp = organizationAllRspMap.get(organization.getParentId());
+			}
+
+			List<OrganizationAllRsp> childOrganizationAllRspList = organizationMap.get(parentOrganizationAllRsp);
+
+			if(childOrganizationAllRspList == null) {
+				childOrganizationAllRspList = new ArrayList<>();
+				childOrganizationAllRspList.add(organizationAllRsp);
+
+				if(StringUtils.isTrimEmpty(organization.getParentId())) {
+					organizationMap.put(rootOrganizationAllRsp, childOrganizationAllRspList);
+				}else {
+					organizationMap.put(organizationAllRspMap.get(organization.getParentId()), childOrganizationAllRspList);
+				}
+			} else {
+				childOrganizationAllRspList.add(organizationAllRsp);
+			}
+
+		});
+
+
+		sortOrganization(organizationMap, rootOrganizationAllRsp, organizationMap.get(rootOrganizationAllRsp));
+
+		return rootOrganizationAllRsp;
 	}
 }

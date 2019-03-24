@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfi
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
@@ -40,7 +41,7 @@ public class Bootstrap {
                 }).run(args);
     }
 
-    @EnableTransactionManagement
+    @EnableTransactionManagement(mode= AdviceMode.ASPECTJ)
     @EnableAutoConfiguration(exclude={WebMvcAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
     @ComponentScan(
             basePackages = "com.zcsoft.rc.*.dao," +

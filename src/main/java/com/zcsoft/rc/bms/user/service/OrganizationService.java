@@ -29,5 +29,11 @@ public interface OrganizationService extends IBaseService<Organization, java.lan
      */
     OrganizationUpdateRsp update(OrganizationUpdateReq req);
 
+    /**
+     * 查询所有组织
+     * @return
+     */
+    OrganizationAllRsp all();
+
 
 }

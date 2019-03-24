@@ -9,6 +9,10 @@ package com.zcsoft.rc.bms.app.constants;
  * 2018/4/24 下午2:47
  */
 public class Constants {
-    
+
+    /**
+     * 根节点
+     */
+    public static final String ROOT_KEY="root";
 
 }

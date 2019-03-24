@@ -51,5 +51,14 @@ public class OrganizationController {
 	public OrganizationUpdateRsp update(@Valid OrganizationUpdateReq req){
 		return organizationService.update(req);
 	}
+
+	/**
+	 * 查询所有组织
+	 * @return
+	 */
+	@RequestMapping(value="all", method= RequestMethod.POST)
+	public OrganizationAllRsp all() {
+		return organizationService.all();
+	}
 	
 }
