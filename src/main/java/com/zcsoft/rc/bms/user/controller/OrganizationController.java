@@ -1,8 +1,7 @@
 package com.zcsoft.rc.bms.user.controller;
 
 
-import com.zcsoft.rc.bms.api.user.entity.OrganizationAddReq;
-import com.zcsoft.rc.bms.api.user.entity.OrganizationAddRsp;
+import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.user.service.OrganizationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +32,24 @@ public class OrganizationController {
 	@RequestMapping(value="add", method= RequestMethod.POST)
 	public OrganizationAddRsp add(@Valid OrganizationAddReq req){
 		return organizationService.add(req);
+	}
+
+	/**
+	 * 删除组织
+	 * @param req
+	 */
+	@RequestMapping(value="delete", method= RequestMethod.POST)
+	public OrganizationDeleteRsp delete(@Valid OrganizationDeleteReq req){
+		return organizationService.delete(req);
+	}
+
+	/**
+	 * 修改组织
+	 * @param req
+	 */
+	@RequestMapping(value="update", method= RequestMethod.POST)
+	public OrganizationUpdateRsp update(@Valid OrganizationUpdateReq req){
+		return organizationService.update(req);
 	}
 	
 }

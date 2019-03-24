@@ -46,6 +46,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	}
 
 	@Override
+	public List<User> getByOrganizationId(String organizationId) {
+		User user = new User();
+		user.setOrganizationId(organizationId);
+
+		return userDAO.queryList(user);
+	}
+
+	@Override
 	public UserLoginRsp login(UserLoginReq req) {
 		UserLoginRsp userLoginRsp = new UserLoginRsp();
 		userLoginRsp.setUsername(req.getUsername());

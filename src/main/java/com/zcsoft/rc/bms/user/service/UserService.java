@@ -27,10 +27,18 @@ public interface UserService extends IBaseService<User, java.lang.String> {
     List<Authority> getAuthoritiesByUserId(String userId);
 
     /**
+     * 根据组织id查询用户列表
+     * @param organizationId
+     * @return
+     */
+    List<User> getByOrganizationId(String organizationId);
+
+    /**
      * 用户登录
      * @param req
      * @return
      */
     UserLoginRsp login(UserLoginReq req);
-	
+
+
 }
