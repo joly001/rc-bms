@@ -2,6 +2,7 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.api.user.entity.AuthoritiesAllRsp;
 import com.zcsoft.rc.bms.user.service.RoleAuthorityService;
 import com.zcsoft.rc.bms.user.service.RoleService;
 import com.zcsoft.rc.user.dao.RoleDAO;
@@ -33,5 +34,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 	@Override
 	public List<Authority> getAuthorityByRoleId(String roleId) {
 		return roleAuthorityService.getAuthorityByRoleId(roleId);
+	}
+
+	@Override
+	public AuthoritiesAllRsp authorities() {
+		return roleAuthorityService.getAuthorityGroupService().authorities();
 	}
 }

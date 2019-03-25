@@ -25,6 +25,11 @@ public class RoleAuthorityServiceImpl extends BaseServiceImpl<RoleAuthority, jav
 		super.setBaseDAO(roleAuthorityDAO);
 		this.roleAuthorityDAO = roleAuthorityDAO;
 	}
+
+	public AuthorityGroupService getAuthorityGroupService() {
+		return authorityGroupService;
+	}
+
 	@Resource
 	public void setAuthorityGroupService(AuthorityGroupService authorityGroupService) {
 		this.authorityGroupService = authorityGroupService;

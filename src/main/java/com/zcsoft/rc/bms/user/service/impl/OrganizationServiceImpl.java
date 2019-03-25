@@ -127,7 +127,6 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 	}
 
 	protected void sortOrganization(Map<OrganizationAllRsp,List<OrganizationAllRsp>> organizationMap, OrganizationAllRsp rootOrganizationAllRsp, List<OrganizationAllRsp> rootOrganizationAllRspList){
-		// 权限列表根据排序字段进行排序
 		Collections.sort(rootOrganizationAllRspList, new Comparator<OrganizationAllRsp>(){
 			public int compare(OrganizationAllRsp a, OrganizationAllRsp b) {
 				return a.getSequenceNumber()-b.getSequenceNumber();
@@ -145,32 +144,29 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 
 	@Override
 	public OrganizationAllRsp all() {
-		List<Organization> organizationList = organizationDAO.queryAll();
-
-		Map<String, OrganizationAllRsp> organizationAllRspMap = new HashMap<>();
-		organizationList.forEach(organization -> {
-			OrganizationAllRsp organizationAllRsp = new OrganizationAllRsp();
-			organizationAllRsp.setId(organization.getId());
-			organizationAllRsp.setOrgName(organization.getOrgName());
-			organizationAllRsp.setSequenceNumber(organization.getSequenceNumber());
-			organizationAllRsp.setChildOrgList(new ArrayList<>());
-			organizationAllRspMap.put(organization.getId(), organizationAllRsp);
-		});
-
-		Map<OrganizationAllRsp,List<OrganizationAllRsp>> organizationMap = new HashMap<>();
-
 		OrganizationAllRsp rootOrganizationAllRsp = new OrganizationAllRsp();
 		rootOrganizationAllRsp.setId(Constants.ROOT_KEY);
 		rootOrganizationAllRsp.setOrgName(Constants.ROOT_KEY);
 		rootOrganizationAllRsp.setSequenceNumber(0);
 		rootOrganizationAllRsp.setChildOrgList(new ArrayList<>());
 
+
+		List<Organization> organizationList = organizationDAO.queryAll();
+
+		if(organizationList == null || organizationList.isEmpty()) {
+			return rootOrganizationAllRsp;
+		}
+
+		Map<String, OrganizationAllRsp> organizationAllRspMap = new HashMap<>();
 		organizationList.forEach(organization -> {
-			OrganizationAllRsp organizationAllRsp = new OrganizationAllRsp();
-			organizationAllRsp.setId(organization.getId());
-			organizationAllRsp.setOrgName(organization.getOrgName());
-			organizationAllRsp.setSequenceNumber(organization.getSequenceNumber());
-			organizationAllRsp.setChildOrgList(new ArrayList<>());
+			OrganizationAllRsp organizationAllRsp = organization.convertToOrganizationAllRsp();
+			organizationAllRspMap.put(organization.getId(), organizationAllRsp);
+		});
+
+		Map<OrganizationAllRsp,List<OrganizationAllRsp>> organizationMap = new HashMap<>();
+
+		organizationList.forEach(organization -> {
+			OrganizationAllRsp organizationAllRsp = organization.convertToOrganizationAllRsp();
 
 			OrganizationAllRsp parentOrganizationAllRsp;
 			if(StringUtils.isTrimEmpty(organization.getParentId())) {
@@ -185,11 +181,7 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 				childOrganizationAllRspList = new ArrayList<>();
 				childOrganizationAllRspList.add(organizationAllRsp);
 
-				if(StringUtils.isTrimEmpty(organization.getParentId())) {
-					organizationMap.put(rootOrganizationAllRsp, childOrganizationAllRspList);
-				}else {
-					organizationMap.put(organizationAllRspMap.get(organization.getParentId()), childOrganizationAllRspList);
-				}
+				organizationMap.put(parentOrganizationAllRsp, childOrganizationAllRspList);
 			} else {
 				childOrganizationAllRspList.add(organizationAllRsp);
 			}

@@ -2,6 +2,7 @@ package com.zcsoft.rc.bms.user.service;
 
 
 import com.sharingif.cube.support.service.base.IBaseService;
+import com.zcsoft.rc.bms.api.user.entity.AuthoritiesAllRsp;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.AuthorityGroup;
 
@@ -16,5 +17,11 @@ public interface AuthorityGroupService extends IBaseService<AuthorityGroup, java
      * @return
      */
     List<Authority> getAuthorityByAuthorityGroup(String authorityGroupId);
-	
+
+    /**
+     * 查询所有权限组
+     * @return
+     */
+    AuthoritiesAllRsp authorities();
+
 }
