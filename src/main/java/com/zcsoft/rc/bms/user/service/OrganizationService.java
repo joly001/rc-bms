@@ -9,28 +9,28 @@ import com.zcsoft.rc.user.model.entity.Organization;
 public interface OrganizationService extends IBaseService<Organization, java.lang.String> {
 
     /**
-     * 添加组织信息
+     * 组织添加
      * @param req
      * @return
      */
     OrganizationAddRsp add(OrganizationAddReq req);
 
     /**
-     * 删除组织
+     * 组织删除
      * @param req
      * @return
      */
     OrganizationDeleteRsp delete(OrganizationDeleteReq req);
 
     /**
-     * 修改组织
+     * 组织修改
      * @param req
      * @return
      */
     OrganizationUpdateRsp update(OrganizationUpdateReq req);
 
     /**
-     * 查询所有组织
+     * 组织查询所有
      * @return
      */
     OrganizationAllRsp all();

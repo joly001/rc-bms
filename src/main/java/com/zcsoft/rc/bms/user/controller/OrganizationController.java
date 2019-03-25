@@ -26,7 +26,7 @@ public class OrganizationController {
 	}
 
 	/**
-	 * 添加组织
+	 * 组织添加
 	 * @param req
 	 */
 	@RequestMapping(value="add", method= RequestMethod.POST)
@@ -35,7 +35,7 @@ public class OrganizationController {
 	}
 
 	/**
-	 * 删除组织
+	 * 组织删除
 	 * @param req
 	 */
 	@RequestMapping(value="delete", method= RequestMethod.POST)
@@ -44,7 +44,7 @@ public class OrganizationController {
 	}
 
 	/**
-	 * 修改组织
+	 * 组织修改
 	 * @param req
 	 */
 	@RequestMapping(value="update", method= RequestMethod.POST)
@@ -53,7 +53,7 @@ public class OrganizationController {
 	}
 
 	/**
-	 * 查询所有组织
+	 * 组织查询所有
 	 * @return
 	 */
 	@RequestMapping(value="all", method= RequestMethod.POST)

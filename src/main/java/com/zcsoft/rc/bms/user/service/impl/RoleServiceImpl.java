@@ -3,16 +3,16 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
-import com.zcsoft.rc.bms.api.user.entity.AuthoritiesAllRsp;
-import com.zcsoft.rc.bms.api.user.entity.RoleAddReq;
-import com.zcsoft.rc.bms.api.user.entity.RoleAddRsp;
+import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.user.service.RoleAuthorityService;
 import com.zcsoft.rc.bms.user.service.RoleService;
+import com.zcsoft.rc.bms.user.service.UserRoleService;
 import com.zcsoft.rc.user.dao.RoleDAO;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.Role;
 import com.zcsoft.rc.user.model.entity.RoleAuthority;
+import com.zcsoft.rc.user.model.entity.UserRole;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 	private RoleDAO roleDAO;
 
 	private RoleAuthorityService roleAuthorityService;
+	private UserRoleService userRoleService;
 
 	@Resource
 	public void setRoleDAO(RoleDAO roleDAO) {
@@ -35,6 +36,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 	@Resource
 	public void setRoleAuthorityService(RoleAuthorityService roleAuthorityService) {
 		this.roleAuthorityService = roleAuthorityService;
+	}
+	@Resource
+	public void setUserRoleService(UserRoleService userRoleService) {
+		this.userRoleService = userRoleService;
 	}
 
 	@Override
@@ -53,7 +58,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 
 		role = roleDAO.query(role);
 
-		if(role == null) {
+		if(role != null) {
 			throw new ValidationCubeException(ErrorConstants.ROLE_ALREADY_EXIST);
 		}
 	}
@@ -83,5 +88,36 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		roleAddRsp.setId(role.getId());
 
 		return roleAddRsp;
+	}
+
+
+	@Transactional
+	protected void delete(String roleId) {
+		roleAuthorityService.deleteByRoleId(roleId);
+		roleDAO.deleteById(roleId);
+	}
+
+	@Override
+	public RoleDeleteRsp delete(RoleDeleteReq req) {
+		Role role = roleDAO.queryById(req.getId());
+		if(role == null) {
+			throw new ValidationCubeException(ErrorConstants.ROLE_NOT_EXIST);
+		}
+
+		if(Role.ROLE_TYPE_DEFAULT.equals(role.getRoleType())) {
+			throw new ValidationCubeException(ErrorConstants.ROLE_DEFAULT_TYPE_NOT_DELETE);
+		}
+
+		List<UserRole> userRoleList = userRoleService.getByRoleId(role.getId());
+		if(!userRoleList.isEmpty()) {
+			throw new ValidationCubeException(ErrorConstants.ROLE_HAS_USER);
+		}
+
+		delete(role.getId());
+
+		RoleDeleteRsp rsp = new RoleDeleteRsp();
+		rsp.setId(role.getId());
+
+		return rsp;
 	}
 }

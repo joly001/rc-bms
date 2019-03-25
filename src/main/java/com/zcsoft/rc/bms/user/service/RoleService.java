@@ -2,9 +2,7 @@ package com.zcsoft.rc.bms.user.service;
 
 
 import com.sharingif.cube.support.service.base.IBaseService;
-import com.zcsoft.rc.bms.api.user.entity.AuthoritiesAllRsp;
-import com.zcsoft.rc.bms.api.user.entity.RoleAddReq;
-import com.zcsoft.rc.bms.api.user.entity.RoleAddRsp;
+import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.Role;
 
@@ -32,5 +30,12 @@ public interface RoleService extends IBaseService<Role, java.lang.String> {
      * @return
      */
     RoleAddRsp add(RoleAddReq req);
+
+    /**
+     * 角色删除
+     * @param req
+     * @return
+     */
+    RoleDeleteRsp delete(RoleDeleteReq req);
 	
 }

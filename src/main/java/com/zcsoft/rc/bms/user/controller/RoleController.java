@@ -1,9 +1,7 @@
 package com.zcsoft.rc.bms.user.controller;
 
 
-import com.zcsoft.rc.bms.api.user.entity.AuthoritiesAllRsp;
-import com.zcsoft.rc.bms.api.user.entity.RoleAddReq;
-import com.zcsoft.rc.bms.api.user.entity.RoleAddRsp;
+import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.user.service.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +26,7 @@ public class RoleController {
 	}
 
 	/**
-	 * 查询所有权限组
+	 * 权限组查询所有
 	 */
 	@RequestMapping(value="authorities", method= RequestMethod.POST)
 	public AuthoritiesAllRsp authorities() {
@@ -36,11 +34,19 @@ public class RoleController {
 	}
 
 	/**
-	 * 角色添加
+	 * 添加
 	 */
 	@RequestMapping(value="add", method= RequestMethod.POST)
 	public RoleAddRsp add(@Valid RoleAddReq req) {
 		return roleService.add(req);
+	}
+
+	/**
+	 * 角色删除
+	 */
+	@RequestMapping(value="delete", method= RequestMethod.POST)
+	public RoleDeleteRsp delete(@Valid RoleDeleteReq req) {
+		return roleService.delete(req);
 	}
 	
 }

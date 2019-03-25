@@ -29,5 +29,12 @@ public interface RoleAuthorityService extends IBaseService<RoleAuthority, java.l
      * @return
      */
     List<Authority> getAuthorityByRoleId(String roleId);
+
+    /**
+     * 根据角色删除
+     * @param roleId
+     * @return
+     */
+    int deleteByRoleId(String roleId);
 	
 }
