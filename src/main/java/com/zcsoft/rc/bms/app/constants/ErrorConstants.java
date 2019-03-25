@@ -19,6 +19,11 @@ public class ErrorConstants {
      */
     public static final String ORGANIZATION_NOT_EXIST = "001003";
 
+    /**
+     * 用户没有权限
+     */
+    public static final String ROLE_HAS_NOT_ENOUGH_RIGHTS = "002000";
+
 
 
 }
