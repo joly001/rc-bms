@@ -23,7 +23,10 @@ public class ErrorConstants {
      * 用户没有权限
      */
     public static final String ROLE_HAS_NOT_ENOUGH_RIGHTS = "002000";
-
+    /**
+     * 角色名称已经存在
+     */
+    public static final String ROLE_ALREADY_EXIST = "002001";
 
 
 }
