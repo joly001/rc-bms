@@ -141,7 +141,16 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		roleDAO.updateById(role);
 		roleAuthorityService.deleteByRoleId(role.getId());
 
-		add(role, authorities);
+		if(authorities == null) {
+			return;
+		}
+
+		authorities.forEach(authority -> {
+			RoleAuthority roleAuthority = new RoleAuthority();
+			roleAuthority.setRoleCode(role.getId());
+			roleAuthority.setAuthorityCode(authority);
+			roleAuthorityService.add(roleAuthority);
+		});
 	}
 
 	@Override
