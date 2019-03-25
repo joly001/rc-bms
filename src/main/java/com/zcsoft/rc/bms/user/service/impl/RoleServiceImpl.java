@@ -199,11 +199,11 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 				,req
 		);
 
-		if(paginationRepertory.getPageItems() == null) {
+		if(paginationRepertory.getPageItems() == null || paginationRepertory.getPageItems().isEmpty()) {
 			return httpPaginationRepertory;
 		}
 
-		List<RoleListRsp> roleListRspList = new ArrayList<>(httpPaginationRepertory.getPageItems().size());
+		List<RoleListRsp> roleListRspList = new ArrayList<>(paginationRepertory.getPageItems().size());
 		paginationRepertory.getPageItems().forEach(role -> {
 			RoleListRsp roleListRsp = new RoleListRsp();
 			BeanUtils.copyProperties(role, roleListRsp);
