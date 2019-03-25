@@ -1,6 +1,8 @@
 package com.zcsoft.rc.bms.user.controller;
 
 
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.user.service.RoleService;
 import org.springframework.stereotype.Controller;
@@ -55,6 +57,14 @@ public class RoleController {
 	@RequestMapping(value="update", method= RequestMethod.POST)
 	public RoleUpdateRsp update(@Valid RoleUpdateReq req) {
 		return roleService.update(req);
+	}
+
+	/**
+	 * 角色分页查询
+	 */
+	@RequestMapping(value="list", method= RequestMethod.POST)
+	public HttpPaginationRepertory<RoleListRsp> list(HttpPaginationCondition<RoleListReq> req) {
+		return roleService.list(req);
 	}
 	
 }

@@ -2,8 +2,13 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.persistence.database.pagination.PaginationCondition;
+import com.sharingif.cube.persistence.database.pagination.PaginationRepertory;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
+import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.user.service.RoleAuthorityService;
 import com.zcsoft.rc.bms.user.service.RoleService;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -173,5 +179,39 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		rsp.setId(role.getId());
 
 		return rsp;
+	}
+
+	@Override
+	public HttpPaginationRepertory<RoleListRsp> list(HttpPaginationCondition<RoleListReq> req) {
+		Role queryRole = new Role();
+		queryRole.setRoleName(req.getCondition().getRoleName());
+		PaginationCondition<Role> paginationCondition = new PaginationCondition<>();
+		paginationCondition.setCondition(queryRole);
+		paginationCondition.setCurrentPage(req.getCurrentPage());
+		paginationCondition.setPageSize(Constants.PAGE_SIZE);
+
+
+		PaginationRepertory<Role> paginationRepertory = roleDAO.queryPagination(paginationCondition);
+
+		HttpPaginationRepertory<RoleListRsp> httpPaginationRepertory = new HttpPaginationRepertory<>(
+				paginationRepertory.getTotalCount()
+				,null
+				,req
+		);
+
+		if(paginationRepertory.getPageItems() == null) {
+			return httpPaginationRepertory;
+		}
+
+		List<RoleListRsp> roleListRspList = new ArrayList<>(httpPaginationRepertory.getPageItems().size());
+		paginationRepertory.getPageItems().forEach(role -> {
+			RoleListRsp roleListRsp = new RoleListRsp();
+			BeanUtils.copyProperties(role, roleListRsp);
+
+			roleListRspList.add(roleListRsp);
+		});
+		httpPaginationRepertory.setPageItems(roleListRspList);
+
+		return httpPaginationRepertory;
 	}
 }

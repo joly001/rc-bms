@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.user.service;
 
 
 import com.sharingif.cube.support.service.base.IBaseService;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.Role;
@@ -44,5 +46,12 @@ public interface RoleService extends IBaseService<Role, java.lang.String> {
      * @return
      */
     RoleUpdateRsp update(RoleUpdateReq req);
+
+    /**
+     * 角色分页查询
+     * @param req
+     * @return
+     */
+    HttpPaginationRepertory<RoleListRsp> list(HttpPaginationCondition<RoleListReq> req);
 	
 }
