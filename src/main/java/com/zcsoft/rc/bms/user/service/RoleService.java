@@ -37,5 +37,12 @@ public interface RoleService extends IBaseService<Role, java.lang.String> {
      * @return
      */
     RoleDeleteRsp delete(RoleDeleteReq req);
+
+    /**
+     * 角色修改
+     * @param req
+     * @return
+     */
+    RoleUpdateRsp update(RoleUpdateReq req);
 	
 }

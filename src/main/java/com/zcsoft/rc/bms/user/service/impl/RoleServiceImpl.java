@@ -52,20 +52,31 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		return roleAuthorityService.getAuthorityGroupService().authorities();
 	}
 
-	protected void verifyRoleNameExistence (String roleName) {
+	protected void verifyRoleNameExistence(String id, String roleName) {
 		Role role = new Role();
 		role.setRoleName(roleName);
 
 		role = roleDAO.query(role);
 
-		if(role != null) {
-			throw new ValidationCubeException(ErrorConstants.ROLE_ALREADY_EXIST);
+		if(role == null) {
+			return;
 		}
+
+		if(role.getId().equals(id)) {
+			return;
+		}
+
+		throw new ValidationCubeException(ErrorConstants.ROLE_ALREADY_EXIST);
 	}
 
 	@Transactional
 	protected void add(Role role, List<String> authorities) {
 		roleDAO.insert(role);
+
+		if(authorities == null) {
+			return;
+		}
+
 		authorities.forEach(authority -> {
 			RoleAuthority roleAuthority = new RoleAuthority();
 			roleAuthority.setRoleCode(role.getId());
@@ -76,7 +87,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 
 	@Override
 	public RoleAddRsp add(RoleAddReq req) {
-		verifyRoleNameExistence(req.getRoleName());
+		verifyRoleNameExistence(null, req.getRoleName());
 
 		Role role = new Role();
 		BeanUtils.copyProperties(req, role);
@@ -97,12 +108,16 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		roleDAO.deleteById(roleId);
 	}
 
-	@Override
-	public RoleDeleteRsp delete(RoleDeleteReq req) {
-		Role role = roleDAO.queryById(req.getId());
+	protected void verifyRoleIdExistence(Role role) {
 		if(role == null) {
 			throw new ValidationCubeException(ErrorConstants.ROLE_NOT_EXIST);
 		}
+	}
+
+	@Override
+	public RoleDeleteRsp delete(RoleDeleteReq req) {
+		Role role = roleDAO.queryById(req.getId());
+		verifyRoleIdExistence(role);
 
 		if(Role.ROLE_TYPE_DEFAULT.equals(role.getRoleType())) {
 			throw new ValidationCubeException(ErrorConstants.ROLE_DEFAULT_TYPE_NOT_DELETE);
@@ -116,6 +131,36 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		delete(role.getId());
 
 		RoleDeleteRsp rsp = new RoleDeleteRsp();
+		rsp.setId(role.getId());
+
+		return rsp;
+	}
+
+	@Transactional
+	protected void update(Role role, List<String> authorities) {
+		roleDAO.updateById(role);
+		roleAuthorityService.deleteByRoleId(role.getId());
+
+		add(role, authorities);
+	}
+
+	@Override
+	public RoleUpdateRsp update(RoleUpdateReq req) {
+		Role queryRole = roleDAO.queryById(req.getId());
+		verifyRoleIdExistence(queryRole);
+
+		if(Role.ROLE_TYPE_DEFAULT.equals(queryRole.getRoleType())) {
+			throw new ValidationCubeException(ErrorConstants.ROLE_DEFAULT_TYPE_NOT_UPDATE);
+		}
+
+		verifyRoleNameExistence(req.getId(), req.getRoleName());
+
+		Role role = new Role();
+		BeanUtils.copyProperties(req, role);
+
+		update(role, req.getAuthorities());
+
+		RoleUpdateRsp rsp = new RoleUpdateRsp();
 		rsp.setId(role.getId());
 
 		return rsp;

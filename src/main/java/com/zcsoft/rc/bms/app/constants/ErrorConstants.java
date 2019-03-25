@@ -39,6 +39,10 @@ public class ErrorConstants {
      * 角色已被用户使用不能删除
      */
     public static final String ROLE_HAS_USER = "002004";
+    /**
+     * 系统角色不能修改
+     */
+    public static final String ROLE_DEFAULT_TYPE_NOT_UPDATE = "002005";
 
 
 }

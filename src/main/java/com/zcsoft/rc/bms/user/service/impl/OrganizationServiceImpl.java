@@ -46,19 +46,26 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 		}
 	}
 
-	protected void verifyOrgNameExistence (String orgName) {
+	protected void verifyOrgNameExistence(String id, String orgName) {
 		Organization queryOrganization = new Organization();
 		queryOrganization.setOrgName(orgName);
 		queryOrganization = organizationDAO.query(queryOrganization);
-		if(queryOrganization != null) {
-			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_ALREADY_EXIST);
+
+		if(queryOrganization == null) {
+			return;
 		}
+
+		if(queryOrganization.getId().equals(id)) {
+			return;
+		}
+
+		throw new ValidationCubeException(ErrorConstants.ORGANIZATION_ALREADY_EXIST);
 	}
 
 	@Override
 	public OrganizationAddRsp add(OrganizationAddReq req) {
 
-		verifyOrgNameExistence(req.getOrgName());
+		verifyOrgNameExistence(null, req.getOrgName());
 
 		Integer maxSequenceNumber = getMaxSequenceNumber(req.getParentId());
 
@@ -78,16 +85,22 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 
 	@Transactional
 	protected void delete(Organization organization) {
-		int number = organizationDAO.deleteById(organization.getId());
-		if(number == 0) {
+		organizationDAO.deleteById(organization.getId());
+		organizationDAO.updateDecrementSequenceNumberByParentIdSequenceNumber(organization.getParentId(), organization.getSequenceNumber());
+	}
+
+	protected void verifyOrgIdExistence(Organization organization) {
+		if(organization == null) {
 			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_NOT_EXIST);
 		}
 
-		organizationDAO.updateDecrementSequenceNumberByParentIdSequenceNumber(organization.getParentId(), organization.getSequenceNumber());
 	}
 
 	@Override
 	public OrganizationDeleteRsp delete(OrganizationDeleteReq req) {
+		Organization organization = organizationDAO.queryById(req.getId());
+		verifyOrgIdExistence(organization);
+
 		Organization queryOrganization = new Organization();
 		queryOrganization.setParentId(req.getId());
 
@@ -101,8 +114,6 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_HAS_CHILD_USER);
 		}
 
-		Organization organization = organizationDAO.queryById(req.getId());
-
 		delete(organization);
 
 		OrganizationDeleteRsp rsp = new OrganizationDeleteRsp();
@@ -113,7 +124,10 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 
 	@Override
 	public OrganizationUpdateRsp update(OrganizationUpdateReq req) {
-		verifyOrgNameExistence(req.getOrgName());
+		Organization queryOrganization = organizationDAO.queryById(req.getId());
+		verifyOrgIdExistence(queryOrganization);
+
+		verifyOrgNameExistence(req.getId(), req.getOrgName());
 
 		Organization organization = new Organization();
 		BeanUtils.copyProperties(req, organization);

@@ -48,5 +48,13 @@ public class RoleController {
 	public RoleDeleteRsp delete(@Valid RoleDeleteReq req) {
 		return roleService.delete(req);
 	}
+
+	/**
+	 * 角色修改
+	 */
+	@RequestMapping(value="update", method= RequestMethod.POST)
+	public RoleUpdateRsp update(@Valid RoleUpdateReq req) {
+		return roleService.update(req);
+	}
 	
 }
