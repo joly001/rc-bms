@@ -61,6 +61,7 @@ public class ChainAutoconfigure {
 
         UserAuthorityAccessDecisionChain noUserChain = new UserAuthorityAccessDecisionChain();
         noUserChain.setExcludeMethods(excludeMethods);
+        noUserChain.setCommomAuthority(commomAuthority);
         noUserChain.setReplaceContent("com.zcsoft.rc.bms.");
 
         return noUserChain;
