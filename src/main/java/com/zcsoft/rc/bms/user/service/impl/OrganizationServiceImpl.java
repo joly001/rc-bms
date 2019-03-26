@@ -63,6 +63,13 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 	}
 
 	@Override
+	public void verifyIdExistence(String id) {
+		Organization organization = organizationDAO.queryById(id);
+
+		verifyOrgIdExistence(organization);
+	}
+
+	@Override
 	public OrganizationAddRsp add(OrganizationAddReq req) {
 
 		verifyOrgNameExistence(null, req.getOrgName());
@@ -93,7 +100,6 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 		if(organization == null) {
 			throw new ValidationCubeException(ErrorConstants.ORGANIZATION_NOT_EXIST);
 		}
-
 	}
 
 	@Override

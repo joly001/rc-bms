@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.user.controller;
 
 
 import com.sharingif.cube.core.handler.chain.BHMChain;
+import com.zcsoft.rc.bms.api.user.entity.UserAddReq;
+import com.zcsoft.rc.bms.api.user.entity.UserAddRsp;
 import com.zcsoft.rc.bms.api.user.entity.UserLoginReq;
 import com.zcsoft.rc.bms.api.user.entity.UserLoginRsp;
 import com.zcsoft.rc.bms.user.service.UserService;
@@ -45,5 +47,12 @@ public class UserController {
 
 	}
 
+	/**
+	 * 用户添加
+	 */
+	@RequestMapping(value="add", method= RequestMethod.POST)
+	public UserAddRsp add(@Valid UserAddReq req) {
+		return userService.add(req);
+	}
 
 }

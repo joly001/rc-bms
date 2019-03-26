@@ -1,14 +1,22 @@
 package com.zcsoft.rc.bms.user.service.impl;
 
 
+import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.api.user.entity.UserAddReq;
+import com.zcsoft.rc.bms.api.user.entity.UserAddRsp;
 import com.zcsoft.rc.bms.api.user.entity.UserLoginReq;
 import com.zcsoft.rc.bms.api.user.entity.UserLoginRsp;
+import com.zcsoft.rc.bms.app.constants.Constants;
+import com.zcsoft.rc.bms.app.constants.ErrorConstants;
+import com.zcsoft.rc.bms.user.service.OrganizationService;
 import com.zcsoft.rc.bms.user.service.UserRoleService;
 import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.dao.UserDAO;
 import com.zcsoft.rc.user.model.entity.Authority;
+import com.zcsoft.rc.user.model.entity.Organization;
 import com.zcsoft.rc.user.model.entity.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +28,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	private UserDAO userDAO;
 
 	private UserRoleService userRoleService;
+	private OrganizationService organizationService;
 
 	@Resource
 	public void setUserDAO(UserDAO userDAO) {
@@ -30,6 +39,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	@Resource
 	public void setUserRoleService(UserRoleService userRoleService) {
 		this.userRoleService = userRoleService;
+	}
+	@Resource
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 
 	@Override
@@ -58,5 +71,66 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		UserLoginRsp userLoginRsp = new UserLoginRsp();
 		userLoginRsp.setUsername(req.getUsername());
 		return userLoginRsp;
+	}
+
+	protected void verifyMobileExistence(String id, String mobile) {
+		User user = new User();
+		user.setMobile(mobile);
+
+		user = userDAO.query(user);
+
+		if(user == null) {
+			return;
+		}
+
+		if(user.getId().equals(id)) {
+			return;
+		}
+
+		throw new ValidationCubeException(ErrorConstants.USER_MOBILE_ALREADY_EXIST);
+	}
+
+	protected void verifyWristStrapCodeExistence(String id, String wristStrapCode) {
+		User user = new User();
+		user.setWristStrapCode(wristStrapCode);
+
+		user = userDAO.query(user);
+
+		if(user == null) {
+			return;
+		}
+
+		if(user.getId().equals(id)) {
+			return;
+		}
+
+		throw new ValidationCubeException(ErrorConstants.USER_WRISTSTRAPCODE_ALREADY_EXIST);
+	}
+
+	@Override
+	public UserAddRsp add(UserAddReq req) {
+
+		verifyMobileExistence(null, req.getMobile());
+
+		verifyWristStrapCodeExistence(null, req.getWristStrapCode());
+
+		organizationService.verifyIdExistence(req.getOrganizationId());
+
+
+		User user = new User();
+		BeanUtils.copyProperties(req, user);
+		user.setUsername(req.getMobile());
+		user.setPassword(Constants.DEFULT_PASSWORD);
+		user.setMobilePrefix(Constants.CHINA_MOBILE_PREFIX);
+		user.setUserType(req.getBuilderUserType());
+		user.setAdmissionDate(req.getAdmissionLeaveDate());
+		user.setStatus(User.STATUS_NORMAL);
+
+		userDAO.insert(user);
+
+		UserAddRsp rsp = new UserAddRsp();
+		rsp.setId(user.getId());
+
+		return rsp;
 	}
 }
