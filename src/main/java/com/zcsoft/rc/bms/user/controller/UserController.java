@@ -29,12 +29,21 @@ public class UserController {
 
 	/**
 	 * 用户登录
-	 * @param req
 	 */
 	@BHMChain(ref = "loginChain")
 	@RequestMapping(value="login", method= RequestMethod.POST)
 	public UserLoginRsp login(@Valid UserLoginReq req){
 		return userService.login(req);
 	}
+
+	/**
+	 * 用户安全退出
+	 */
+	@BHMChain(ref="signOutChain")
+	@RequestMapping(value="signOut", method= RequestMethod.POST)
+	public void signOut() {
+
+	}
+
 
 }

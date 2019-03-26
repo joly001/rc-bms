@@ -54,8 +54,10 @@ public class ChainAutoconfigure {
     public UserAuthorityAccessDecisionChain createNoUserChain() {
 
         List<String> excludeMethods = new ArrayList<String>();
-
         excludeMethods.add("user.controller.UserController.login");
+
+        List<String> commomAuthority = new ArrayList<>();
+        commomAuthority.add("user.controller.UserController.signOut");
 
         UserAuthorityAccessDecisionChain noUserChain = new UserAuthorityAccessDecisionChain();
         noUserChain.setExcludeMethods(excludeMethods);

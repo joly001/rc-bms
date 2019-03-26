@@ -28,6 +28,7 @@ public class UserAuthorityAccessDecisionChain extends AbstractHandlerMethodChain
 
     private String replaceContent;
     private Map<String,String> excludeMethods = new HashMap<String,String>();
+    private Map<String,String> commomAuthority;
 
     public String getReplaceContent() {
         return replaceContent;
@@ -43,9 +44,16 @@ public class UserAuthorityAccessDecisionChain extends AbstractHandlerMethodChain
 
     public void setExcludeMethods(List<String> excludeMethods) {
         this.excludeMethods = new HashMap<String,String>(excludeMethods.size());
-        for(String excludeMethod : excludeMethods) {
-            this.excludeMethods.put(excludeMethod,excludeMethod);
-        }
+        excludeMethods.forEach(excludeMethod -> {
+            this.excludeMethods.put(excludeMethod,null);
+        });
+    }
+
+    public void setCommomAuthority(List<String> commomAuthorities) {
+        commomAuthority = new HashMap<>(commomAuthorities.size());
+        commomAuthorities.forEach(authority ->{
+            commomAuthority.put(authority,null);
+        });
     }
 
     protected boolean authorityAccessDecision(IAuthorityRepertory<TreeMap<String, String>> authorityRepertory, String authorityCode) {
@@ -60,7 +68,7 @@ public class UserAuthorityAccessDecisionChain extends AbstractHandlerMethodChain
     @Override
     public void before(HandlerMethodContent content) throws CubeException {
         String authorityCode = getAuthorityCode(content);
-        if(null != excludeMethods.get(authorityCode)) {
+        if(excludeMethods.containsKey(authorityCode)) {
             return;
         }
 
@@ -69,6 +77,10 @@ public class UserAuthorityAccessDecisionChain extends AbstractHandlerMethodChain
 
         if(user == null) {
             throw new NoUserAccessDecisionCubeException();
+        }
+
+        if(commomAuthority.containsKey(authorityCode)) {
+            return;
         }
 
         if(!authorityAccessDecision(user, authorityCode)) {
