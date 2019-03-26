@@ -11,6 +11,12 @@ import java.util.List;
 public interface RoleAuthorityService extends IBaseService<RoleAuthority, java.lang.String> {
 
     /**
+     * 获得权限组服务
+     * @return
+     */
+    AuthorityGroupService getAuthorityGroupService();
+
+    /**
      * 根据角色id查询角色权限
      * @param roleId
      * @return
@@ -23,5 +29,12 @@ public interface RoleAuthorityService extends IBaseService<RoleAuthority, java.l
      * @return
      */
     List<Authority> getAuthorityByRoleId(String roleId);
+
+    /**
+     * 根据角色删除
+     * @param roleId
+     * @return
+     */
+    int deleteByRoleId(String roleId);
 	
 }

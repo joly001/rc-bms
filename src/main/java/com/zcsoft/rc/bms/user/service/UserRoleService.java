@@ -18,6 +18,13 @@ public interface UserRoleService extends IBaseService<UserRole, java.lang.String
     List<UserRole> getByUserId(String userId);
 
     /**
+     * 根据角色id获得角色
+     * @param roleid
+     * @return
+     */
+    List<UserRole> getByRoleId(String roleid);
+
+    /**
      * 根据用户id获得权限列表
      * @param userId
      * @return

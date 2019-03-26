@@ -6,6 +6,7 @@ import com.sharingif.cube.security.authentication.AuthenticationHander;
 import com.sharingif.cube.security.authentication.password.TextEncryptorPasswordAuthentication;
 import com.sharingif.cube.security.confidentiality.encrypt.TextEncryptor;
 import com.sharingif.cube.security.exception.validation.authentication.AuthenticationCubeException;
+import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class PasswordAuthenticationHandler extends TextEncryptorPasswordAuthenti
 		User queryUser = userService.getByUsername(user.getUsername());
 		
 		if(null == queryUser || StringUtils.isEmpty(queryUser.getUsername())) {
-			throw new AuthenticationCubeException("Incorrect username or password, Please Try again");
+			throw new AuthenticationCubeException(ErrorConstants.USER_INCORRECT_USERNAME_OR_PASSWORD);
 		}
 		
 		passwordAuthentication(queryUser.getPassword(), user);
