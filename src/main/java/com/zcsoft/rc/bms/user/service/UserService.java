@@ -53,5 +53,12 @@ public interface UserService extends IBaseService<User, java.lang.String> {
      */
     UserDeleteRsp delete(UserDeleteReq req);
 
+    /**
+     * 用户修改
+     * @param req
+     * @return
+     */
+    UserUpdateRsp update(UserUpdateReq req);
+
 
 }

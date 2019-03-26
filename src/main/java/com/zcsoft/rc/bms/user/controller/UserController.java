@@ -60,4 +60,12 @@ public class UserController {
 		return userService.delete(req);
 	}
 
+	/**
+	 * 用户修改
+	 */
+	@RequestMapping(value="update", method= RequestMethod.POST)
+	public UserUpdateRsp update(UserUpdateReq req) {
+		return userService.update(req);
+	}
+
 }

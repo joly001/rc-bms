@@ -149,4 +149,25 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 
 		return rsp;
 	}
+
+	@Override
+	public UserUpdateRsp update(UserUpdateReq req) {
+		User user = userDAO.queryById(req.getId());
+		verifyIdExistence(user);
+
+		verifyMobileExistence(req.id, req.getMobile());
+
+		verifyWristStrapCodeExistence(req.id, req.getWristStrapCode());
+
+		organizationService.verifyIdExistence(req.getOrganizationId());
+
+		user = new User();
+		BeanUtils.copyProperties(req, user);
+		userDAO.updateById(user);
+
+		UserUpdateRsp rsp = new UserUpdateRsp();
+		rsp.setId(user.getId());
+
+		return rsp;
+	}
 }
