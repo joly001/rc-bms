@@ -2,10 +2,7 @@ package com.zcsoft.rc.bms.user.controller;
 
 
 import com.sharingif.cube.core.handler.chain.BHMChain;
-import com.zcsoft.rc.bms.api.user.entity.UserAddReq;
-import com.zcsoft.rc.bms.api.user.entity.UserAddRsp;
-import com.zcsoft.rc.bms.api.user.entity.UserLoginReq;
-import com.zcsoft.rc.bms.api.user.entity.UserLoginRsp;
+import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +50,14 @@ public class UserController {
 	@RequestMapping(value="add", method= RequestMethod.POST)
 	public UserAddRsp add(@Valid UserAddReq req) {
 		return userService.add(req);
+	}
+
+	/**
+	 * 用户删除
+	 */
+	@RequestMapping(value="delete", method= RequestMethod.POST)
+	public UserDeleteRsp delete(@Valid UserDeleteReq req) {
+		return userService.delete(req);
 	}
 
 }

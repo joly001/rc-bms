@@ -3,10 +3,7 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
-import com.zcsoft.rc.bms.api.user.entity.UserAddReq;
-import com.zcsoft.rc.bms.api.user.entity.UserAddRsp;
-import com.zcsoft.rc.bms.api.user.entity.UserLoginReq;
-import com.zcsoft.rc.bms.api.user.entity.UserLoginRsp;
+import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.user.service.OrganizationService;
@@ -73,6 +70,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		return userLoginRsp;
 	}
 
+	protected void verifyIdExistence(User user) {
+		if(user == null) {
+			throw new ValidationCubeException(ErrorConstants.USER_NOT_EXIST);
+		}
+	}
+
 	protected void verifyMobileExistence(String id, String mobile) {
 		User user = new User();
 		user.setMobile(mobile);
@@ -129,6 +132,19 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		userDAO.insert(user);
 
 		UserAddRsp rsp = new UserAddRsp();
+		rsp.setId(user.getId());
+
+		return rsp;
+	}
+
+	@Override
+	public UserDeleteRsp delete(UserDeleteReq req) {
+		User user = userDAO.queryById(req.getId());
+		verifyIdExistence(user);
+
+		userDAO.deleteById(req.getId());
+
+		UserDeleteRsp rsp = new UserDeleteRsp();
 		rsp.setId(user.getId());
 
 		return rsp;
