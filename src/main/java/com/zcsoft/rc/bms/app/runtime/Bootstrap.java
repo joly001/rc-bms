@@ -7,10 +7,12 @@ import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfi
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -28,7 +30,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Bootstrap {
 
     public static void main(String[] args) {
-        System.out.println(UUIDUtils.generateUUID());
         new SpringApplicationBuilder()
                 .parent(ApplicationContext.class)
                 .child(Bootstrap.class)
@@ -40,10 +41,14 @@ public class Bootstrap {
                 }).run(args);
     }
 
-    @EnableTransactionManagement
+    @EnableTransactionManagement(mode= AdviceMode.ASPECTJ)
     @EnableAutoConfiguration(exclude={WebMvcAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
     @ComponentScan(
-            basePackages = "com.zcsoft.rc.bms.*.dao,com.zcsoft.rc.bms.*.service,com.zcsoft.rc.bms.app,com.sharingif.cube.spring.boot.*"
+            basePackages = "com.zcsoft.rc.*.dao," +
+                    "com.zcsoft.rc.bms.*.service," +
+                    "com.zcsoft.rc.common," +
+                    "com.zcsoft.rc.bms.app," +
+                    "com.sharingif.cube.spring.boot"
             ,nameGenerator = ExtendedAnnotationBeanNameGenerator.class
             ,useDefaultFilters= false
             ,includeFilters={

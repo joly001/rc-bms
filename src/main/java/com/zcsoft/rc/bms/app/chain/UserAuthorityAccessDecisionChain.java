@@ -4,19 +4,23 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.util.StringUtils;
+import com.sharingif.cube.security.authentication.authority.IAuthorityRepertory;
+import com.sharingif.cube.security.exception.validation.access.AccessDecisionCubeException;
 import com.sharingif.cube.security.exception.validation.access.NoUserAccessDecisionCubeException;
 import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
 import com.sharingif.cube.web.user.CoreUserHttpSessionManage;
 import com.sharingif.cube.web.user.IWebUserManage;
+import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.user.model.entity.User;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class NoUserChain extends AbstractHandlerMethodChain {
+public class UserAuthorityAccessDecisionChain extends AbstractHandlerMethodChain {
 
-    public NoUserChain() {
+    public UserAuthorityAccessDecisionChain() {
         webUserManage = new CoreUserHttpSessionManage();
     }
 
@@ -44,9 +48,19 @@ public class NoUserChain extends AbstractHandlerMethodChain {
         }
     }
 
+    protected boolean authorityAccessDecision(IAuthorityRepertory<TreeMap<String, String>> authorityRepertory, String authorityCode) {
+        TreeMap<String, String> authorities = authorityRepertory.getAuthorities();
+        if(authorities == null) {
+            return false;
+        }
+
+        return authorities.containsKey(authorityCode);
+    }
+
     @Override
     public void before(HandlerMethodContent content) throws CubeException {
-        if(null != excludeMethods.get(getAuthorityCode(content))) {
+        String authorityCode = getAuthorityCode(content);
+        if(null != excludeMethods.get(authorityCode)) {
             return;
         }
 
@@ -55,6 +69,10 @@ public class NoUserChain extends AbstractHandlerMethodChain {
 
         if(user == null) {
             throw new NoUserAccessDecisionCubeException();
+        }
+
+        if(!authorityAccessDecision(user, authorityCode)) {
+            throw new AccessDecisionCubeException(ErrorConstants.ROLE_HAS_NOT_ENOUGH_RIGHTS);
         }
 
     }

@@ -38,6 +38,14 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole, java.lang.Str
 	}
 
 	@Override
+	public List<UserRole> getByRoleId(String roleid) {
+		UserRole userRole = new UserRole();
+		userRole.setRoleCode(roleid);
+
+		return userRoleDAO.queryList(userRole);
+	}
+
+	@Override
 	public List<Authority> getAuthorityByUserId(String userId) {
 		List<Authority> authorityList = new ArrayList<>(200);
 
