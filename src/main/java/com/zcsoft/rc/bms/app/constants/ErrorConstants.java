@@ -44,5 +44,10 @@ public class ErrorConstants {
      */
     public static final String ROLE_DEFAULT_TYPE_NOT_UPDATE = "002005";
 
+    /**
+     * 用户名或密码错误
+     */
+    public static final String USER_INCORRECT_USERNAME_OR_PASSWORD = "003000";
+
 
 }
