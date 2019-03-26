@@ -6,13 +6,14 @@ import VueAxios from 'vue-axios';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import axios from './plugins/axios/http.js' // 导入axios拦截器 
-
+import Icon from 'vue-svg-icon/Icon.vue';
 import {updateVueX} from "./utils/index.js";
 
 Vue.config.productionTip = false;
 
 Vue.use(VueAxios, axios);
 Vue.use(iView);
+Vue.component('icon', Icon);  
 
 updateVueX();//监听页面刷新，重置vueX数据。
 

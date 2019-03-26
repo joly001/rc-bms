@@ -33,6 +33,7 @@ export default new Router({
       path: '/',
       meta: {
         showMenu: true,
+        icon: 'command',
         title: "指挥调度中心"
       },
       component(resolve) {
@@ -79,6 +80,7 @@ export default new Router({
       path: '/',
       meta: {
         showMenu: true,
+        icon: 'people',
         title: '人员管理'
       },
       component(resolve) {
@@ -102,6 +104,7 @@ export default new Router({
       path: '/',
       meta: {
         showMenu: true,
+        icon: 'problem',
         title: "问题库管理"
       },
       component(resolve) { require(['@/components/main.vue'], resolve) },

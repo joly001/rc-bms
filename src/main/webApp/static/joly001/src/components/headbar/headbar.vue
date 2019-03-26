@@ -2,7 +2,7 @@
   <section class="headbar">
     <div class="left">
       <div class="toggle" @click="toggle">
-        <img src="../../assets/images/colse.png" alt>
+        <icon name="meun" :scale="3"></icon>
       </div>
       <ul class="current-page">
         <li>首页&nbsp;/&nbsp;</li>
@@ -14,14 +14,14 @@
       <div class="search">
         <input type="text" placeholder >
       </div>
-      <div class="notice" @click="notice">
-        <img src="../../assets/images/colse.png" class="we">
+      <div class="notice flex-row" @click="notice">
+        <icon name="notice" :scale="3"></icon>
       </div>
-      <div class="settings" @click="settings">
-        <img src="../../assets/images/colse.png" class="we">
+      <div class="settings flex-row" @click="settings">
+        <icon name="set" :scale="3"></icon>
       </div>
-      <div class="more" @click="more">
-        <img src="../../assets/images/colse.png" class="we">
+      <div class="more flex-row" @click="more">
+        <icon name="more" :scale="3"></icon>
       </div>
     </div>
   </section>

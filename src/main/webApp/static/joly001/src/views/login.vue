@@ -12,8 +12,8 @@
 				</div>
 				<div class="login-form">
 					<Form action="" ref="formInline" :model="formInline" :rules="ruleInline">
-						<FormItem prop="user">
-							<Input type="text" v-model="formInline.user" placeholder="账号">
+						<FormItem prop="username">
+							<Input type="text" v-model="formInline.username" placeholder="账号">
 								<Icon type="ios-person-outline" slot="prepend"></Icon>
 							</Input>
 						</FormItem>
@@ -42,12 +42,12 @@
 			return {
 				spinShow: false,
 				formInline:{
-					user:'',
+					username:'',
 					password:''
 				},
 				checked: false,
 				ruleInline:{
-					 user: [
+					 username: [
                         { required: true, message: '请填写账号', trigger: 'blur' }
                     ],
                     password: [
@@ -65,62 +65,26 @@
 				this.$refs[formInline].validate((valid) =>{
 					  if (valid) {
 						this.spinShow = true
-					  	var loginParams = {
-							Id: _this.formInline.user,
-							Pw: _this.formInline.password
-						};//用户输入的账号和密码
-					    this.axios({
-					  		method:'get',
-					  		url:'/Api/Home/Login',
-					  		params:loginParams
-					  	}).then((res) =>{
-					  		if(res.status==200){
-					  			 	this.$Message.success("登录成功!");
-									// sessionStorage.setItem("AttributionGuid",res.data.User.AttributionGuid);//缓存用户token
-									// sessionStorage.setItem("token",res.data.Token);//缓存用户token
-									// sessionStorage.setItem('NickName',res.data.User.NickName);
-									this.$store.commit("set_attr",res.data.User.AttributionGuid)
-									this.$store.commit("set_token",res.data.Token)
-									console.log(res)
-									this.$store.commit("set_nick_name",res.data.User.NickName)
-									let routes = this.$router.options.routes;
-									// if(res.data.User.AttributionGuid == "0000000000-0000-0000-0000-0000000000"){
-									// 	this.$store.commit("setAttributionName","水利厅")
-									// 	routes[0].meta.title = this.$store.state.AttributionName;
-									// 	routes[routes.length-2].meta.showMenu = true;
-									// }else{
-									// 	this.$store.commit("setAttributionName",res.data.User.AttributionName)
-									// 	routes[0].meta.title = this.$store.state.AttributionName;
-									// 	routes[routes.length-2].meta.showMenu = false;
-									// }
-									
-								  this.$store.commit("set_guid",res.data.User.Guid);
-								  let remeberFlag;//储存记住密码
-						            //判断复选框是否被勾选
-						            if (this.checked == true) {
-						                // console.log("checked == true");
-						                remeberFlag = "true";
-						                this.setCookie(_this.formInline.user, _this.formInline.password, 30, remeberFlag);
-						            }else {
-						                remeberFlag = "false";
-						                this.setCookie("", "", -1, remeberFlag);
-						            }
-								  this.$router.push({ name: "home"});
-								  this.spinShow = false;
-							  }else{
-								  this.$Message.error('登录失败!');
-							  }
-							  this.spinShow = false;
-					  	}).catch((error) =>{
-					  		if(error.c ==500 && error.m.search("密码错误") != -1){
-								  this.$Message.error('帐号或密码错误!');
-								  return;
-							}
-							this.spinShow = false;
-					  		this.$Message.error('登录失败!');
-					  	})
+					  	console.log(_this.formInline)
+						this.$store.dispatch("LOGIN",_this.formInline).then((res) => {
+							 this.$Message.success("登录成功");	
+							 let remeberFlag;//储存记住密码
+				            //判断复选框是否被勾选
+				            if (this.checked == true) {
+				                remeberFlag = "true";
+				                this.setCookie(_this.formInline.username, _this.formInline.password, 30, remeberFlag);
+				            }else {
+				                remeberFlag = "false";
+				                this.setCookie("", "", -1, remeberFlag);
+				            }
+				            this.spinShow = false;
+							this.$router.push({ name: "home"});
+
+						}).catch( (err) => {
+							this.$Message.error('登录失败!');
+						})
 					  }else{
-					  	this.$Message.error('登录失败!');
+					  	this.$Message.error('账号密码格式不正确!');
 					  }
 				})
 				
@@ -141,7 +105,7 @@
 		                let arr2 = arr[i].split('='); //再次切割
 		                //判断查找相对应的值
 		                if (arr2[0] == 'userName') {
-		                    this.formInline.user = arr2[1]; //保存到保存数据的地方
+		                    this.formInline.username = arr2[1]; //保存到保存数据的地方
 		                } else if (arr2[0] == 'userPwd') {
 		                    this.formInline.password = arr2[1];
 		                }else if (arr2[0] == 'remeberFlag') {
@@ -157,7 +121,6 @@
 		    }
 		},
 		mounted () {
-			this.$store.commit("set_token","")
 			this.getCookie();
 		}
 	}

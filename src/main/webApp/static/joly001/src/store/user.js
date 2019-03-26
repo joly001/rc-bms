@@ -1,29 +1,38 @@
-
+import axios from '@/plugins/axios/http.js';
+import { login } from '@/API/index.js';
 
 export default {
     state: {
-        attributionGuid: '',
-        token: '',
-        nickName: '', 
-        guid: '',
+        username: '',
+        checked: false
     },
     mutations: {
-        set_attr (state, attr) {//设置用户 权限
-            state.attributionGuid = attr || "";
-        },
-        set_token (state, token) {//设置登录token
-            console.log(token)
-            state.token = token || "";
-        },
-        set_nick_name (state, nickName) {//设置用户名称
-            state.nickName = nickName || "";
-        },
-        set_guid (state, guid) {//设置用户Guid
-            state.guid = guid || "";
-        }
+
     },
     actions: {
-
+        LOGIN ({commit, state}, loginInfo) {//登录
+            return new Promise((resolve, reject) => {
+                axios({
+                    method: 'post',
+                    url: login(),
+                    data: {
+                        username: loginInfo.username,
+                        password: loginInfo.password
+                    }
+                }).then((res) => {
+                    console.log(res)
+                    if(res.status == 200) {
+                        state.username = res.data.username;
+                        let str = "登录成功"
+                        resolve(str);
+                    }
+                }).catch((err) => {
+                    console.log('loginErr',err)
+                    reject(err)
+                })
+            })
+            
+        }
     },
     getters: {
 

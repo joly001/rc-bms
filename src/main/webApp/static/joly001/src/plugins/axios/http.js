@@ -5,8 +5,8 @@ import iView from 'iview';
 import qs from 'qs';
 
 axios.defaults.timeout = 10000;
-axios.defaults.baseURL = 'http://192.168.0.100';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.baseURL = 'http://47.93.254.21:9091';
+// axios.defaults.headers.post['Content-Type'] = 'application/json;charse=UTF-8';
 
 const tip = (msg) => {
     iView.$message.error(msg)
@@ -54,8 +54,6 @@ const errorHandle = (status, other) => {
 
 // 创建axios实例
 var instance = axios.create({ timeout: 1000 * 12 });
-// 设置post请求头
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 /** 
  * 请求拦截器 
  * 每次请求前，如果存在token则在请求头中携带token 
@@ -70,7 +68,9 @@ instance.interceptors.request.use(
         token && (config.headers.Authorization = token);
 
         if (config.method == 'post') {
-            config.data = qs.stringify(config.data);
+            config.headers.Accept = `application/json`
+            config.headers.ContentType = `application/json`
+            // config.data = qs.stringify(config.data);
         }
         return config;
     },

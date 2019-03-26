@@ -9,7 +9,7 @@
                 <!--accessMounted()控制路由显示隐藏-->
                 <Submenu :name="i"  v-for="(item,i) in memuList" :index="i" :key="i" v-if="figureAccess(item)">
                     <template slot="title">
-                        <Icon :type="item.icon"></Icon>
+                        <icon :name="item.meta.icon" :scale="3"></icon>
                         <span>{{item.meta.title}}</span>
                     </template>
                     <MenuItem :name="child.name" v-for="child in item.children" @click.native="go(child.name)" :key="child.name">{{child.meta.title}}</MenuItem>
@@ -89,6 +89,21 @@
         .ivu-menu-dark,.ivu-menu,.ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened,.ivu-layout-sider,.ivu-menu-dark .ivu-menu-opened .ivu-menu-submenu-title{
             background: #1B2433!important;
         }
+
+        .ivu-menu-submenu-title{
+            display: flex;
+        }
+
+        .ivu-menu-submenu-title>span{
+            margin: 0 10px;
+        }
+
+        .ivu-menu-submenu-title>i{
+           width: 18px;
+           height: 18px;
+        }
+
+
         .ivu-menu-submenu{
             font-size: 18px;
         }
@@ -110,7 +125,6 @@
         }        
     }
 </style>
-
 <style lang="less" scoped>
-@import url('../../styles/navbar/navbar.less');
+    @import url('../../styles/navbar/navbar.less');
 </style>
