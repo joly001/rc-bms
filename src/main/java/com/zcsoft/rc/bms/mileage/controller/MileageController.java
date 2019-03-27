@@ -1,10 +1,7 @@
 package com.zcsoft.rc.bms.mileage.controller;
 
 
-import com.zcsoft.rc.bms.api.mileage.entity.MileageAddReq;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageAddRsp;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageDeteleReq;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageDeteleRsp;
+import com.zcsoft.rc.bms.api.mileage.entity.*;
 import com.zcsoft.rc.bms.mileage.service.MileageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +41,14 @@ public class MileageController {
 	@RequestMapping(value="delete", method= RequestMethod.POST)
 	public MileageDeteleRsp delete(MileageDeteleReq req) {
 		return mileageService.delete(req);
+	}
+
+	/**
+	 * 里程修改
+	 */
+	@RequestMapping(value="update", method= RequestMethod.POST)
+	public MileageUpdateRsp update(MileageUpdateReq req) {
+		return mileageService.update(req);
 	}
 	
 }

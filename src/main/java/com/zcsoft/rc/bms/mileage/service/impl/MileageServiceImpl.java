@@ -3,10 +3,7 @@ package com.zcsoft.rc.bms.mileage.service.impl;
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageAddReq;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageAddRsp;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageDeteleReq;
-import com.zcsoft.rc.bms.api.mileage.entity.MileageDeteleRsp;
+import com.zcsoft.rc.bms.api.mileage.entity.*;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.mileage.service.MileageSegmentService;
 import com.zcsoft.rc.bms.mileage.service.MileageService;
@@ -52,13 +49,17 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 		throw new ValidationCubeException(ErrorConstants.MILEAGE_ALREADY_EXIST);
 	}
 
+	protected void verifyLongitudeEquals(double startLongitude, double endLongitude) {
+		if(startLongitude != endLongitude) {
+			throw new ValidationCubeException(ErrorConstants.MILEAGE_LONGITUDE_NOT_EQUALS);
+		}
+	}
+
 	@Override
 	public MileageAddRsp add(MileageAddReq req) {
 		verifyMileageNameExistence(null, req.getMileageName());
 
-		if(req.getStartLongitude().doubleValue() != req.getEndLongitude().doubleValue()) {
-			throw new ValidationCubeException(ErrorConstants.MILEAGE_LONGITUDE_NOT_EQUALS);
-		}
+		verifyLongitudeEquals(req.getStartLongitude().doubleValue(), req.getEndLongitude().doubleValue());
 
 		Mileage mileage = new Mileage();
 		BeanUtils.copyProperties(req, mileage);
@@ -88,6 +89,26 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 
 		MileageDeteleRsp rsp = new MileageDeteleRsp();
 		rsp.setId(req.getId());
+
+		return rsp;
+	}
+
+	@Override
+	public MileageUpdateRsp update(MileageUpdateReq req) {
+		Mileage queryMileage = mileageDAO.queryById(req.getId());
+		verifyRoleIdExistence(queryMileage);
+
+		verifyMileageNameExistence(req.getId(), req.getMileageName());
+
+		verifyLongitudeEquals(req.getStartLongitude().doubleValue(), req.getEndLongitude().doubleValue());
+
+		Mileage mileage = new Mileage();
+		BeanUtils.copyProperties(req, mileage);
+
+		mileageDAO.updateById(mileage);
+
+		MileageUpdateRsp rsp = new MileageUpdateRsp();
+		rsp.setId(mileage.getId());
 
 		return rsp;
 	}
