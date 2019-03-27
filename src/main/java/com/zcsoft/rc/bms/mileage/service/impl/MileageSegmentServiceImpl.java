@@ -84,6 +84,19 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		}
 	}
 
+	protected void handleMileageSegment(String startMileageName, String endMileageName, MileageSegment mileageSegment) {
+		Mileage mileage = mileageService.getByMileageName(startMileageName);
+		mileageIsNull(mileage);
+		mileageSegment.setStartMileageId(mileage.getId());
+		mileageSegment.setStartLongitude(mileage.getStartLongitude());
+		mileageSegment.setStartLatitude(mileage.getStartLatitude());
+		mileage = mileageService.getByMileageName(endMileageName);
+		mileageIsNull(mileage);
+		mileageSegment.setEndMileageId(mileage.getId());
+		mileageSegment.setEndLongitude(mileage.getEndLongitude());
+		mileageSegment.setEndLatitude(mileage.getEndLatitude());
+	}
+
 	@Override
 	public MileageSegmentAddRsp add(MileageSegmentAddReq req) {
 		verifyMileageSegmentNameExistence(null, req.getMileageSegmentName());
@@ -91,12 +104,7 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		MileageSegment mileageSegment = new MileageSegment();
 		BeanUtils.copyProperties(req, mileageSegment);
 
-		Mileage mileage = mileageService.getByMileageName(req.getStartMileageName());
-		mileageIsNull(mileage);
-		mileageSegment.setStartMileageId(mileage.getId());
-		mileage = mileageService.getByMileageName(req.getEndMileageName());
-		mileageIsNull(mileage);
-		mileageSegment.setEndMileageId(mileage.getId());
+		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), mileageSegment);
 
 		mileageSegmentDAO.insert(mileageSegment);
 
@@ -137,12 +145,7 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		MileageSegment mileageSegment = new MileageSegment();
 		BeanUtils.copyProperties(req, mileageSegment);
 
-		Mileage mileage = mileageService.getByMileageName(req.getStartMileageName());
-		mileageIsNull(mileage);
-		mileageSegment.setStartMileageId(mileage.getId());
-		mileage = mileageService.getByMileageName(req.getEndMileageName());
-		mileageIsNull(mileage);
-		mileageSegment.setEndMileageId(mileage.getId());
+		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), mileageSegment);
 
 		mileageSegmentDAO.updateById(mileageSegment);
 
