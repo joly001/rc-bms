@@ -130,7 +130,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		user.setUsername(req.getMobile());
 		user.setPassword(Constants.DEFULT_PASSWORD);
 		user.setMobilePrefix(Constants.CHINA_MOBILE_PREFIX);
-		user.setUserType(req.getBuilderUserType());
+		user.setUserType(User.USER_TYPE_REGISTER);
 		user.setAdmissionDate(req.getAdmissionLeaveDate());
 		user.setStatus(User.STATUS_NORMAL);
 
@@ -192,7 +192,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 			queryUser.setNick(userListReq.getNick());
 			queryUser.setMobile(userListReq.getMobile());
 			queryUser.setWristStrapCode(userListReq.getWristStrapCode());
-			queryUser.setUserType(User.USER_TYPE_SYS);
+			queryUser.setUserType(User.USER_TYPE_REGISTER);
 		}
 		PaginationCondition<User> paginationCondition = new PaginationCondition<>();
 		paginationCondition.setCondition(queryUser);
