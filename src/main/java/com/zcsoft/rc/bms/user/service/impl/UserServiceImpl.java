@@ -192,6 +192,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 			queryUser.setNick(userListReq.getNick());
 			queryUser.setMobile(userListReq.getMobile());
 			queryUser.setWristStrapCode(userListReq.getWristStrapCode());
+			queryUser.setUserType(User.USER_TYPE_SYS);
 		}
 		PaginationCondition<User> paginationCondition = new PaginationCondition<>();
 		paginationCondition.setCondition(queryUser);
