@@ -1,5 +1,7 @@
 package com.zcsoft.rc.bms.app.constants;
 
+import com.zcsoft.rc.mileage.model.entity.Mileage;
+
 public interface ErrorConstants {
 
     /**
@@ -64,6 +66,11 @@ public interface ErrorConstants {
      * 用户不存在
      */
     String USER_NOT_EXIST = "003004";
+
+    /**
+     * 已存在该里程标，请重新填写
+     */
+    String MILEAGE_ALREADY_EXIST = "004000";
 
 
 }
