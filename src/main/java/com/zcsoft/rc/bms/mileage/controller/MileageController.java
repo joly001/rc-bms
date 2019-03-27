@@ -1,6 +1,8 @@
 package com.zcsoft.rc.bms.mileage.controller;
 
 
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.mileage.entity.*;
 import com.zcsoft.rc.bms.mileage.service.MileageService;
 import org.springframework.stereotype.Controller;
@@ -39,7 +41,7 @@ public class MileageController {
 	 * @return
 	 */
 	@RequestMapping(value="delete", method= RequestMethod.POST)
-	public MileageDeteleRsp delete(MileageDeteleReq req) {
+	public MileageDeteleRsp delete(@Valid MileageDeteleReq req) {
 		return mileageService.delete(req);
 	}
 
@@ -47,8 +49,16 @@ public class MileageController {
 	 * 里程修改
 	 */
 	@RequestMapping(value="update", method= RequestMethod.POST)
-	public MileageUpdateRsp update(MileageUpdateReq req) {
+	public MileageUpdateRsp update(@Valid MileageUpdateReq req) {
 		return mileageService.update(req);
+	}
+
+	/**
+	 * 里程分页查询
+	 */
+	@RequestMapping(value="list", method= RequestMethod.POST)
+	public HttpPaginationRepertory<MileageListRsp> list(@Valid HttpPaginationCondition<MileageListReq> req) {
+		return mileageService.list(req);
 	}
 	
 }

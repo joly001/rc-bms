@@ -2,18 +2,24 @@ package com.zcsoft.rc.bms.mileage.service.impl;
 
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.persistence.database.pagination.PaginationCondition;
+import com.sharingif.cube.persistence.database.pagination.PaginationRepertory;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.mileage.entity.*;
+import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.mileage.service.MileageSegmentService;
 import com.zcsoft.rc.bms.mileage.service.MileageService;
 import com.zcsoft.rc.mileage.dao.MileageDAO;
 import com.zcsoft.rc.mileage.model.entity.Mileage;
-import com.zcsoft.rc.mileage.model.entity.MileageSegment;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.String> implements MileageService {
@@ -111,5 +117,41 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 		rsp.setId(mileage.getId());
 
 		return rsp;
+	}
+
+	@Override
+	public HttpPaginationRepertory<MileageListRsp> list(HttpPaginationCondition<MileageListReq> req) {
+		Mileage queryMileage = new Mileage();
+		if(req.getCondition() != null) {
+			queryMileage.setMileageName(req.getCondition().getMileageName());
+		}
+		PaginationCondition<Mileage> paginationCondition = new PaginationCondition<>();
+		paginationCondition.setCondition(queryMileage);
+		paginationCondition.setCurrentPage(req.getCurrentPage());
+		paginationCondition.setPageSize(Constants.PAGE_SIZE);
+
+
+		PaginationRepertory<Mileage> paginationRepertory = mileageDAO.queryPagination(paginationCondition);
+
+		HttpPaginationRepertory<MileageListRsp> httpPaginationRepertory = new HttpPaginationRepertory<>(
+				paginationRepertory.getTotalCount()
+				,null
+				,req
+		);
+
+		if(paginationRepertory.getPageItems() == null || paginationRepertory.getPageItems().isEmpty()) {
+			return httpPaginationRepertory;
+		}
+
+		List<MileageListRsp> mileageListRspList = new ArrayList<>(paginationRepertory.getPageItems().size());
+		paginationRepertory.getPageItems().forEach(mileage -> {
+			MileageListRsp mileageListRsp = new MileageListRsp();
+			BeanUtils.copyProperties(mileage, mileageListRsp);
+
+			mileageListRspList.add(mileageListRsp);
+		});
+		httpPaginationRepertory.setPageItems(mileageListRspList);
+
+		return httpPaginationRepertory;
 	}
 }

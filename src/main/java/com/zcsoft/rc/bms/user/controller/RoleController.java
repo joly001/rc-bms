@@ -63,7 +63,7 @@ public class RoleController {
 	 * 角色分页查询
 	 */
 	@RequestMapping(value="list", method= RequestMethod.POST)
-	public HttpPaginationRepertory<RoleListRsp> list(HttpPaginationCondition<RoleListReq> req) {
+	public HttpPaginationRepertory<RoleListRsp> list(@Valid HttpPaginationCondition<RoleListReq> req) {
 		return roleService.list(req);
 	}
 	

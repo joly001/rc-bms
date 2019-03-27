@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.mileage.service;
 
 
 import com.sharingif.cube.support.service.base.IBaseService;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.mileage.entity.*;
 import com.zcsoft.rc.mileage.model.entity.Mileage;
 
@@ -28,5 +30,12 @@ public interface MileageService extends IBaseService<Mileage, java.lang.String> 
      * @return
      */
     MileageUpdateRsp update(MileageUpdateReq req);
+
+    /**
+     * 里程分页查询
+     * @param req
+     * @return
+     */
+    HttpPaginationRepertory<MileageListRsp> list(HttpPaginationCondition<MileageListReq> req);
 	
 }

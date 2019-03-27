@@ -66,7 +66,7 @@ public class UserController {
 	 * 用户修改
 	 */
 	@RequestMapping(value="update", method= RequestMethod.POST)
-	public UserUpdateRsp update(UserUpdateReq req) {
+	public UserUpdateRsp update(@Valid UserUpdateReq req) {
 		return userService.update(req);
 	}
 
@@ -76,7 +76,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value="list", method= RequestMethod.POST)
-	public HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req) {
+	public HttpPaginationRepertory<UserListRsp> list(@Valid HttpPaginationCondition<UserListReq> req) {
 		return userService.list(req);
 	}
 
