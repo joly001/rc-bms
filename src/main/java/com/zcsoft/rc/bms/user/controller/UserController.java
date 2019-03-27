@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.user.controller;
 
 
 import com.sharingif.cube.core.handler.chain.BHMChain;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.user.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -66,6 +68,15 @@ public class UserController {
 	@RequestMapping(value="update", method= RequestMethod.POST)
 	public UserUpdateRsp update(UserUpdateReq req) {
 		return userService.update(req);
+	}
+
+	/**
+	 * 用户分页查询
+	 * @param req
+	 * @return
+	 */
+	public HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req) {
+		return userService.list(req);
 	}
 
 }

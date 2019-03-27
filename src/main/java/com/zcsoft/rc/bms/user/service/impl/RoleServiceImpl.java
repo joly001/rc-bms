@@ -184,7 +184,9 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 	@Override
 	public HttpPaginationRepertory<RoleListRsp> list(HttpPaginationCondition<RoleListReq> req) {
 		Role queryRole = new Role();
-		queryRole.setRoleName(req.getCondition().getRoleName());
+		if(req.getCondition() != null) {
+			queryRole.setRoleName(req.getCondition().getRoleName());
+		}
 		PaginationCondition<Role> paginationCondition = new PaginationCondition<>();
 		paginationCondition.setCondition(queryRole);
 		paginationCondition.setCurrentPage(req.getCurrentPage());

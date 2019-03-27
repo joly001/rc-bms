@@ -2,6 +2,8 @@ package com.zcsoft.rc.bms.user.service;
 
 
 import com.sharingif.cube.support.service.base.IBaseService;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.User;
@@ -59,6 +61,13 @@ public interface UserService extends IBaseService<User, java.lang.String> {
      * @return
      */
     UserUpdateRsp update(UserUpdateReq req);
+
+    /**
+     * 用户分页查询
+     * @param req
+     * @return
+     */
+    HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req);
 
 
 }

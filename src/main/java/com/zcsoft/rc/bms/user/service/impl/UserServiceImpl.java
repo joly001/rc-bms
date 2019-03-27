@@ -2,7 +2,12 @@ package com.zcsoft.rc.bms.user.service.impl;
 
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.core.util.StringUtils;
+import com.sharingif.cube.persistence.database.pagination.PaginationCondition;
+import com.sharingif.cube.persistence.database.pagination.PaginationRepertory;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
+import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
@@ -11,12 +16,12 @@ import com.zcsoft.rc.bms.user.service.UserRoleService;
 import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.dao.UserDAO;
 import com.zcsoft.rc.user.model.entity.Authority;
-import com.zcsoft.rc.user.model.entity.Organization;
 import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -163,11 +168,57 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 
 		user = new User();
 		BeanUtils.copyProperties(req, user);
+		if(!StringUtils.isTrimEmpty(req.getBuilderStatus()) && null != req.getAdmissionLeaveDate()) {
+			if(User.BUILDER_STATUS_IN.equals(req.getBuilderStatus())) {
+				user.setAdmissionDate(req.getAdmissionLeaveDate());
+			} else {
+				user.setLeaveDate(req.getAdmissionLeaveDate());
+			}
+		}
 		userDAO.updateById(user);
 
 		UserUpdateRsp rsp = new UserUpdateRsp();
 		rsp.setId(user.getId());
 
 		return rsp;
+	}
+
+	@Override
+	public HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req) {
+		UserListReq userListReq = req.getCondition();
+		User queryUser = new User();
+		if(userListReq != null) {
+			queryUser.setOrganizationId(userListReq.getOrganizationId());
+			queryUser.setNick(userListReq.getNick());
+			queryUser.setMobile(userListReq.getMobile());
+			queryUser.setWristStrapCode(userListReq.getWristStrapCode());
+		}
+		PaginationCondition<User> paginationCondition = new PaginationCondition<>();
+		paginationCondition.setCondition(queryUser);
+		paginationCondition.setCurrentPage(req.getCurrentPage());
+		paginationCondition.setPageSize(Constants.PAGE_SIZE);
+
+		PaginationRepertory<User> paginationRepertory = userDAO.queryPagination(paginationCondition);
+
+		HttpPaginationRepertory<UserListRsp> httpPaginationRepertory = new HttpPaginationRepertory<>(
+				paginationRepertory.getTotalCount()
+				,null
+				,req
+		);
+
+		if(paginationRepertory.getPageItems() == null || paginationRepertory.getPageItems().isEmpty()) {
+			return httpPaginationRepertory;
+		}
+
+		List<UserListRsp> userListRspList = new ArrayList<>(paginationRepertory.getPageItems().size());
+		paginationRepertory.getPageItems().forEach(user -> {
+			UserListRsp userListRsp = new UserListRsp();
+			BeanUtils.copyProperties(user, userListRsp);
+
+			userListRspList.add(userListRsp);
+		});
+		httpPaginationRepertory.setPageItems(userListRspList);
+
+		return httpPaginationRepertory;
 	}
 }
