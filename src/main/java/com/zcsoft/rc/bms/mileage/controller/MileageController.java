@@ -41,7 +41,7 @@ public class MileageController {
 	 * @return
 	 */
 	@RequestMapping(value="delete", method= RequestMethod.POST)
-	public MileageDeteleRsp delete(@Valid MileageDeteleReq req) {
+	public MileageDeleteRsp delete(@Valid MileageDeleteReq req) {
 		return mileageService.delete(req);
 	}
 

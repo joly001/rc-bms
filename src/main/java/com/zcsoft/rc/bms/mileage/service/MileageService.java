@@ -11,6 +11,13 @@ import com.zcsoft.rc.mileage.model.entity.Mileage;
 public interface MileageService extends IBaseService<Mileage, java.lang.String> {
 
     /**
+     * 根据名称查询
+     * @param mileageName
+     * @return
+     */
+    Mileage getByMileageName(String mileageName);
+
+    /**
      * 里程添加
      * @param req
      * @return
@@ -22,7 +29,7 @@ public interface MileageService extends IBaseService<Mileage, java.lang.String> 
      * @param req
      * @return
      */
-    MileageDeteleRsp delete(MileageDeteleReq req);
+    MileageDeleteRsp delete(MileageDeleteReq req);
 
     /**
      * 里程修改

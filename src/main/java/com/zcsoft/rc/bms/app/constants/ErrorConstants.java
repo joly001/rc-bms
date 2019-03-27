@@ -84,4 +84,13 @@ public interface ErrorConstants {
      */
     String MILEAGE_NOT_EXIST = "004003";
 
+    /**
+     * 里程区间名称不能重复，请重新填写
+     */
+    String MILEAGESEGMENT_ALREADY_EXIST = "005000";
+    /**
+     * 里程区间不存在
+     */
+    String MILEAGESEGMENT_NOT_EXIST = "005001";
+
 }

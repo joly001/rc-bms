@@ -62,6 +62,14 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 	}
 
 	@Override
+	public Mileage getByMileageName(String mileageName) {
+		Mileage mileage = new Mileage();
+		mileage.setMileageName(mileageName);
+
+		return mileageDAO.query(mileage);
+	}
+
+	@Override
 	public MileageAddRsp add(MileageAddReq req) {
 		verifyMileageNameExistence(null, req.getMileageName());
 
@@ -78,22 +86,22 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 		return rsp;
 	}
 
-	protected void verifyRoleIdExistence(Mileage mileage) {
+	protected void verifyMileageIdExistence(Mileage mileage) {
 		if(mileage == null) {
 			throw new ValidationCubeException(ErrorConstants.MILEAGE_NOT_EXIST);
 		}
 	}
 
 	@Override
-	public MileageDeteleRsp delete(MileageDeteleReq req) {
+	public MileageDeleteRsp delete(MileageDeleteReq req) {
 		Mileage queryMileage = mileageDAO.queryById(req.getId());
-		verifyRoleIdExistence(queryMileage);
+		verifyMileageIdExistence(queryMileage);
 
 		mileageSegmentService.verifyMileageIdExistence(queryMileage.getId());
 
 		mileageDAO.deleteById(req.getId());
 
-		MileageDeteleRsp rsp = new MileageDeteleRsp();
+		MileageDeleteRsp rsp = new MileageDeleteRsp();
 		rsp.setId(req.getId());
 
 		return rsp;
@@ -102,7 +110,7 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 	@Override
 	public MileageUpdateRsp update(MileageUpdateReq req) {
 		Mileage queryMileage = mileageDAO.queryById(req.getId());
-		verifyRoleIdExistence(queryMileage);
+		verifyMileageIdExistence(queryMileage);
 
 		verifyMileageNameExistence(req.getId(), req.getMileageName());
 
