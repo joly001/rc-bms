@@ -75,6 +75,7 @@ public class UserController {
 	 * @param req
 	 * @return
 	 */
+	@RequestMapping(value="list", method= RequestMethod.POST)
 	public HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req) {
 		return userService.list(req);
 	}
