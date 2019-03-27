@@ -75,7 +75,13 @@ public interface ErrorConstants {
      * 里程标经度不相等
      */
     String MILEAGE_LONGITUDE_NOT_EQUALS = "004001";
-
-
+    /**
+     * 里程标存在里程区间，不能删除
+     */
+    String MILEAGE_HAS_MILEAGE_SEGMENT_CAN_NOT_DELETE = "004002";
+    /**
+     * 里程不存在
+     */
+    String MILEAGE_NOT_EXIST = "004003";
 
 }

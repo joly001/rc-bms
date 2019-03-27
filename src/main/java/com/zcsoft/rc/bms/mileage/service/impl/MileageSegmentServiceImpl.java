@@ -1,7 +1,9 @@
 package com.zcsoft.rc.bms.mileage.service.impl;
 
 
+import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
+import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.mileage.service.MileageSegmentService;
 import com.zcsoft.rc.mileage.dao.MileageSegmentDAO;
 import com.zcsoft.rc.mileage.model.entity.MileageSegment;
@@ -19,6 +21,27 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		super.setBaseDAO(mileageSegmentDAO);
 		this.mileageSegmentDAO = mileageSegmentDAO;
 	}
-	
-	
+
+
+	@Override
+	public void verifyMileageIdExistence(String mileageId) {
+		MileageSegment mileageSegment = new MileageSegment();
+		mileageSegment.setStartMileageId(mileageId);
+
+		mileageSegment = mileageSegmentDAO.query(mileageSegment);
+
+		if(mileageSegment == null) {
+			mileageSegment = new MileageSegment();
+			mileageSegment.setEndMileageId(mileageId);
+			mileageSegment = mileageSegmentDAO.query(mileageSegment);
+
+			if(mileageSegment == null) {
+				return;
+			}
+
+		}
+
+		throw new ValidationCubeException(ErrorConstants.MILEAGE_HAS_MILEAGE_SEGMENT_CAN_NOT_DELETE);
+
+	}
 }
