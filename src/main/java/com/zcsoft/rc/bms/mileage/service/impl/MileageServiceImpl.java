@@ -47,6 +47,10 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 	public MileageAddRsp add(MileageAddReq req) {
 		verifyMileageNameExistence(null, req.getMileageName());
 
+		if(req.getStartLongitude().doubleValue() != req.getEndLongitude().doubleValue()) {
+			throw new ValidationCubeException(ErrorConstants.MILEAGE_LONGITUDE_NOT_EQUALS);
+		}
+
 		Mileage mileage = new Mileage();
 		BeanUtils.copyProperties(req, mileage);
 

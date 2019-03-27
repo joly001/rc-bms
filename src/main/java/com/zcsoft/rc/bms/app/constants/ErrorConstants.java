@@ -71,6 +71,11 @@ public interface ErrorConstants {
      * 已存在该里程标，请重新填写
      */
     String MILEAGE_ALREADY_EXIST = "004000";
+    /**
+     * 里程标经度不相等
+     */
+    String MILEAGE_LONGITUDE_NOT_EQUALS = "004001";
+
 
 
 }
