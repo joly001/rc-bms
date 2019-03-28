@@ -44,4 +44,10 @@ public interface MileageSegmentService extends IBaseService<MileageSegment, java
      */
     HttpPaginationRepertory<MileageSegmentListRsp> list(HttpPaginationCondition<MileageSegmentListReq> req);
 
+    /**
+     * 里程所有查询
+     * @return
+     */
+    MileageSegmentAllRsp all();
+
 }

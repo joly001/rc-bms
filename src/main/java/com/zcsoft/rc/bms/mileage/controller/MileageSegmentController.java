@@ -61,4 +61,12 @@ public class MileageSegmentController {
 		return mileageSegmentService.list(req);
 	}
 
+	/**
+	 * 里程区间查询所有
+	 */
+	@RequestMapping(value="all", method= RequestMethod.POST)
+	public MileageSegmentAllRsp all() {
+		return mileageSegmentService.all();
+	}
+
 }

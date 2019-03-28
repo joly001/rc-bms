@@ -179,16 +179,39 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 			return httpPaginationRepertory;
 		}
 
-		List<MileageSegmentListRsp> mileageSegmentListRspRspList = new ArrayList<>(paginationRepertory.getPageItems().size());
-		paginationRepertory.getPageItems().forEach(mileage -> {
+		List<MileageSegmentListRsp> mileageSegmentListRspList = new ArrayList<>(paginationRepertory.getPageItems().size());
+		paginationRepertory.getPageItems().forEach(mileageSegment -> {
 			MileageSegmentListRsp mileageSegmentListRsp = new MileageSegmentListRsp();
-			BeanUtils.copyProperties(mileage, mileageSegmentListRsp);
+			BeanUtils.copyProperties(mileageSegment, mileageSegmentListRsp);
 
-			mileageSegmentListRspRspList.add(mileageSegmentListRsp);
+			mileageSegmentListRspList.add(mileageSegmentListRsp);
 		});
-		httpPaginationRepertory.setPageItems(mileageSegmentListRspRspList);
+		httpPaginationRepertory.setPageItems(mileageSegmentListRspList);
 
 		return httpPaginationRepertory;
 
+	}
+
+	@Override
+	public MileageSegmentAllRsp all() {
+		List<MileageSegment> mileageSegmentList = mileageSegmentDAO.queryAll();
+
+		MileageSegmentAllRsp rsp = new MileageSegmentAllRsp();
+
+		if(mileageSegmentList == null) {
+			return rsp;
+		}
+
+		List<MileageSegmentListRsp> mileageSegmentListRspList = new ArrayList<>(mileageSegmentList.size());
+		mileageSegmentList.forEach(mileageSegment -> {
+			MileageSegmentListRsp mileageSegmentListRsp = new MileageSegmentListRsp();
+			BeanUtils.copyProperties(mileageSegment, mileageSegmentListRsp);
+
+			mileageSegmentListRspList.add(mileageSegmentListRsp);
+		});
+
+		rsp.setList(mileageSegmentListRspList);
+
+		return rsp;
 	}
 }
