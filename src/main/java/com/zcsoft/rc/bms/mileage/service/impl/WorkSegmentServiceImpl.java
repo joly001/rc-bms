@@ -15,11 +15,13 @@ import com.zcsoft.rc.bms.mileage.service.WorkSegmentService;
 import com.zcsoft.rc.mileage.dao.WorkSegmentDAO;
 import com.zcsoft.rc.mileage.model.entity.Mileage;
 import com.zcsoft.rc.mileage.model.entity.WorkSegment;
+import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -76,11 +78,14 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	}
 
 	@Override
-	public WorkSegmentAddRsp add(WorkSegmentAddReq req) {
+	public WorkSegmentAddRsp add(WorkSegmentAddReq req, User user) {
 		verifyWorkSegmentNameExistence(null, req.getWorkSegmentName());
 
 		WorkSegment workSegment = new WorkSegment();
 		BeanUtils.copyProperties(req, workSegment);
+		workSegment.setSubmitUserId(user.getId());
+		workSegment.setSubmitUserName(user.getNick());
+		workSegment.setSubmitTime(new Date());
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
 
@@ -112,7 +117,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	}
 
 	@Override
-	public WorkSegmentUpdateRsp update(WorkSegmentUpdateReq req) {
+	public WorkSegmentUpdateRsp update(WorkSegmentUpdateReq req, User user) {
 		WorkSegment workSegment = workSegmentDAO.queryById(req.getId());
 		verifyWorkSegmentIdExistence(workSegment);
 
@@ -120,6 +125,9 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 
 		workSegment = new WorkSegment();
 		BeanUtils.copyProperties(req, workSegment);
+		workSegment.setSubmitUserId(user.getId());
+		workSegment.setSubmitUserName(user.getNick());
+		workSegment.setSubmitTime(new Date());
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
 

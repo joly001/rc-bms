@@ -1,10 +1,12 @@
 package com.zcsoft.rc.bms.mileage.controller;
 
 
+import com.sharingif.cube.core.handler.bind.annotation.DataContainer;
 import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
 import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.mileage.entity.*;
 import com.zcsoft.rc.bms.mileage.service.WorkSegmentService;
+import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,8 +33,8 @@ public class WorkSegmentController {
 	 * 作业面添加
 	 */
 	@RequestMapping(value="add", method= RequestMethod.POST)
-	public WorkSegmentAddRsp add(@Valid WorkSegmentAddReq req) {
-		return workSegmentService.add(req);
+	public WorkSegmentAddRsp add(@Valid WorkSegmentAddReq req, @DataContainer User user) {
+		return workSegmentService.add(req, user);
 	}
 
 	/**
@@ -49,8 +51,8 @@ public class WorkSegmentController {
 	 * 作业面修改
 	 */
 	@RequestMapping(value="update", method= RequestMethod.POST)
-	public WorkSegmentUpdateRsp update(@Valid WorkSegmentUpdateReq req) {
-		return workSegmentService.update(req);
+	public WorkSegmentUpdateRsp update(@Valid WorkSegmentUpdateReq req, @DataContainer User user) {
+		return workSegmentService.update(req, user);
 	}
 
 	/**
