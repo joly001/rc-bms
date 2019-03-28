@@ -18,6 +18,13 @@ public interface MileageService extends IBaseService<Mileage, java.lang.String> 
     Mileage getByMileageName(String mileageName);
 
     /**
+     * 验证里程名是否存在
+     * @param mileageName
+     * @return
+     */
+    Mileage verifyMileageName(String mileageName);
+
+    /**
      * 里程添加
      * @param req
      * @return

@@ -70,6 +70,14 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 	}
 
 	@Override
+	public Mileage verifyMileageName(String mileageName) {
+		Mileage mileage = getByMileageName(mileageName);
+		verifyMileageIdExistence(mileage);
+
+		return mileage;
+	}
+
+	@Override
 	public MileageAddRsp add(MileageAddReq req) {
 		verifyMileageNameExistence(null, req.getMileageName());
 

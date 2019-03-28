@@ -92,5 +92,18 @@ public interface ErrorConstants {
      * 里程区间不存在
      */
     String MILEAGESEGMENT_NOT_EXIST = "005001";
+    /**
+     * 里程区间存在工作面，不能删除
+     */
+    String MILEAGESEGMENT_HAS_MILEAGE_WORKSEGMENT_CAN_NOT_DELETE = "005002";
+
+    /**
+     * 已存在该作业面，请重新填写
+     */
+    String WORKSEGMENT_ALREADY_EXIST = "006000";
+    /**
+     * 作业面不存在
+     */
+    String WORKSEGMENT_NOT_EXIST = "006001";
 
 }

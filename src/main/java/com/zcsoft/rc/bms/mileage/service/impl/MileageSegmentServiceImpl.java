@@ -12,9 +12,11 @@ import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.mileage.service.MileageSegmentService;
 import com.zcsoft.rc.bms.mileage.service.MileageService;
+import com.zcsoft.rc.bms.mileage.service.WorkSegmentService;
 import com.zcsoft.rc.mileage.dao.MileageSegmentDAO;
 import com.zcsoft.rc.mileage.model.entity.Mileage;
 import com.zcsoft.rc.mileage.model.entity.MileageSegment;
+import com.zcsoft.rc.mileage.model.entity.WorkSegment;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 	private MileageSegmentDAO mileageSegmentDAO;
 
 	private MileageService mileageService;
+	private WorkSegmentService workSegmentService;
 
 	@Resource
 	public void setMileageSegmentDAO(MileageSegmentDAO mileageSegmentDAO) {
@@ -37,6 +40,10 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 	@Resource
 	public void setMileageService(MileageService mileageService) {
 		this.mileageService = mileageService;
+	}
+	@Resource
+	public void setWorkSegmentService(WorkSegmentService workSegmentService) {
+		this.workSegmentService = workSegmentService;
 	}
 
 	@Override
@@ -78,20 +85,14 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		throw new ValidationCubeException(ErrorConstants.MILEAGESEGMENT_ALREADY_EXIST);
 	}
 
-	protected void mileageIsNull(Mileage mileage) {
-		if (mileage == null) {
-			throw new ValidationCubeException(ErrorConstants.MILEAGE_NOT_EXIST);
-		}
-	}
 
 	protected void handleMileageSegment(String startMileageName, String endMileageName, MileageSegment mileageSegment) {
-		Mileage mileage = mileageService.getByMileageName(startMileageName);
-		mileageIsNull(mileage);
+		Mileage mileage = mileageService.verifyMileageName(startMileageName);
 		mileageSegment.setStartMileageId(mileage.getId());
 		mileageSegment.setStartLongitude(mileage.getStartLongitude());
 		mileageSegment.setStartLatitude(mileage.getStartLatitude());
-		mileage = mileageService.getByMileageName(endMileageName);
-		mileageIsNull(mileage);
+
+		mileage = mileageService.verifyMileageName(endMileageName);
 		mileageSegment.setEndMileageId(mileage.getId());
 		mileageSegment.setEndLongitude(mileage.getEndLongitude());
 		mileageSegment.setEndLatitude(mileage.getEndLatitude());
@@ -125,7 +126,10 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		MileageSegment queryMileageSegment = mileageSegmentDAO.queryById(req.getId());
 		verifyMileageSegmentIdExistence(queryMileageSegment);
 
-		//TODO 如果存在作业面不能删除
+		List<WorkSegment> workSegmentList = workSegmentService.getByMileageSegmentId(queryMileageSegment.getEndMileageId());
+		if(workSegmentList != null) {
+			throw new ValidationCubeException(ErrorConstants.MILEAGESEGMENT_HAS_MILEAGE_WORKSEGMENT_CAN_NOT_DELETE);
+		}
 
 		mileageSegmentDAO.deleteById(req.getId());
 
