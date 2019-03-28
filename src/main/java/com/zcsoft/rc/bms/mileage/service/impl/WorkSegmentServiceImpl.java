@@ -42,7 +42,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 		WorkSegment workSegment = new WorkSegment();
 		workSegment.setWorkSegmentName(workSegmentName);
 
-		workSegmentDAO.query(workSegment);
+		workSegment = workSegmentDAO.query(workSegment);
 
 		if(workSegment == null) {
 			return;
