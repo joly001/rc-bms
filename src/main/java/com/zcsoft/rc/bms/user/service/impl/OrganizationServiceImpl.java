@@ -179,14 +179,18 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 
 		Map<String, OrganizationAllRsp> organizationAllRspMap = new HashMap<>();
 		organizationList.forEach(organization -> {
-			OrganizationAllRsp organizationAllRsp = organization.convertToOrganizationAllRsp();
+			OrganizationAllRsp organizationAllRsp = new OrganizationAllRsp();
+			BeanUtils.copyProperties(organization, organizationAllRsp);
+			organizationAllRsp.setChildOrgList(new ArrayList<>());
 			organizationAllRspMap.put(organization.getId(), organizationAllRsp);
 		});
 
 		Map<OrganizationAllRsp,List<OrganizationAllRsp>> organizationMap = new HashMap<>();
 
 		organizationList.forEach(organization -> {
-			OrganizationAllRsp organizationAllRsp = organization.convertToOrganizationAllRsp();
+			OrganizationAllRsp organizationAllRsp = new OrganizationAllRsp();
+			BeanUtils.copyProperties(organization, organizationAllRsp);
+			organizationAllRsp.setChildOrgList(new ArrayList<>());
 
 			OrganizationAllRsp parentOrganizationAllRsp;
 			if(StringUtils.isTrimEmpty(organization.getParentId())) {

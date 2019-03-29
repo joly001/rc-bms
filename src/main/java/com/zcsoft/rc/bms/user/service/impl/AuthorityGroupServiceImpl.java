@@ -11,6 +11,7 @@ import com.zcsoft.rc.bms.user.service.AuthorityService;
 import com.zcsoft.rc.user.dao.AuthorityGroupDAO;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.AuthorityGroup;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -70,7 +71,9 @@ public class AuthorityGroupServiceImpl extends BaseServiceImpl<AuthorityGroup, j
 
 		Map<String, AuthoritiesAllRsp> authoritiesAllRspMap = new HashMap<>();
 		authorityGroupList.forEach(authorityGroup -> {
-			AuthoritiesAllRsp authoritiesAllRsp = authorityGroup.convertToAuthoritiesAllRsp();
+            AuthoritiesAllRsp authoritiesAllRsp = new AuthoritiesAllRsp();
+            BeanUtils.copyProperties(authorityGroup, authoritiesAllRsp);
+            authoritiesAllRsp.setAuthorities(new ArrayList<>());
 
 			authoritiesAllRspMap.put(authorityGroup.getId(), authoritiesAllRsp);
 		});
@@ -78,7 +81,9 @@ public class AuthorityGroupServiceImpl extends BaseServiceImpl<AuthorityGroup, j
 		Map<AuthoritiesAllRsp,List<AuthoritiesAllRsp>> authoritiesMap = new HashMap<>();
 
 		authorityGroupList.forEach(authorityGroup -> {
-			AuthoritiesAllRsp authoritiesAllRsp = authorityGroup.convertToAuthoritiesAllRsp();
+            AuthoritiesAllRsp authoritiesAllRsp = new AuthoritiesAllRsp();
+            BeanUtils.copyProperties(authorityGroup, authoritiesAllRsp);
+            authoritiesAllRsp.setAuthorities(new ArrayList<>());
 
 			AuthoritiesAllRsp parentAuthoritiesAllRsp;
 			if(StringUtils.isTrimEmpty(authorityGroup.getParentId())) {
