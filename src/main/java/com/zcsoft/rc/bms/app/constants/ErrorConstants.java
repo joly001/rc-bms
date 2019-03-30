@@ -1,7 +1,5 @@
 package com.zcsoft.rc.bms.app.constants;
 
-import com.zcsoft.rc.mileage.model.entity.Mileage;
-
 public interface ErrorConstants {
 
     /**
@@ -105,5 +103,18 @@ public interface ErrorConstants {
      * 作业面不存在
      */
     String WORKSEGMENT_NOT_EXIST = "006001";
+
+    /**
+     * 车牌号不能重复，请重新填写
+     */
+    String MACHINERY_PLATENUMBER_ALREADY_EXIST = "007000";
+    /**
+     * 定位器编码不能重复
+     */
+    String MACHINERY_WRISTSTRAPCODE_ALREADY_EXIST = "007001";
+    /**
+     * 机械不存在
+     */
+    String MACHINERY_NOT_EXIST = "007002";
 
 }

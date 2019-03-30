@@ -35,6 +35,13 @@ public interface UserService extends IBaseService<User, java.lang.String> {
     List<User> getByOrganizationId(String organizationId);
 
     /**
+     * 验证userId是否存在
+     * @param userId
+     * @return
+     */
+    User verifyIdExistence(String userId);
+
+    /**
      * 用户登录
      * @param req
      * @return
