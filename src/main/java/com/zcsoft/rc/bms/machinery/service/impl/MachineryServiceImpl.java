@@ -138,7 +138,7 @@ public class MachineryServiceImpl extends BaseServiceImpl<Machinery, String> imp
 		Machinery queryMachinery = new Machinery();
 		if(req.getCondition() != null) {
 			queryMachinery.setWristStrapCode(req.getCondition().getWristStrapCode());
-			queryMachinery.setMachineryType(req.getCondition().getMachineryType());
+			queryMachinery.setMachineryName(req.getCondition().getMachineryName());
 			queryMachinery.setNick(req.getCondition().getNick());
 		}
 		PaginationCondition<Machinery> paginationCondition = new PaginationCondition<>();
