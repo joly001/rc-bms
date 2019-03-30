@@ -66,5 +66,15 @@ public class RoleController {
 	public HttpPaginationRepertory<RoleListRsp> list(@Valid HttpPaginationCondition<RoleListReq> req) {
 		return roleService.list(req);
 	}
+
+	/**
+	 * 角色详情
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(value="detail", method= RequestMethod.POST)
+	public RoleDetailsRsp detail(RoleDetailsReq req) {
+		return roleService.detail(req);
+	}
 	
 }

@@ -53,5 +53,12 @@ public interface RoleService extends IBaseService<Role, java.lang.String> {
      * @return
      */
     HttpPaginationRepertory<RoleListRsp> list(HttpPaginationCondition<RoleListReq> req);
+
+    /**
+     * 角色详情
+     * @param req
+     * @return
+     */
+    RoleDetailsRsp detail(RoleDetailsReq req);
 	
 }

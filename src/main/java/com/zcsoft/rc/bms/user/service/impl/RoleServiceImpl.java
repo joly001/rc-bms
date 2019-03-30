@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> implements RoleService {
@@ -215,5 +217,26 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 		httpPaginationRepertory.setPageItems(roleListRspList);
 
 		return httpPaginationRepertory;
+	}
+
+	@Override
+	public RoleDetailsRsp detail(RoleDetailsReq req) {
+		Role queryRole = roleDAO.queryById(req.getId());
+		verifyRoleIdExistence(queryRole);
+
+		RoleDetailsRsp rsp = new RoleDetailsRsp();
+		BeanUtils.copyProperties(queryRole, rsp);
+
+		List<RoleAuthority> authorityGroupList = roleAuthorityService.getByRoleId(queryRole.getId());
+		Map<String,String> authorities = new HashMap<>(authorityGroupList.size());
+		if(authorityGroupList == null || authorityGroupList.isEmpty()) {
+			return rsp;
+		}
+		authorityGroupList.forEach(roleAuthority -> {
+			authorities.put(roleAuthority.getAuthorityCode(), null);
+		});
+		rsp.setAuthorities(authorities);
+
+		return rsp;
 	}
 }
