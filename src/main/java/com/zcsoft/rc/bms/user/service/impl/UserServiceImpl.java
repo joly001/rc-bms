@@ -168,9 +168,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		User user = userDAO.queryById(req.getId());
 		verifyIdExistence(user);
 
-		verifyMobileExistence(req.id, req.getMobile());
+		verifyMobileExistence(req.getId(), req.getMobile());
 
-		verifyWristStrapCodeExistence(req.id, req.getWristStrapCode());
+		verifyWristStrapCodeExistence(req.getId(), req.getWristStrapCode());
 
 		organizationService.verifyIdExistence(req.getOrganizationId());
 
