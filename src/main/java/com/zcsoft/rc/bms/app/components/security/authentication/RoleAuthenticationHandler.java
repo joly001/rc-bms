@@ -3,6 +3,7 @@ package com.zcsoft.rc.bms.app.components.security.authentication;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.security.authentication.authority.tree.TreeMapAuthorityHandler;
 import com.sharingif.cube.security.authentication.role.IRoleAuthenticationHandler;
+import com.zcsoft.rc.bms.user.service.AuthorityService;
 import com.zcsoft.rc.bms.user.service.UserRoleService;
 import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.model.entity.Authority;
@@ -29,13 +30,13 @@ import java.util.TreeMap;
 @Component
 public class RoleAuthenticationHandler implements IRoleAuthenticationHandler<User> {
 
-	private UserService userService;
+	private AuthorityService authorityService;
 
 	private TreeMapAuthorityHandler treeMapAuthorityHandler;
 
 	@Resource
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	public void setAuthorityService(AuthorityService authorityService) {
+		this.authorityService = authorityService;
 	}
 
 	@Resource
@@ -45,7 +46,7 @@ public class RoleAuthenticationHandler implements IRoleAuthenticationHandler<Use
 
 	@Override
 	public void handleRole(User user) throws CubeException {
-		List<Authority> authorityList = userService.getAuthoritiesByUserId(user.getId());
+		List<Authority> authorityList = authorityService.getListByUserId(user.getId());
 
 		if(authorityList == null || authorityList.isEmpty()) {
 			return;

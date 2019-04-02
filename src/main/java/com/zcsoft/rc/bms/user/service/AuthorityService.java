@@ -15,5 +15,12 @@ public interface AuthorityService extends IBaseService<Authority, java.lang.Stri
      * @return
      */
     List<Authority> getByAuthorityGroupId(String authorityGroupId);
+
+    /**
+     * 根据用户id查询权限
+     * @param userId
+     * @return
+     */
+    List<Authority> getListByUserId(String userId);
 	
 }

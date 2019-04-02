@@ -29,4 +29,9 @@ public class AuthorityServiceImpl extends BaseServiceImpl<Authority, java.lang.S
 
 		return authorityDAO.queryList(authority);
 	}
+
+	@Override
+	public List<Authority> getListByUserId(String userId) {
+		return authorityDAO.queryListByUserId(userId);
+	}
 }
