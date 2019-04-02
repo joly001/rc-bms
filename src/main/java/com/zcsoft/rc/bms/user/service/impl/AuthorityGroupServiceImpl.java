@@ -73,6 +73,7 @@ public class AuthorityGroupServiceImpl extends BaseServiceImpl<AuthorityGroup, j
 		authorityGroupList.forEach(authorityGroup -> {
             AuthoritiesAllRsp authoritiesAllRsp = new AuthoritiesAllRsp();
             BeanUtils.copyProperties(authorityGroup, authoritiesAllRsp);
+			authoritiesAllRsp.setName(authorityGroup.getAuthorityGroupName());
             authoritiesAllRsp.setAuthorities(new ArrayList<>());
 
 			authoritiesAllRspMap.put(authorityGroup.getId(), authoritiesAllRsp);
@@ -83,6 +84,7 @@ public class AuthorityGroupServiceImpl extends BaseServiceImpl<AuthorityGroup, j
 		authorityGroupList.forEach(authorityGroup -> {
             AuthoritiesAllRsp authoritiesAllRsp = new AuthoritiesAllRsp();
             BeanUtils.copyProperties(authorityGroup, authoritiesAllRsp);
+			authoritiesAllRsp.setName(authorityGroup.getAuthorityGroupName());
             authoritiesAllRsp.setAuthorities(new ArrayList<>());
 
 			AuthoritiesAllRsp parentAuthoritiesAllRsp;
