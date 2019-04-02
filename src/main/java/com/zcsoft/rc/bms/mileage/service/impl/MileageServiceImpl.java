@@ -55,12 +55,6 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 		throw new ValidationCubeException(ErrorConstants.MILEAGE_ALREADY_EXIST);
 	}
 
-	protected void verifyLongitudeEquals(double startLongitude, double endLongitude) {
-		if(startLongitude != endLongitude) {
-			throw new ValidationCubeException(ErrorConstants.MILEAGE_LONGITUDE_NOT_EQUALS);
-		}
-	}
-
 	@Override
 	public Mileage getByMileageName(String mileageName) {
 		Mileage mileage = new Mileage();
@@ -80,8 +74,6 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 	@Override
 	public MileageAddRsp add(MileageAddReq req) {
 		verifyMileageNameExistence(null, req.getMileageName());
-
-		verifyLongitudeEquals(req.getStartLongitude().doubleValue(), req.getEndLongitude().doubleValue());
 
 		Mileage mileage = new Mileage();
 		BeanUtils.copyProperties(req, mileage);
@@ -121,8 +113,6 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 		verifyMileageIdExistence(queryMileage);
 
 		verifyMileageNameExistence(req.getId(), req.getMileageName());
-
-		verifyLongitudeEquals(req.getStartLongitude().doubleValue(), req.getEndLongitude().doubleValue());
 
 		Mileage mileage = new Mileage();
 		BeanUtils.copyProperties(req, mileage);
