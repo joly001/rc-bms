@@ -62,5 +62,13 @@ public class WorkSegmentController {
 	public HttpPaginationRepertory<WorkSegmentListRsp> list(@Valid HttpPaginationCondition<WorkSegmentListReq> req) {
 		return workSegmentService.list(req);
 	}
+
+	/**
+	 * 作业面列表，根据里程查询
+	 */
+	@RequestMapping(value="mileageWorkSegment", method= RequestMethod.POST)
+	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req) {
+		return workSegmentService.mileageWorkSegment(req);
+	}
 	
 }

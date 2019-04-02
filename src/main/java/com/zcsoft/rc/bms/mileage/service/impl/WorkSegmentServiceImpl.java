@@ -176,4 +176,29 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 
 		return httpPaginationRepertory;
 	}
+
+	@Override
+	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req) {
+		WorkSegment queryWorkSegment = new WorkSegment();
+		queryWorkSegment.setMileageSegmentId(req.getMileageSegmentId());
+		List<WorkSegment> workSegmentList = workSegmentDAO.queryList(queryWorkSegment);
+
+		WorkSegmentListListRsp rsp = new WorkSegmentListListRsp();
+
+		if(workSegmentList == null) {
+			return rsp;
+		}
+
+		List<WorkSegmentListRsp> workSegmentListRspList = new ArrayList<>(workSegmentList.size());
+		workSegmentList.forEach(workSegment -> {
+			WorkSegmentListRsp workSegmentListRsp = new WorkSegmentListRsp();
+			BeanUtils.copyProperties(workSegment, workSegmentListRsp);
+
+			workSegmentListRspList.add(workSegmentListRsp);
+		});
+
+		rsp.setList(workSegmentListRspList);
+
+		return rsp;
+	}
 }

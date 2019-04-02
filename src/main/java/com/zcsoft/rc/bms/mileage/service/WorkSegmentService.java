@@ -49,5 +49,12 @@ public interface WorkSegmentService extends IBaseService<WorkSegment, java.lang.
      * @return
      */
     HttpPaginationRepertory<WorkSegmentListRsp> list(HttpPaginationCondition<WorkSegmentListReq> req);
+
+    /**
+     * 作业面列表，根据里程查询
+     * @param req
+     * @return
+     */
+    WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req);
 	
 }
