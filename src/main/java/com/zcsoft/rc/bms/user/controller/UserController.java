@@ -1,11 +1,13 @@
 package com.zcsoft.rc.bms.user.controller;
 
 
+import com.sharingif.cube.core.handler.bind.annotation.DataContainer;
 import com.sharingif.cube.core.handler.chain.BHMChain;
 import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
 import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.bms.user.service.UserService;
+import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,6 +46,14 @@ public class UserController {
 	@RequestMapping(value="signOut", method= RequestMethod.POST)
 	public void signOut() {
 
+	}
+
+	/**
+	 * 用户权限
+	 */
+	@RequestMapping(value="userAuthorities", method= RequestMethod.POST)
+	public UserAuthoritiesRsp userAuthorities(@DataContainer User user) {
+		return userService.userAuthorities(user);
 	}
 
 	/**

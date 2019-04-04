@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> implements UserService {
@@ -81,6 +82,18 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		UserLoginRsp userLoginRsp = new UserLoginRsp();
 		userLoginRsp.setUsername(req.getUsername());
 		return userLoginRsp;
+	}
+
+	@Override
+	public UserAuthoritiesRsp userAuthorities(User user) {
+		UserAuthoritiesRsp rsp = new UserAuthoritiesRsp();
+		rsp.setUsername(user.getUsername());
+
+		TreeMap<String, String> authorities = user.getAuthorities();
+
+		rsp.setAuthorities(authorities);
+
+		return rsp;
 	}
 
 	protected void verifyIdExistence(User user) {

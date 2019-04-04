@@ -49,6 +49,13 @@ public interface UserService extends IBaseService<User, java.lang.String> {
     UserLoginRsp login(UserLoginReq req);
 
     /**
+     * 用户权限
+     * @param user
+     * @return
+     */
+    UserAuthoritiesRsp userAuthorities(User user);
+
+    /**
      * 用户添加
      * @param req
      * @return
