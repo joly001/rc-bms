@@ -12,10 +12,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.jdk.version>1.8</project.build.jdk.version>
 
-    <maven.project.com.sharingif.cube.version>4.0.0-RELEASE</maven.project.com.sharingif.cube.version>
-
     <maven.project.springframework.groupId>org.springframework</maven.project.springframework.groupId>
     <maven.project.org.springframework.boot.groupId>org.springframework.boot</maven.project.org.springframework.boot.groupId>
+    <maven.cube.boot.groupId>com.sharingif.cube.spring.boot</maven.cube.boot.groupId>
+    <maven.project.com.sharingif.cube.spring.boot.version>4.0.0-RELEASE</maven.project.com.sharingif.cube.spring.boot.version>
     <maven.project.org.springframework.boot.release.version>1.5.3.RELEASE</maven.project.org.springframework.boot.release.version>
   </properties>
 
@@ -26,6 +26,22 @@
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${maven.cube.boot.groupId}</groupId>
+      <artifactId>com.sharingif.cube.spring.boot.security.web.spring</artifactId>
+      <version>${maven.project.com.sharingif.cube.spring.boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${maven.cube.boot.groupId}</groupId>
+      <artifactId>com.sharingif.cube.spring.boot.web.springmvc</artifactId>
+      <version>${maven.project.com.sharingif.cube.spring.boot.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${maven.cube.boot.groupId}</groupId>
+      <artifactId>com.sharingif.cube.spring.boot.tomcat</artifactId>
+      <version>${maven.project.com.sharingif.cube.spring.boot.version}</version>
     </dependency>
 
     <dependency>
