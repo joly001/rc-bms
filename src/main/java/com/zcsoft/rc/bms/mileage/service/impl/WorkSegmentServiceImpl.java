@@ -65,8 +65,8 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 
 		mileage = mileageService.verifyMileageName(endMileageName);
 		workSegment.setEndMileageId(mileage.getId());
-		workSegment.setEndLongitude(mileage.getEndLongitude());
-		workSegment.setEndLatitude(mileage.getEndLatitude());
+		workSegment.setEndLongitude(mileage.getStartLongitude());
+		workSegment.setEndLatitude(mileage.getStartLatitude());
 	}
 
 	@Override

@@ -94,8 +94,8 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 
 		mileage = mileageService.verifyMileageName(endMileageName);
 		mileageSegment.setEndMileageId(mileage.getId());
-		mileageSegment.setEndLongitude(mileage.getEndLongitude());
-		mileageSegment.setEndLatitude(mileage.getEndLatitude());
+		mileageSegment.setEndLongitude(mileage.getStartLongitude());
+		mileageSegment.setEndLatitude(mileage.getStartLatitude());
 	}
 
 	@Override
