@@ -11,13 +11,16 @@ import com.zcsoft.rc.bms.api.mileage.entity.*;
 import com.zcsoft.rc.bms.app.constants.Constants;
 import com.zcsoft.rc.bms.app.constants.ErrorConstants;
 import com.zcsoft.rc.bms.mileage.service.MileageService;
+import com.zcsoft.rc.bms.mileage.service.WorkSegmentDataTimeService;
 import com.zcsoft.rc.bms.mileage.service.WorkSegmentService;
 import com.zcsoft.rc.mileage.dao.WorkSegmentDAO;
 import com.zcsoft.rc.mileage.model.entity.Mileage;
 import com.zcsoft.rc.mileage.model.entity.WorkSegment;
+import com.zcsoft.rc.mileage.model.entity.WorkSegmentDataTime;
 import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	
 	private WorkSegmentDAO workSegmentDAO;
 	private MileageService mileageService;
+	private WorkSegmentDataTimeService workSegmentDataTimeService;
 
 	@Resource
 	public void setWorkSegmentDAO(WorkSegmentDAO workSegmentDAO) {
@@ -38,6 +42,10 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	@Resource
 	public void setMileageService(MileageService mileageService) {
 		this.mileageService = mileageService;
+	}
+	@Resource
+	public void setWorkSegmentDataTimeService(WorkSegmentDataTimeService workSegmentDataTimeService) {
+		this.workSegmentDataTimeService = workSegmentDataTimeService;
 	}
 
 	protected void verifyWorkSegmentNameExistence(String id, String workSegmentName) {
@@ -77,6 +85,13 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 		return workSegmentDAO.queryList(workSegment);
 	}
 
+	@Transactional
+	protected void add(WorkSegment workSegment, List<WorkSegmentDateTimeReq> workDateTimeList) {
+		workSegmentDAO.insert(workSegment);
+
+		workSegmentDataTimeService.add(workSegment.getId(), workDateTimeList);
+	}
+
 	@Override
 	public WorkSegmentAddRsp add(WorkSegmentAddReq req, User user) {
 		verifyWorkSegmentNameExistence(null, req.getWorkSegmentName());
@@ -89,7 +104,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
 
-		workSegmentDAO.insert(workSegment);
+		add(workSegment, req.getWorkDateTimeList());
 
 		WorkSegmentAddRsp rsp = new WorkSegmentAddRsp();
 		rsp.setId(workSegment.getId());
@@ -116,6 +131,15 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 		return rsp;
 	}
 
+	@Transactional
+	protected void update(WorkSegment workSegment, List<WorkSegmentDateTimeReq> workDateTimeList) {
+		workSegmentDAO.updateById(workSegment);
+
+		workSegmentDataTimeService.deleteByWorkSegmentId(workSegment.getId());
+
+		workSegmentDataTimeService.add(workSegment.getId(), workDateTimeList);
+	}
+
 	@Override
 	public WorkSegmentUpdateRsp update(WorkSegmentUpdateReq req, User user) {
 		WorkSegment workSegment = workSegmentDAO.queryById(req.getId());
@@ -131,7 +155,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
 
-		workSegmentDAO.updateById(workSegment);
+		update(workSegment, req.getWorkDateTimeList());
 
 		WorkSegmentUpdateRsp rsp = new WorkSegmentUpdateRsp();
 		rsp.setId(req.getId());
