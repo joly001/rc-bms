@@ -120,6 +120,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	}
 
 	protected void verifyWristStrapCodeExistence(String id, String wristStrapCode) {
+		if(wristStrapCode == null) {
+			return;
+		}
+
 		User user = new User();
 		user.setWristStrapCode(wristStrapCode);
 
