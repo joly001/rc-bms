@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-6def26c8"],{"1e4d":function(n,e,c){"use strict";var t=c("c663"),a=c.n(t);a.a},"6a3a":function(n,e,c){"use strict";c.r(e);var t=function(){var n=this,e=n.$createElement,c=n._self._c||e;return c("div",[n._v("\n  信息展示\n")])},a=[],o=(c("cadf"),c("551c"),c("097d"),{name:"Info"}),u=o,i=(c("1e4d"),c("2877")),f=Object(i["a"])(u,t,a,!1,null,"6ed459be",null);f.options.__file="Info.vue";e["default"]=f.exports},c663:function(n,e,c){}}]);
-//# sourceMappingURL=chunk-6def26c8.cd7fa6d3.js.map
