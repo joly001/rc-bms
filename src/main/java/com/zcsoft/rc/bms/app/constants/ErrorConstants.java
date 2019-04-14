@@ -117,4 +117,13 @@ public interface ErrorConstants {
      */
     String MACHINERY_NOT_EXIST = "007002";
 
+    /**
+     * 站点名称不能重复，请重新填写！
+     */
+    String RAILWAY_LINES_NAME_ALREADY_EXIST = "008000";
+    /**
+     * 站点不存在
+     */
+    String RAILWAY_LINES_NOT_EXIST = "005001";
+
 }
