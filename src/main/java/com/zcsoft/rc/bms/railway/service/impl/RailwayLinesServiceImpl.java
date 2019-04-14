@@ -80,13 +80,13 @@ public class RailwayLinesServiceImpl extends BaseServiceImpl<RailwayLines, java.
 	public RailwayLinesAddRsp add(RailwayLinesAddReq req) {
 		verifyrRailwayLinesNameExistence(null, req.getRailwayLinesName());
 
-		if(StringUtils.isTrimEmpty(req.getPreviousStationId())) {
-			RailwayLines queryRailwayLines = railwayLinesDAO.queryById(req.getPreviousStationId());
-			verifyRailwayLinesExistence(queryRailwayLines);
-		}
-
 		RailwayLines railwayLines = new RailwayLines();
 		BeanUtils.copyProperties(req, railwayLines);
+		if(!StringUtils.isTrimEmpty(req.getPreviousStationId())) {
+			RailwayLines queryRailwayLines = railwayLinesDAO.queryById(req.getPreviousStationId());
+			verifyRailwayLinesExistence(queryRailwayLines);
+			railwayLines.setPreviousStationName(queryRailwayLines.getRailwayLinesName());
+		}
 
 		handleMileage(req.getStartMileageName(), req.getEndMileageName(), railwayLines);
 
@@ -118,17 +118,22 @@ public class RailwayLinesServiceImpl extends BaseServiceImpl<RailwayLines, java.
 
 		verifyrRailwayLinesNameExistence(req.getId(), req.getRailwayLinesName());
 
-		if(StringUtils.isTrimEmpty(req.getPreviousStationId())) {
-			queryRailwayLines = railwayLinesDAO.queryById(req.getPreviousStationId());
-			verifyRailwayLinesExistence(queryRailwayLines);
-		}
-
 		RailwayLines railwayLines = new RailwayLines();
 		BeanUtils.copyProperties(req, railwayLines);
+		if(!StringUtils.isTrimEmpty(req.getPreviousStationId())) {
+			queryRailwayLines = railwayLinesDAO.queryById(req.getPreviousStationId());
+			verifyRailwayLinesExistence(queryRailwayLines);
+			railwayLines.setPreviousStationName(queryRailwayLines.getRailwayLinesName());
+		}
 
 		handleMileage(req.getStartMileageName(), req.getEndMileageName(), railwayLines);
 
-		return null;
+		railwayLinesDAO.updateById(railwayLines);
+
+		RailwayLinesUpdateRsp rsp = new RailwayLinesUpdateRsp();
+		rsp.setId(req.getId());
+
+		return rsp;
 	}
 
 	@Override
@@ -174,9 +179,9 @@ public class RailwayLinesServiceImpl extends BaseServiceImpl<RailwayLines, java.
 		verifyRailwayLinesExistence(queryRailwayLines);
 
 		RailwayLinesDetailsRsp rsp = new RailwayLinesDetailsRsp();
-		BeanUtils.copyProperties(queryRailwayLines, req);
+		BeanUtils.copyProperties(queryRailwayLines, rsp);
 
-		if(StringUtils.isTrimEmpty(queryRailwayLines.getPreviousStationId())) {
+		if(!StringUtils.isTrimEmpty(queryRailwayLines.getPreviousStationId())) {
 			RailwayLines previousRailwayLines = railwayLinesDAO.queryById(queryRailwayLines.getPreviousStationId());
 			RailwayLinesDetailsRsp previousRailwayLinesDetailsRsp = new RailwayLinesDetailsRsp();
 			BeanUtils.copyProperties(previousRailwayLines, previousRailwayLinesDetailsRsp);

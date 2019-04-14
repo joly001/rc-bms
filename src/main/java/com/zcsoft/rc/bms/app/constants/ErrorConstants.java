@@ -124,6 +124,6 @@ public interface ErrorConstants {
     /**
      * 站点不存在
      */
-    String RAILWAY_LINES_NOT_EXIST = "005001";
+    String RAILWAY_LINES_NOT_EXIST = "008001";
 
 }
