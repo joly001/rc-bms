@@ -61,6 +61,7 @@ public class ChainAutoconfigure {
         commomAuthority.add("user.controller.UserController.userAuthorities");
         commomAuthority.add("warning.controller.WorkWarningController.warningList");
         commomAuthority.add("warning.controller.WorkWarningController.list");
+        commomAuthority.add("warning.controller.TrainWarningController.list");
 
         UserAuthorityAccessDecisionChain noUserChain = new UserAuthorityAccessDecisionChain();
         noUserChain.setExcludeMethods(excludeMethods);
