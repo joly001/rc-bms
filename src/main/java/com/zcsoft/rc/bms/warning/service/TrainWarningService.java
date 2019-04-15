@@ -12,7 +12,7 @@ import com.zcsoft.rc.warning.model.entity.TrainWarning;
 public interface TrainWarningService extends IBaseService<TrainWarning, java.lang.String> {
 
     /**
-     * 火车警告分页查询
+     * 列车警告分页查询
      * @param req
      * @return
      */

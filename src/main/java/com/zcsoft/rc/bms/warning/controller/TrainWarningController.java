@@ -25,7 +25,7 @@ public class TrainWarningController {
 	}
 
 	/**
-	 * 火车警告分页查询
+	 * 列车警告分页查询
 	 * @param req
 	 * @return
 	 */
