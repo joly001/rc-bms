@@ -174,6 +174,28 @@ public class RailwayLinesServiceImpl extends BaseServiceImpl<RailwayLines, java.
 	}
 
 	@Override
+	public RailwayLinesListAllRsp all() {
+		List<RailwayLines> railwayLinesList = railwayLinesDAO.queryAll();
+
+		RailwayLinesListAllRsp rsp = new RailwayLinesListAllRsp();
+
+		if(railwayLinesList == null || railwayLinesList.isEmpty()) {
+			return rsp;
+		}
+
+		List<RailwayLinesAllRsp> railwayLinesAllRspList = new ArrayList<>(railwayLinesList.size());
+		railwayLinesList.forEach(railwayLines -> {
+			RailwayLinesAllRsp railwayLinesAllRsp = new RailwayLinesAllRsp();
+			BeanUtils.copyProperties(railwayLines, railwayLinesAllRsp);
+
+			railwayLinesAllRspList.add(railwayLinesAllRsp);
+		});
+		rsp.setList(railwayLinesAllRspList);
+
+		return rsp;
+	}
+
+	@Override
 	public RailwayLinesDetailsRsp details(RailwayLinesDetailsReq req) {
 		RailwayLines queryRailwayLines = railwayLinesDAO.queryById(req.getId());
 		verifyRailwayLinesExistence(queryRailwayLines);

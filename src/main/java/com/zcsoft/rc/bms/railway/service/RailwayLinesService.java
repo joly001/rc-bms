@@ -39,6 +39,12 @@ public interface RailwayLinesService extends IBaseService<RailwayLines, java.lan
     HttpPaginationRepertory<RailwayLinesListRsp> list(HttpPaginationCondition<RailwayLinesListReq> req);
 
     /**
+     * 线路查询所有
+     * @return
+     */
+    RailwayLinesListAllRsp all();
+
+    /**
      * 线路详情
      * @param req
      * @return

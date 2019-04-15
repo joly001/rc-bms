@@ -64,6 +64,15 @@ public class RailwayLinesController {
 	}
 
 	/**
+	 * 线路查询所有
+	 * @return
+	 */
+	@RequestMapping(value="all", method= RequestMethod.POST)
+	public RailwayLinesListAllRsp all() {
+		return railwayLinesService.all();
+	}
+
+	/**
 	 * 线路详情
 	 * @param req
 	 * @return
