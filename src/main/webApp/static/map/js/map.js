@@ -12,6 +12,7 @@ function mercatorTolonlat(mercator){
 var TrainMap = (function(){
     var map, layer, view, options,prjCoordSys,epsgcode,vectorLayer,sourceVector,overlay ;
     var lon=0,lat=0,zoomlevel=2,initZoomToScale;
+    var waringObj = {};
 
     function _(optionsObj){
         var originResult =optionsObj.originResult;
@@ -123,9 +124,14 @@ var TrainMap = (function(){
         if(f){
             f.getGeometry().setCoordinates(arr.geometry.coordinates);
             if(arr.properties.warningStatus == "true"){
-                this.content.innerHTML = "警告！施工人员"+arr.warning+"靠近警告线！" ;
+                var waringData = $.parseJSON(arr.properties.warning);
+                this.content.innerHTML = waringData.waringContent ;
                 overlay.setPosition(arr.geometry.coordinates);
                 map.addOverlay(overlay);
+                waringObj[arr.properties.id] = true
+            }else if((arr.properties.warningStatus != "true") && waringObj[arr.properties.id]){
+                overlay.setPosition(undefined);
+                waringObj[arr.properties.id] = false;
             }
         }else{
             f= addPoint(arr,this)
@@ -152,7 +158,8 @@ var TrainMap = (function(){
           f.setId(param.properties.id);
           f.setStyle(styleFunction(param.properties.type));
           if(param.properties.warningStatus == "true"){
-              o.content.innerHTML = param.warning.waringContent;
+              var waringData = $.parseJSON(param.properties.warning);
+              o.content.innerHTML = waringData.waringContent ;
               overlay.setPosition(param.geometry.coordinates);
               map.addOverlay(overlay);
           }

@@ -6,7 +6,7 @@ $(function(){
 })
 function init() {
     document.title="资源open layers3表述";
-    login();
+    // login();
     loadMap();
     loadMessage();
     selectEvent();
@@ -221,7 +221,7 @@ function showSonDiv(i){
 function dataList(){
     //列定义，注意是又层中括号
     var cols = [[
-        {field:'id',title:'序号',displayTip:true, width:100, align:'center'},
+        {field:'id',title:'序号',displayTip:true, width:100, align:'center',formatter:function(value,row,index){ return index+1}},
         {field:'createTime',title:'告警时间',displayTip:true,width:170,align:'center'},
         {field:'mileageSegmentName',title:'作业区间',displayTip:true,width:170,align:'center'},
         {field:'workSegmentName',title:'作业面',displayTip:true,width:170,align:'center'},
@@ -301,7 +301,7 @@ function dataList(){
 function loadWarning(){
     //列定义，注意是又层中括号
     var cols = [[
-        {field:'id',title:'序号',displayTip:true, width:100, align:'center'},
+        {field:'id',title:'序号',displayTip:true, width:100, align:'center',formatter:function(value,row,index){ return index+1}},
         {field:'nick',title:'司机',displayTip:true,width:170,align:'center'},
         {field:'type',title:'接近类型',displayTip:true,width:170,align:'center',formatter:function (value,row,index){
             if(value =="00" ){
