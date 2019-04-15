@@ -1,20 +1,18 @@
 var url = "http://47.94.11.219:8090/iserver/services/map-KUA/rest/maps/东站333_1@4326",trainMap,
-    messageControl,loadSon1,loadSon2;
+    messageControl,loadSon1,loadSon2,localPage,loadSon;
 
 $(function(){
     init();
 })
 function init() {
     document.title="资源open layers3表述";
+    login();
     loadMap();
     loadMessage();
-    loadArea();
     selectEvent();
-    login();
     dataList();
-    /*new ol.supermap.LayerInfoService("http://47.94.11.219:8090/iserver/services/map-KUA/rest/maps/东站333_1@4326/tempLayersSet/{warning_Line@4326}/Rivers@World@@World").getLayersInfo(function(result){
-       console.log(result);
-    })*/
+    loadArea();
+    loadWarning();
 }
 
 function login(){
@@ -22,20 +20,16 @@ function login(){
         'username':'admin',
         'password':'888888'
     };
-    $.ajax({
-        url: "http://47.93.254.21:9091/rc-bms/user/login",
-        data: JSON.stringify(comment),
-        type: 'post',
-        dataType: 'json',
-        contentType: 'application/json;charset=utf-8',
-        cache: false,
-        success: function(data) {
-            console.log(data);
-        },
-        error: function(xhr) {
-            console.error(xhr.responseText);
-        }
-    });
+    axios.post(baseUrl+"/rc-bms/user/login", {
+        username: 'admin',
+        password: '888888'
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
 }
 
@@ -48,7 +42,7 @@ function loadMap() {
 
 function loadMessage() {
     messageControl = new MessageControl({
-        url:"ws://47.94.11.219:8800/iserver/services/rcDataFlow/dataflow/subscribe",
+        url:wsUrl,
         onopen:function(){console.log("connect success")},
         onclose:function(){console.log("connect close")},
         onerror:function(){console.log("connect error")},
@@ -71,64 +65,74 @@ function minpoint(a,b){
 }
 
 function loadArea(){
+
+    axios.post(baseUrl+"/rc-bms/mileageSegment/all", {
+        pageSize:15,
+        currentPage:1
+    })
+        .then(function (response) {
+            createParentList(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+
+function createParentList(firstDataList){
     var sp = new SelectPlugin({
         fistUlId:"workingInterval"
     });
-
+    loadSon = {};
     sp.createParentList({
-        data:firstData._data.list,
+        data:firstDataList.data._data.list,
         customKeyValue:{
             name:"mileageSegmentName"
         },
         fn:function (o){
-            loadSon = true;
+            console.log($(o).data());
             var id =  $(o).attr("id");
             var type = $(o).attr("datatype");
-            if(loadSon1 != true && type=="0"){
-                sp.createSonList({
-                    pId:id,
-                    data:type=="0"?k457_t._data.list:k457._data.list,
-                    customKeyValue:{
-                        name:"workSegmentName"
-                    },
-                    fn:function (o){
-                        console.log($(o).data())
-                        var c = minpoint([$(o).data().startLongitude,$(o).data().startLatitude],[$(o).data().endLongitude,$(o).data().endLatitude]);
-                        trainMap.moveTo(c)
-                    }
-                });
-                showSonDiv(id+"_div");
-                loadSon1 = true;
-                return;
-            }
+            var pId = $(o).data().id;
+            if(!loadSon[pId]){
 
-            if(loadSon2 != true && type=="1"){
-                sp.createSonList({
-                    pId:id,
-                    data:type=="0"?k457_t._data.list:k457._data.list,
-                    customKeyValue:{
-                        name:"workSegmentName"
-                    },
-                    fn:function(o){
-                        var c = minpoint([$(o).data().startLongitude,$(o).data().startLatitude],[$(o).data().endLongitude,$(o).data().endLatitude]);
-                        trainMap.moveTo(c)
-                    }
+                axios.post(baseUrl+"/rc-bms/workSegment/mileageWorkSegment", {
+                    mileageSegmentId:pId
                 })
-                showSonDiv(id+"_div");
-                loadSon2 = true;
+                    .then(function (response) {
+                        sp.createSonList({
+                            pId:id,
+                            data:response.data._data.list,
+                            customKeyValue:{
+                                name:"workSegmentName"
+                            },
+                            fn:function (o){
+                                console.log($(o).data());
+                                var c = minpoint([$(o).data().startLongitude,$(o).data().startLatitude],[$(o).data().endLongitude,$(o).data().endLatitude]);
+                                trainMap.moveTo(c)
+                            }
+                        });
+                        showSonDiv(id+"_div");
+                        loadSon[pId] = "load";
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
                 return;
             }
-            $("#"+id+"_div").hide();
-            showSonDiv(id+"_div");
-            if(type=="0"){
-                loadSon1 = false;
+            if($("#"+id+"_div").is(':hidden')){
+                $("#"+id+"_div").show();
             }else{
-                loadSon2 = false;
+                $("#"+id+"_div").hide();
             }
+            showSonDiv(id+"_div");
         }
     })
 }
 
+function createSonList(){
+
+}
 
 function selectEvent(){
 
@@ -218,14 +222,38 @@ function dataList(){
     //列定义，注意是又层中括号
     var cols = [[
         {field:'id',title:'序号',displayTip:true, width:100, align:'center'},
-        {field:'name1',title:'告警时间',displayTip:true,width:170,align:'center'},
-        {field:'name2',title:'作业区间',displayTip:true,width:170,align:'center'},
-        {field:'name3',title:'作业面',displayTip:true,width:170,align:'center'},
-        {field:'name4',title:'部门名称',displayTip:true,width:170,align:'center'},
-        {field:'name5',title:'人员类型',displayTip:true,width:170,align:'center'},
-        {field:'name6',title:'姓 名',displayTip:true,width:170,align:'center'},
-        {field:'name7',title:'联系电话',displayTip:true,width:170,align:'center'},
-        {field:'name8',title:'告警原因',displayTip:true,width:170,align:'center'}
+        {field:'createTime',title:'告警时间',displayTip:true,width:170,align:'center'},
+        {field:'mileageSegmentName',title:'作业区间',displayTip:true,width:170,align:'center'},
+        {field:'workSegmentName',title:'作业面',displayTip:true,width:170,align:'center'},
+        {field:'depName',title:'部门名称',displayTip:true,width:170,align:'center'},
+        {field:'builderUserType',title:'人员类型',displayTip:true,width:170,align:'center',formatter:function(value,row,index){
+                if(value == '00'){
+                    return '机车';
+                }else if(value == '01'){
+                    return '列车';
+                }else if(value == '02'){
+                    return '作业人员';
+                }else if(value == '03'){
+                    return '作业负责人';
+                }else if(value == '04'){
+                    return '安全员';
+                }else if(value == '05'){
+                    return '防护员';
+                }else if(value == '06'){
+                    return '监理';
+                }else{
+                    return '其他人员';
+                }
+            }},
+        {field:'nick',title:'姓 名',displayTip:true,width:170,align:'center'},
+        {field:'mobile',title:'联系电话',displayTip:true,width:170,align:'center'},
+        {field:'type',title:'告警原因',displayTip:true,width:170,align:'center',formatter:function(value,row,index){
+                if(value == '00'){
+                    return '接近警告线';
+                }else {
+                    return '其他';
+                }
+            }}
     ]];
 
     //表格初始化
@@ -235,21 +263,103 @@ function dataList(){
         columns:cols,//普通列
         showHeader:true,//是否显示表头，默认true显示
         nowrap:false, //false可自动换行，默认true
-        onDblClickRow:function(rowIndex, rowData){ alert("单击事件："+rowIndex+"--"+rowData.name);}, //行双击事件
-        onClickRow:function(rowIndex, rowData){ }, //行单击事件
        // width:"100%", //初始宽
         height:130, //实始高
-        pagination:false //显示分页栏
+        pagination:true //显示分页栏
     });
 
+    localPage = 2;
+    axios.post(baseUrl+"/rc-bms/workWarning/list", {
+        pageSize:15,
+        currentPage:1
+    }).then(function (response) {
+            //加载数据
+            $('#list1').datagrid("loadData",response.data._data.pageItems);
+/*            $("#list1 .attachTable").find('tbody').scroll(function(){
+                var $this =$(this);
+                var scrollTop =$(this).scrollTop();        //滚动条top值
+                var viewH =$(this).innerHeight();          //盒子高度
+                var contentH =$(this).get(0).scrollHeight; //盒子内容高度
+                if(scrollTop + viewH >= contentH-2) { //到达底部10px时,加载新内容
+                    axios.post(baseUrl+"/rc-bms/workWarning/list", {
+                        pageSize:15,
+                        currentPage:localPage
+                    }).then(function (response2) {
+                        localPage++;
+                        //加载数据
+                        $('#list1').datagrid("loadData",response2.data._data.pageItems);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                }
+            });*/
+        }).catch(function (error) {
+            console.log(error);
+        });
+}
 
+function loadWarning(){
+    //列定义，注意是又层中括号
+    var cols = [[
+        {field:'id',title:'序号',displayTip:true, width:100, align:'center'},
+        {field:'nick',title:'司机',displayTip:true,width:170,align:'center'},
+        {field:'type',title:'接近类型',displayTip:true,width:170,align:'center',formatter:function (value,row,index){
+            if(value =="00" ){
+                    return '列车临站';
+             }else{
+                    return '列车接近';
+            }
+         }},
+        {field:'direction',title:'上/下行',displayTip:true,width:170,align:'center',formatter:function(value,row,index){
+            if(value =="0"){
+                return '上行'
+            }else{
+                return '下行'
+            }
+            }},
+        {field:'warningContent',title:'告警内容',displayTip:true,width:170,align:'center'}
+    ]];
 
+    //表格初始化
+    $('#list2').datagrid({
+        idField:"id", //明确唯一主键
+        // frozenColumns:[[{field:'ck',checkbox:fale}]],//复选框列
+        columns:cols,//普通列
+        showHeader:true,//是否显示表头，默认true显示
+        nowrap:false, //false可自动换行，默认true
+        // width:"100%", //初始宽
+        height:130, //实始高
+        pagination:true //显示分页栏
+    });
 
-    var data =[];
-    for(var i=0;i<20;i++){
-        data.push({id:i+"",name1:i+"呵呵"+(i%10==1?"abc def ghi jkl mno pqr stu vwx yz":""),name2:(i%2),  name3:(i==1) ,name4:i,name5:i,name6:i,name7:i,name8:i});
-    }
+    localPage = 2;
+    axios.post(baseUrl+"/rc-bms/trainWarning/list", {
+        pageSize:15,
+        currentPage:1
+    }).then(function (response) {
+        //加载数据
+        console.log(response);
+        $('#list2').datagrid("loadData",response.data._data.pageItems);
+/*        $("#list2 .attachTable").find('tbody').scroll(function(){
+            var $this =$(this);
+            var scrollTop =$(this).scrollTop();        //滚动条top值
+            var viewH =$(this).innerHeight();          //盒子高度
+            var contentH =$(this).get(0).scrollHeight; //盒子内容高度
+            if(scrollTop + viewH >= contentH-2) { //到达底部10px时,加载新内容
+                axios.post(baseUrl+"/rc-bms/trainWarning/list", {
+                    pageSize:15,
+                    currentPage:localPage
+                }).then(function (response2) {
+                    localPage++;
+                    //加载数据
+                    $('#list2').datagrid("loadData",response2.data._data.pageItems);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        });*/
+    }).catch(function (error) {
+        console.log(error);
+    });
 
-    //加载数据
-    $('#list1').datagrid("loadData",data);
 }
