@@ -1,18 +1,26 @@
 var url = "http://47.94.11.219:8090/iserver/services/map-KUA/rest/maps/东站333_1@4326",trainMap,
-    messageControl,loadSon1,loadSon2,localPage,loadSon;
+    messageControl,loadSon1,loadSon2,localPage,loadSon,fatherDivH,list1H,list1TbodyH;
 
 $(function(){
     init();
 })
 function init() {
     document.title="资源open layers3表述";
-    // login();
+    //login();
     loadMap();
     loadMessage();
     selectEvent();
     dataList();
     loadArea();
     loadWarning();
+
+    $("#loadUpDown").click(function(){
+        if(fatherDivH){
+            loadHeightDown();
+        }else{
+            loadHeightUp();
+        }
+    });
 }
 
 function login(){
@@ -71,6 +79,10 @@ function loadArea(){
         currentPage:1
     })
         .then(function (response) {
+            if(response.data&&response.data._exceptionMessage&&response.data._exceptionMessage == "000002"){
+                window.location.href = window.location.href.split('wisdom/info')[0];
+                return;
+            }
             createParentList(response);
         })
         .catch(function (error) {
@@ -222,7 +234,10 @@ function dataList(){
     //列定义，注意是又层中括号
     var cols = [[
         {field:'id',title:'序号',displayTip:true, width:100, align:'center',formatter:function(value,row,index){ return index+1}},
-        {field:'createTime',title:'告警时间',displayTip:true,width:170,align:'center'},
+        {field:'createTime',title:'告警时间',displayTip:true,width:170,align:'center',formatter:function(value){
+                var date = new Date(Number(value));
+                return  date.toLocaleString();
+            }},
         {field:'mileageSegmentName',title:'作业区间',displayTip:true,width:170,align:'center'},
         {field:'workSegmentName',title:'作业面',displayTip:true,width:170,align:'center'},
         {field:'depName',title:'部门名称',displayTip:true,width:170,align:'center'},
@@ -269,33 +284,27 @@ function dataList(){
     });
 
     localPage = 2;
-    axios.post(baseUrl+"/rc-bms/workWarning/list", {
-        pageSize:15,
-        currentPage:1
-    }).then(function (response) {
+
+    loadListData();
+
+    window.setInterval(loadListData, 5000);
+
+    function loadListData(){
+        axios.post(baseUrl+"/rc-bms/workWarning/list", {
+            pageSize:15,
+            currentPage:1
+        }).then(function (response) {
+            if(response.data&&response.data._exceptionMessage&&response.data._exceptionMessage == "000002"){
+                window.location.href = window.location.href.split('wisdom/info')[0];
+                return;
+            }
             //加载数据
             $('#list1').datagrid("loadData",response.data._data.pageItems);
-/*            $("#list1 .attachTable").find('tbody').scroll(function(){
-                var $this =$(this);
-                var scrollTop =$(this).scrollTop();        //滚动条top值
-                var viewH =$(this).innerHeight();          //盒子高度
-                var contentH =$(this).get(0).scrollHeight; //盒子内容高度
-                if(scrollTop + viewH >= contentH-2) { //到达底部10px时,加载新内容
-                    axios.post(baseUrl+"/rc-bms/workWarning/list", {
-                        pageSize:15,
-                        currentPage:localPage
-                    }).then(function (response2) {
-                        localPage++;
-                        //加载数据
-                        $('#list1').datagrid("loadData",response2.data._data.pageItems);
-                    }).catch(function (error) {
-                        console.log(error);
-                    });
-                }
-            });*/
         }).catch(function (error) {
             console.log(error);
         });
+    }
+
 }
 
 function loadWarning(){
@@ -333,33 +342,42 @@ function loadWarning(){
     });
 
     localPage = 2;
-    axios.post(baseUrl+"/rc-bms/trainWarning/list", {
-        pageSize:15,
-        currentPage:1
-    }).then(function (response) {
-        //加载数据
-        console.log(response);
-        $('#list2').datagrid("loadData",response.data._data.pageItems);
-/*        $("#list2 .attachTable").find('tbody').scroll(function(){
-            var $this =$(this);
-            var scrollTop =$(this).scrollTop();        //滚动条top值
-            var viewH =$(this).innerHeight();          //盒子高度
-            var contentH =$(this).get(0).scrollHeight; //盒子内容高度
-            if(scrollTop + viewH >= contentH-2) { //到达底部10px时,加载新内容
-                axios.post(baseUrl+"/rc-bms/trainWarning/list", {
-                    pageSize:15,
-                    currentPage:localPage
-                }).then(function (response2) {
-                    localPage++;
-                    //加载数据
-                    $('#list2').datagrid("loadData",response2.data._data.pageItems);
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
-        });*/
-    }).catch(function (error) {
-        console.log(error);
-    });
 
+    loadListData();
+
+    window.setInterval(loadListData, 5000);
+
+    function loadListData(){
+        axios.post(baseUrl+"/rc-bms/trainWarning/list", {
+            pageSize:15,
+            currentPage:1
+        }).then(function (response) {
+            if(response.data&&response.data._exceptionMessage&&response.data._exceptionMessage == "000002"){
+                window.location.href = window.location.href.split('wisdom/info')[0];
+                return;
+            }
+            //加载数据
+            $('#list2').datagrid("loadData",response.data._data.pageItems);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+}
+
+function loadHeightUp(){
+    fatherDivH = $("#fatherDiv").height();
+    list1H = $("#list1").height();
+    list1TbodyH = $("#list1").find("tbody").height();
+    $("#fatherDiv").height(382);
+    $("#list1").height(313);
+    $("#list1").find("tbody").height(275);
+}
+
+function loadHeightDown() {
+    $("#fatherDiv").height(fatherDivH);
+    $("#list1").height(list1H);
+    $("#list1").find("tbody").height(list1TbodyH);
+
+    fatherDivH = null;
 }
