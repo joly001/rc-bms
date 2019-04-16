@@ -46,4 +46,12 @@ public class WorkSegmentDataTimeServiceImpl extends BaseServiceImpl<WorkSegmentD
 			add(workSegmentDataTime);
 		});
 	}
+
+	@Override
+	public List<WorkSegmentDataTime> getByWorkSegmentId(String workSegmentId) {
+		WorkSegmentDataTime queryWorkSegmentDataTime = new WorkSegmentDataTime();
+		queryWorkSegmentDataTime.setWorkSegmentId(workSegmentId);
+
+		return workSegmentDataTimeDAO.queryList(queryWorkSegmentDataTime);
+	}
 }

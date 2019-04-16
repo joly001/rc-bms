@@ -202,6 +202,27 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	}
 
 	@Override
+	public WorkSegmentDataTimeListListRsp workSegmentDataTimeList(WorkSegmentDataTimeListReq req) {
+		List<WorkSegmentDataTime> workSegmentDataTimeList = workSegmentDataTimeService.getByWorkSegmentId(req.getWorkSegmentId());
+
+		WorkSegmentDataTimeListListRsp rsp = new WorkSegmentDataTimeListListRsp();
+		if(workSegmentDataTimeList == null || workSegmentDataTimeList.isEmpty()) {
+			return rsp;
+		}
+
+		List<WorkSegmentDataTimeListRsp> workSegmentDataTimeListRspList = new ArrayList<>();
+		workSegmentDataTimeList.forEach(workSegmentDataTime -> {
+			WorkSegmentDataTimeListRsp workSegmentDataTimeListRsp = new WorkSegmentDataTimeListRsp();
+			BeanUtils.copyProperties(workSegmentDataTime, workSegmentDataTimeListRsp);
+
+			workSegmentDataTimeListRspList.add(workSegmentDataTimeListRsp);
+		});
+		rsp.setList(workSegmentDataTimeListRspList);
+
+		return rsp;
+	}
+
+	@Override
 	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req) {
 		WorkSegment queryWorkSegment = new WorkSegment();
 		queryWorkSegment.setMileageSegmentId(req.getMileageSegmentId());

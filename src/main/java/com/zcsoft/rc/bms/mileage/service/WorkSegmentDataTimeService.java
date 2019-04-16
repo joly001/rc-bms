@@ -23,5 +23,12 @@ public interface WorkSegmentDataTimeService extends IBaseService<WorkSegmentData
      * @param workDateTimeList
      */
     void add(String workSegmentId, List<WorkSegmentDateTimeReq> workDateTimeList);
+
+    /**
+     * 根据作业面查询作业时间
+     * @param workSegmentId
+     * @return
+     */
+    List<WorkSegmentDataTime> getByWorkSegmentId(String workSegmentId);
 	
 }

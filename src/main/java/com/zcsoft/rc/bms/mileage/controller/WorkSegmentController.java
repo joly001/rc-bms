@@ -64,6 +64,14 @@ public class WorkSegmentController {
 	}
 
 	/**
+	 * 作业面作业时间查询
+	 */
+	@RequestMapping(value="workSegmentDataTimeList", method= RequestMethod.POST)
+	public WorkSegmentDataTimeListListRsp workSegmentDataTimeList(WorkSegmentDataTimeListReq req) {
+		return workSegmentService.workSegmentDataTimeList(req);
+	}
+
+	/**
 	 * 作业面列表，根据里程查询
 	 */
 	@RequestMapping(value="mileageWorkSegment", method= RequestMethod.POST)
