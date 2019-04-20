@@ -71,12 +71,28 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 		return mileage;
 	}
 
+	protected void verifyMileageCoordinate(String id, double longitude) {
+		Mileage queryMileage = mileageDAO.queryByStartLongitudeEndLongitude(longitude);
+		if(queryMileage != null) {
+			if(id == null || !id.equals(queryMileage.getId())) {
+				throw new ValidationCubeException(ErrorConstants.MILEAGE_COORDINATES_REPETITION, new Object[]{queryMileage.getMileageName()});
+			}
+		}
+	}
+
+	protected void verifyMileageCoordinate(String id, Mileage mileage) {
+		verifyMileageCoordinate(id, mileage.getStartLongitude());
+		verifyMileageCoordinate(id, mileage.getEndLongitude());
+	}
+
 	@Override
 	public MileageAddRsp add(MileageAddReq req) {
 		verifyMileageNameExistence(null, req.getMileageName());
 
 		Mileage mileage = new Mileage();
 		BeanUtils.copyProperties(req, mileage);
+
+		verifyMileageCoordinate(null, mileage);
 
 		mileageDAO.insert(mileage);
 
@@ -116,6 +132,8 @@ public class MileageServiceImpl extends BaseServiceImpl<Mileage, java.lang.Strin
 
 		Mileage mileage = new Mileage();
 		BeanUtils.copyProperties(req, mileage);
+
+		verifyMileageCoordinate(req.getId(), mileage);
 
 		mileageDAO.updateById(mileage);
 

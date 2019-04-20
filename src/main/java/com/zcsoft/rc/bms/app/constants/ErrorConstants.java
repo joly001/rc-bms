@@ -81,6 +81,10 @@ public interface ErrorConstants {
      * 里程不存在
      */
     String MILEAGE_NOT_EXIST = "004003";
+    /**
+     * 里程坐标重复
+     */
+    String MILEAGE_COORDINATES_REPETITION = "004004";
 
     /**
      * 里程区间名称不能重复，请重新填写
