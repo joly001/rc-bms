@@ -98,6 +98,20 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		mileageSegment.setEndLatitude(mileage.getStartLatitude());
 	}
 
+	protected void verifyilMeageSegmentCoordinate(String id, double longitude) {
+		MileageSegment queryMileageSegment = mileageSegmentDAO.queryByStartLongitudeEndLongitude(longitude);
+		if(queryMileageSegment != null) {
+			if(id == null || !id.equals(queryMileageSegment.getId())) {
+				throw new ValidationCubeException(ErrorConstants.MILEAGESEGMENT_COORDINATES_REPETITION, new Object[]{queryMileageSegment.getMileageSegmentName()});
+			}
+		}
+	}
+
+	protected void verifyilMeageSegmentCoordinate(String id, MileageSegment mileageSegment) {
+		verifyilMeageSegmentCoordinate(id, mileageSegment.getStartLongitude());
+		verifyilMeageSegmentCoordinate(id, mileageSegment.getEndLongitude());
+	}
+
 	@Override
 	public MileageSegmentAddRsp add(MileageSegmentAddReq req) {
 		verifyMileageSegmentNameExistence(null, req.getMileageSegmentName());
@@ -106,6 +120,8 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		BeanUtils.copyProperties(req, mileageSegment);
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), mileageSegment);
+
+		verifyilMeageSegmentCoordinate(null, mileageSegment);
 
 		mileageSegmentDAO.insert(mileageSegment);
 
@@ -150,6 +166,8 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		BeanUtils.copyProperties(req, mileageSegment);
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), mileageSegment);
+
+		verifyilMeageSegmentCoordinate(req.getId(), mileageSegment);
 
 		mileageSegmentDAO.updateById(mileageSegment);
 

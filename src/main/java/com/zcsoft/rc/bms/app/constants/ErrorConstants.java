@@ -98,6 +98,10 @@ public interface ErrorConstants {
      * 里程区间存在工作面，不能删除
      */
     String MILEAGESEGMENT_HAS_MILEAGE_WORKSEGMENT_CAN_NOT_DELETE = "005002";
+    /**
+     * 里程区间坐标重复
+     */
+    String MILEAGESEGMENT_COORDINATES_REPETITION = "005003";
 
     /**
      * 已存在该作业面，请重新填写
