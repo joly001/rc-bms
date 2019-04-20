@@ -6,14 +6,14 @@ $(function(){
 })
 function init() {
     document.title="资源open layers3表述";
-    //login();
+    login();
     loadMap();
     loadMessage();
     selectEvent();
     dataList();
     loadArea();
     loadWarning();
-
+    selectEventPerson();
     $("#loadUpDown").click(function(){
         if(fatherDivH){
             loadHeightDown();
@@ -24,6 +24,9 @@ function init() {
 }
 
 function login(){
+    if(!isLocaltion){
+        return
+    }
     var comment = {
         'username':'admin',
         'password':'888888'
@@ -33,7 +36,7 @@ function login(){
         password: '888888'
     })
         .then(function (response) {
-            console.log(response);
+
         })
         .catch(function (error) {
             console.log(error);
@@ -79,8 +82,9 @@ function loadArea(){
         currentPage:1
     })
         .then(function (response) {
-            if(response.data&&response.data._exceptionMessage&&response.data._exceptionMessage == "000002"){
-                window.location.href = window.location.href.split('wisdom/info')[0];
+            if(response.data&&response.data._exceptionMessage&&(response.data._exceptionMessage == "000002")){
+               window.location.href = loginUrl;
+                console.log(response);
                 return;
             }
             createParentList(response);
@@ -142,10 +146,6 @@ function createParentList(firstDataList){
     })
 }
 
-function createSonList(){
-
-}
-
 function selectEvent(){
 
 
@@ -198,6 +198,68 @@ function selectEvent(){
         $(this).show();
         var _height = $(this).height()+54;
         //box_show(_height);
+    },function(){
+        time = setTimeout(function(){
+            $(this).hide();
+            box_hide();
+        },50);
+        lista.removeClass("now");
+        lista.eq(olda).addClass("now");
+    });
+}
+
+function selectEventPerson(){
+
+
+    var time = null;
+    var list = $("#navlist2");
+    var box = $("#navbox2");
+    var lista = list.find("a");
+
+    for(var i=0,j=lista.length;i<j;i++){
+        if(lista[i].className == "now"){
+            var olda = i;
+        }
+    }
+
+    var box_show = function(hei){
+        box.stop().animate({
+            height:hei,
+            opacity:1
+        },400);
+    }
+
+    var box_hide = function(){
+        box.stop().animate({
+            height:0,
+            opacity:0
+        },400);
+    }
+
+    lista.hover(function(){
+        lista.removeClass("now");
+        $(this).addClass("now");
+        clearTimeout(time);
+        box.find(".cont").show();
+        var _height = box.find(".cont").height()+10;
+        box_show(_height)
+    },function(){
+        time = setTimeout(function(){
+            box.find(".cont").hide();
+            box_hide();
+        },50);
+        lista.removeClass("now");
+        lista.eq(olda).addClass("now");
+    });
+
+    box.find(".cont").hover(function(){
+        var _index = box.find(".cont").index($(this));
+        lista.removeClass("now");
+        lista.eq(_index).addClass("now");
+        clearTimeout(time);
+        $(this).show();
+        var _height = $(this).height()+10;
+        box_show(_height);
     },function(){
         time = setTimeout(function(){
             $(this).hide();
@@ -294,8 +356,9 @@ function dataList(){
             pageSize:15,
             currentPage:1
         }).then(function (response) {
-            if(response.data&&response.data._exceptionMessage&&response.data._exceptionMessage == "000002"){
-                window.location.href = window.location.href.split('wisdom/info')[0];
+            if(response.data&&response.data._exceptionMessage&&(response.data._exceptionMessage == "000002")){
+                window.location.href = loginUrl;
+                console.log(response);
                 return;
             }
             //加载数据
@@ -352,8 +415,9 @@ function loadWarning(){
             pageSize:15,
             currentPage:1
         }).then(function (response) {
-            if(response.data&&response.data._exceptionMessage&&response.data._exceptionMessage == "000002"){
-                window.location.href = window.location.href.split('wisdom/info')[0];
+            if(response.data&&response.data._exceptionMessage&&(response.data._exceptionMessage == "000002")){
+                window.location.href = loginUrl;
+                console.log(response);
                 return;
             }
             //加载数据
@@ -380,4 +444,8 @@ function loadHeightDown() {
     $("#list1").find("tbody").height(list1TbodyH);
 
     fatherDivH = null;
+}
+
+function showType(type,obj){
+    trainMap.showForType(type,$(obj).is(':checked'));
 }
