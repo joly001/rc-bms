@@ -1,7 +1,6 @@
 package com.zcsoft.rc.bms.app.runtime;
 
 import com.sharingif.cube.context.annotation.ExtendedAnnotationBeanNameGenerator;
-import com.sharingif.cube.core.util.UUIDUtils;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -41,7 +39,7 @@ public class Bootstrap {
                 }).run(args);
     }
 
-    @EnableTransactionManagement(mode= AdviceMode.ASPECTJ)
+    @EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
     @EnableAutoConfiguration(exclude={WebMvcAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
     @ComponentScan(
             basePackages = "com.zcsoft.rc.*.dao," +
