@@ -167,9 +167,8 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	public HttpPaginationRepertory<WorkSegmentListRsp> list(HttpPaginationCondition<WorkSegmentListReq> req) {
 		WorkSegment queryWorkSegment = new WorkSegment();
 		if(req.getCondition() != null) {
-			queryWorkSegment.setWorkSegmentName(req.getCondition().getWorkSegmentName());
-			queryWorkSegment.setMileageSegmentName(req.getCondition().getMileageSegmentName());
-			queryWorkSegment.setWorkDate(req.getCondition().getWorkDate());
+			queryWorkSegment.setWorkSegmentName(req.getCondition().getCondition());
+			queryWorkSegment.setMileageSegmentName(req.getCondition().getCondition());
 		}
 		PaginationCondition<WorkSegment> paginationCondition = new PaginationCondition<>();
 		paginationCondition.setCondition(queryWorkSegment);

@@ -137,9 +137,9 @@ public class MachineryServiceImpl extends BaseServiceImpl<Machinery, String> imp
 	public HttpPaginationRepertory<MachineryListRsp> list(HttpPaginationCondition<MachineryListReq> req) {
 		Machinery queryMachinery = new Machinery();
 		if(req.getCondition() != null) {
-			queryMachinery.setWristStrapCode(req.getCondition().getWristStrapCode());
-			queryMachinery.setMachineryName(req.getCondition().getMachineryName());
-			queryMachinery.setNick(req.getCondition().getNick());
+			queryMachinery.setWristStrapCode(req.getCondition().getCondition());
+			queryMachinery.setMachineryName(req.getCondition().getCondition());
+			queryMachinery.setNick(req.getCondition().getCondition());
 		}
 		PaginationCondition<Machinery> paginationCondition = new PaginationCondition<>();
 		paginationCondition.setCondition(queryMachinery);

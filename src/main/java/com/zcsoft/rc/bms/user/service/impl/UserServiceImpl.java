@@ -212,12 +212,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	public HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req) {
 		UserListReq userListReq = req.getCondition();
 		User queryUser = new User();
+		queryUser.setUserType(User.USER_TYPE_REGISTER);
 		if(userListReq != null) {
 			queryUser.setOrganizationId(userListReq.getOrganizationId());
-			queryUser.setNick(userListReq.getNick());
-			queryUser.setMobile(userListReq.getMobile());
-			queryUser.setWristStrapCode(userListReq.getWristStrapCode());
-			queryUser.setUserType(User.USER_TYPE_REGISTER);
+			queryUser.setNick(userListReq.getCondition());
+			queryUser.setMobile(userListReq.getCondition());
+			queryUser.setWristStrapCode(userListReq.getCondition());
 		}
 		PaginationCondition<User> paginationCondition = new PaginationCondition<>();
 		paginationCondition.setCondition(queryUser);
