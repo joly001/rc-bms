@@ -150,7 +150,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 		workSegment = new WorkSegment();
 		BeanUtils.copyProperties(req, workSegment);
 		workSegment.setSubmitUserId(user.getId());
-		workSegment.setSubmitUserName(user.getNick());
+		workSegment.setSubmitUserName(user.getUsername());
 		workSegment.setSubmitTime(new Date());
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
