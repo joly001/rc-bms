@@ -193,6 +193,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 
 		user = new User();
 		BeanUtils.copyProperties(req, user);
+		if(!StringUtils.isTrimEmpty(req.getMobile())) {
+			user.setUsername(req.getMobile());
+		}
 		if(!StringUtils.isTrimEmpty(req.getBuilderStatus()) && null != req.getAdmissionLeaveDate()) {
 			if(User.BUILDER_STATUS_IN.equals(req.getBuilderStatus())) {
 				user.setAdmissionDate(req.getAdmissionLeaveDate());
