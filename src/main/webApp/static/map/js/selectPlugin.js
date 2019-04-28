@@ -24,7 +24,7 @@ var SelectPlugin = (function(){
             var id = data.id?data.id:data[o.customKeyValue.id];
             var name = data.name?data.name:data[o.customKeyValue.name];
             str +=
-            '<li style="overflow: auto;margin-top: 10px">'+
+            '<li style="overflow: auto;margin-top: 10px;margin-left: 18px;">'+
                 '<div class="liDiv" style="overflow: auto;" dataType = "'+i+'" id = "'+id+'">'+
                   '<a style="float: left;margin-left: 5px;">'+name+'</a>'+
                   '<div class="arr" style="float: left;margin-left: 10px;">'+

@@ -45,7 +45,17 @@ input.deInput::-ms-clear{display:none;}
 
 .attachTable{float:left;position:relative;width:100%;border-spacing:0;border-collapse:collapse;font-size:12px;}
 .attachTable thead{position:inherit;top:0px;}
-.attachTable thead th{border-top:1px solid #45b6d7;border-bottom:1px solid #45b6d7;border-right:1px dotted transparent;background-color:#45b6d7;color:#fff;padding:5px;white-space:nowrap;word-break: keep-all;text-align:left;}
+.attachTable thead th{
+    border-top: 1px solid #EAF5FD;
+    border-bottom: 1px solid #EAF5FD;
+    border-right: 1px dotted transparent;
+    background-color: #EAF5FD;
+    color: #040000;
+    padding: 5px;
+    white-space: nowrap;
+    word-break: keep-all;
+    text-align: left;
+}
 .attachTable thead th:hover{border-right:1px dotted rgba(2, 26, 52, 1);}
 .attachTable thead th div{text-align:center;}
 

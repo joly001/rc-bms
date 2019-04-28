@@ -6,7 +6,7 @@ $(function(){
 })
 function init() {
     document.title="资源open layers3表述";
-    login();
+    //login();
     loadMap();
     loadMessage();
     selectEvent();
@@ -24,9 +24,7 @@ function init() {
 }
 
 function login(){
-    if(!isLocaltion){
-        return
-    }
+
     var comment = {
         'username':'admin',
         'password':'888888'
@@ -36,7 +34,7 @@ function login(){
         password: '888888'
     })
         .then(function (response) {
-
+            console.log(response);
         })
         .catch(function (error) {
             console.log(error);
@@ -295,15 +293,15 @@ function showSonDiv(i){
 function dataList(){
     //列定义，注意是又层中括号
     var cols = [[
-        {field:'id',title:'序号',displayTip:true, width:100, align:'center',formatter:function(value,row,index){ return index+1}},
-        {field:'createTime',title:'告警时间',displayTip:true,width:170,align:'center',formatter:function(value){
+        {field:'id',title:'序号',displayTip:true, width:10, align:'center',formatter:function(value,row,index){ return index+1}},
+        {field:'createTime',title:'告警时间',displayTip:true,width:150,align:'center',formatter:function(value){
                 var date = new Date(Number(value));
                 return  date.toLocaleString();
             }},
-        {field:'mileageSegmentName',title:'作业区间',displayTip:true,width:170,align:'center'},
-        {field:'workSegmentName',title:'作业面',displayTip:true,width:170,align:'center'},
-        {field:'depName',title:'部门名称',displayTip:true,width:170,align:'center'},
-        {field:'builderUserType',title:'人员类型',displayTip:true,width:170,align:'center',formatter:function(value,row,index){
+        {field:'mileageSegmentName',title:'作业区间',displayTip:true,width:100,align:'center'},
+        {field:'workSegmentName',title:'作业面',displayTip:true,width:100,align:'center'},
+        {field:'depName',title:'部门名称',displayTip:true,width:150,align:'center'},
+        {field:'builderUserType',title:'人员类型',displayTip:true,width:50,align:'center',formatter:function(value,row,index){
                 if(value == '00'){
                     return '机车';
                 }else if(value == '01'){
@@ -322,13 +320,17 @@ function dataList(){
                     return '其他人员';
                 }
             }},
-        {field:'nick',title:'姓 名',displayTip:true,width:170,align:'center'},
-        {field:'mobile',title:'联系电话',displayTip:true,width:170,align:'center'},
-        {field:'type',title:'告警原因',displayTip:true,width:170,align:'center',formatter:function(value,row,index){
+        {field:'nick',title:'姓 名',displayTip:true,width:70,align:'center'},
+        {field:'mobile',title:'联系电话',displayTip:true,width:60,align:'center'},
+        {field:'type',title:'告警原因',displayTip:true,width:80,align:'center',formatter:function(value,row,index){
                 if(value == '00'){
-                    return '接近警告线';
-                }else {
-                    return '其他';
+                    return '<div style="text-align:center;background-color:#ff45ac;border-radius:6px;color: white">接近警告线</div>';
+                }else if(value == '01'){
+                    return '<div style="text-align:center;background-color:#ffa647;border-radius:6px;color: white">碾压光缆</div>';
+                }else if(value == '02'){
+                    return '<div style="text-align:center;background-color:#004d90;border-radius:6px;color: white">线缆附近动土</div>';
+                }else{
+
                 }
             }}
     ]];
@@ -339,7 +341,7 @@ function dataList(){
        // frozenColumns:[[{field:'ck',checkbox:fale}]],//复选框列
         columns:cols,//普通列
         showHeader:true,//是否显示表头，默认true显示
-        nowrap:false, //false可自动换行，默认true
+        nowrap:true, //false可自动换行，默认true
        // width:"100%", //初始宽
         height:130, //实始高
         pagination:true //显示分页栏
@@ -373,23 +375,23 @@ function dataList(){
 function loadWarning(){
     //列定义，注意是又层中括号
     var cols = [[
-        {field:'id',title:'序号',displayTip:true, width:100, align:'center',formatter:function(value,row,index){ return index+1}},
-        {field:'nick',title:'司机',displayTip:true,width:170,align:'center'},
-        {field:'type',title:'接近类型',displayTip:true,width:170,align:'center',formatter:function (value,row,index){
+        {field:'id',title:'序号',displayTip:true, width:10, align:'center',formatter:function(value,row,index){ return index+1}},
+        {field:'nick',title:'司机',displayTip:true,width:70,align:'center'},
+        {field:'type',title:'接近类型',displayTip:true,width:70,align:'center',formatter:function (value,row,index){
             if(value =="00" ){
                     return '列车临站';
              }else{
                     return '列车接近';
             }
          }},
-        {field:'direction',title:'上/下行',displayTip:true,width:170,align:'center',formatter:function(value,row,index){
+        {field:'direction',title:'上/下行',displayTip:true,width:70,align:'center',formatter:function(value,row,index){
             if(value =="0"){
                 return '上行'
             }else{
                 return '下行'
             }
             }},
-        {field:'warningContent',title:'告警内容',displayTip:true,width:170,align:'center'}
+        {field:'warningContent',title:'告警内容',displayTip:true,width:250,align:'center'}
     ]];
 
     //表格初始化
@@ -398,7 +400,7 @@ function loadWarning(){
         // frozenColumns:[[{field:'ck',checkbox:fale}]],//复选框列
         columns:cols,//普通列
         showHeader:true,//是否显示表头，默认true显示
-        nowrap:false, //false可自动换行，默认true
+        nowrap:true, //false可自动换行，默认true
         // width:"100%", //初始宽
         height:130, //实始高
         pagination:true //显示分页栏
