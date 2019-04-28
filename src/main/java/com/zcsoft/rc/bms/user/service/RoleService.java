@@ -60,5 +60,10 @@ public interface RoleService extends IBaseService<Role, java.lang.String> {
      * @return
      */
     RoleDetailsRsp detail(RoleDetailsReq req);
-	
+
+    /**
+     * 验证角色是否存在
+     * @param roleId
+     */
+    void verifyRoleIdExistence(String roleId);
 }

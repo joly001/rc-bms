@@ -31,6 +31,11 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole, java.lang.Str
 	}
 
 	@Override
+	public RoleService getRoleService() {
+		return roleService;
+	}
+
+	@Override
 	public List<UserRole> getByUserId(String userId) {
 		UserRole userRole = new UserRole();
 		userRole.setUserId(userId);
@@ -56,5 +61,22 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole, java.lang.Str
 		});
 
 		return authorityList;
+	}
+
+	@Override
+	public UserRole getUserRole(String userId, String roleCode) {
+		UserRole userRole = new UserRole();
+		userRole.setUserId(userId);
+		userRole.setRoleCode(roleCode);
+
+		return userRoleDAO.query(userRole);
+	}
+
+	@Override
+	public void deleteByUserId(String userId) {
+		UserRole userRole = new UserRole();
+		userRole.setUserId(userId);
+
+		userRoleDAO.deleteByCondition(userRole);
 	}
 }

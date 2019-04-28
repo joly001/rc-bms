@@ -11,6 +11,12 @@ import java.util.List;
 public interface UserRoleService extends IBaseService<UserRole, java.lang.String> {
 
     /**
+     * 获取角色服务
+     * @return
+     */
+    RoleService getRoleService();
+
+    /**
      * 根据用户id获得角色
      * @param userId
      * @return
@@ -30,5 +36,18 @@ public interface UserRoleService extends IBaseService<UserRole, java.lang.String
      * @return
      */
     List<Authority> getAuthorityByUserId(String userId);
-	
+
+    /**
+     * 根据用户角色查询
+     * @param userId
+     * @param roleCode
+     * @return
+     */
+    UserRole getUserRole(String userId, String roleCode);
+
+    /**
+     * 删除用户角色
+     * @param userId
+     */
+    void deleteByUserId(String userId);
 }

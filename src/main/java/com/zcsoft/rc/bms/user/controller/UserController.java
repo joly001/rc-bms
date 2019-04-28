@@ -82,12 +82,18 @@ public class UserController {
 
 	/**
 	 * 用户分页查询
-	 * @param req
-	 * @return
 	 */
 	@RequestMapping(value="list", method= RequestMethod.POST)
 	public HttpPaginationRepertory<UserListRsp> list(@Valid HttpPaginationCondition<UserListReq> req) {
 		return userService.list(req);
+	}
+
+	/**
+	 * 用户详情
+	 */
+	@RequestMapping(value="details", method= RequestMethod.POST)
+	public UserDetailsRsp details(@Valid UserDetailsReq req) {
+		return userService.details(req);
 	}
 
 }

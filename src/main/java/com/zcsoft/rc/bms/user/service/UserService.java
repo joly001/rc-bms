@@ -7,6 +7,7 @@ import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
 import com.zcsoft.rc.bms.api.user.entity.*;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -82,6 +83,13 @@ public interface UserService extends IBaseService<User, java.lang.String> {
      * @return
      */
     HttpPaginationRepertory<UserListRsp> list(HttpPaginationCondition<UserListReq> req);
+
+    /**
+     * 用户详情
+     * @param req
+     * @return
+     */
+    UserDetailsRsp details(UserDetailsReq req);
 
 
 }

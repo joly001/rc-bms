@@ -17,6 +17,7 @@ import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.dao.UserDAO;
 import com.zcsoft.rc.user.model.entity.Authority;
 import com.zcsoft.rc.user.model.entity.User;
+import com.zcsoft.rc.user.model.entity.UserRole;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -149,6 +150,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 
 		organizationService.verifyIdExistence(req.getOrganizationId());
 
+		if(!StringUtils.isTrimEmpty(req.getRoleId())) {
+			userRoleService.getRoleService().verifyRoleIdExistence(req.getRoleId());
+		}
 
 		User user = new User();
 		BeanUtils.copyProperties(req, user);
@@ -160,6 +164,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		user.setStatus(User.STATUS_NORMAL);
 
 		userDAO.insert(user);
+
+		if(!StringUtils.isTrimEmpty(req.getRoleId())) {
+			UserRole userRole = new UserRole();
+			userRole.setUserId(user.getId());
+			userRole.setRoleCode(req.getRoleId());
+			userRoleService.add(userRole);
+		}
 
 		UserAddRsp rsp = new UserAddRsp();
 		rsp.setId(user.getId());
@@ -191,6 +202,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 
 		organizationService.verifyIdExistence(req.getOrganizationId());
 
+		if(!StringUtils.isTrimEmpty(req.getRoleId())) {
+			userRoleService.getRoleService().verifyRoleIdExistence(req.getRoleId());
+		}
+
 		user = new User();
 		BeanUtils.copyProperties(req, user);
 		if(!StringUtils.isTrimEmpty(req.getMobile())) {
@@ -204,6 +219,18 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 			}
 		}
 		userDAO.updateById(user);
+
+		if(StringUtils.isTrimEmpty(req.getRoleId())) {
+			userRoleService.deleteByUserId(user.getId());
+		} else {
+			UserRole userRole = userRoleService.getUserRole(user.getId(), req.getRoleId());
+			if(userRole == userRole) {
+				userRole = new UserRole();
+				userRole.setUserId(user.getId());
+				userRole.setRoleCode(req.getRoleId());
+				userRoleService.add(userRole);
+			}
+		}
 
 		UserUpdateRsp rsp = new UserUpdateRsp();
 		rsp.setId(user.getId());
@@ -249,5 +276,20 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		httpPaginationRepertory.setPageItems(userListRspList);
 
 		return httpPaginationRepertory;
+	}
+
+	@Override
+	public UserDetailsRsp details(UserDetailsReq req) {
+		User user = userDAO.queryById(req.getId());
+
+		UserDetailsRsp rsp = new UserDetailsRsp();
+		BeanUtils.copyProperties(user, rsp);
+
+		List<UserRole> userRoleList = userRoleService.getByUserId(req.getId());
+		if(userRoleList != null && !userRoleList.isEmpty()) {
+			rsp.setRoleId(userRoleList.get(0).getRoleCode());
+		}
+
+		return rsp;
 	}
 }

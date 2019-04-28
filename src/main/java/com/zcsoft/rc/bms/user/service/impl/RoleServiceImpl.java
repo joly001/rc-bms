@@ -239,4 +239,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role, java.lang.String> imp
 
 		return rsp;
 	}
+
+	@Override
+	public void verifyRoleIdExistence(String roleId) {
+		Role role = roleDAO.queryById(roleId);
+		verifyRoleIdExistence(role);
+	}
 }
