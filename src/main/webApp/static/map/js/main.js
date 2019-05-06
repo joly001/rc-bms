@@ -6,7 +6,7 @@ $(function(){
 })
 function init() {
     document.title="资源open layers3表述";
-    //login();
+    login();
     loadMap();
     loadMessage();
     selectEvent();
