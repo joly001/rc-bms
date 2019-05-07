@@ -16,6 +16,7 @@ import com.zcsoft.rc.bms.user.service.UserRoleService;
 import com.zcsoft.rc.bms.user.service.UserService;
 import com.zcsoft.rc.user.dao.UserDAO;
 import com.zcsoft.rc.user.model.entity.Authority;
+import com.zcsoft.rc.user.model.entity.Role;
 import com.zcsoft.rc.user.model.entity.User;
 import com.zcsoft.rc.user.model.entity.UserRole;
 import org.springframework.beans.BeanUtils;
@@ -287,7 +288,11 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 
 		List<UserRole> userRoleList = userRoleService.getByUserId(req.getId());
 		if(userRoleList != null && !userRoleList.isEmpty()) {
-			rsp.setRoleId(userRoleList.get(0).getRoleCode());
+			String roleId = userRoleList.get(0).getRoleCode();
+			Role role = userRoleService.getRoleService().getById(roleId);
+
+			rsp.setRoleId(role.getId());
+			rsp.setRoleName(role.getRoleName());
 		}
 
 		return rsp;
