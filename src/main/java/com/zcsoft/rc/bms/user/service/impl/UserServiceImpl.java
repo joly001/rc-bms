@@ -226,6 +226,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 		} else {
 			UserRole userRole = userRoleService.getUserRole(user.getId(), req.getRoleId());
 			if(userRole == userRole) {
+				userRoleService.deleteByUserId(user.getId());
+
 				userRole = new UserRole();
 				userRole.setUserId(user.getId());
 				userRole.setRoleCode(req.getRoleId());
