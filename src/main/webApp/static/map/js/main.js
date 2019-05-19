@@ -86,7 +86,8 @@ function loadArea(){
     })
         .then(function (response) {
             if(response.data&&response.data._exceptionMessage&&(response.data._exceptionMessage == "000002")){
-               window.location.href = loginUrl;
+                parent.reLogin();
+                // window.location.href = loginUrl;
                 console.log(response);
                 return;
             }
@@ -364,7 +365,8 @@ function dataList(){
             currentPage:1
         }).then(function (response) {
             if(response.data&&response.data._exceptionMessage&&(response.data._exceptionMessage == "000002")){
-                window.location.href = loginUrl;
+                parent.reLogin();
+                // window.location.href = loginUrl;
                 console.log(response);
                 return;
             }
@@ -423,7 +425,8 @@ function loadWarning(){
             currentPage:1
         }).then(function (response) {
             if(response.data&&response.data._exceptionMessage&&(response.data._exceptionMessage == "000002")){
-                window.location.href = loginUrl;
+                parent.reLogin();
+                // window.location.href = loginUrl;
                 console.log(response);
                 return;
             }
