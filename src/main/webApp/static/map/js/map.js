@@ -7,12 +7,11 @@ function mercatorTolonlat(mercator){
     lonlat.y = y;
     return [x,y];
 }
-
 var TrainMap = (function(){
     var map, layer, view, options,vectorLayer,sourceVector,prjCoordSys,overlay,epsgcode,url = "http://119.3.246.90:8090/iserver/services/map-ugcv5-DongZhan333DiTu/rest/maps/东站333底图",isMvt = false;
     var lon=0,lat=0,zoomlevel=2,initZoomToScale;
     var envelope;
-
+    var waringObj = {}
     function _(optionsObj){
         var queryString = "";
         // 中继服务发送的请求，queryString字段是类似“token=&isMvt=true"这种情况，和普通请求做一下兼容处理
