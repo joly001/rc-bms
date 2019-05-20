@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b9a6e481-80e2-4a0b-991a-629353a9ea74" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/map.js" afterDir="false" />
-    </list>
+    <list default="true" id="b9a6e481-80e2-4a0b-991a-629353a9ea74" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -123,8 +120,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="35" />
-    <option name="y" value="95" />
+    <option name="x" value="210" />
+    <option name="y" value="190" />
     <option name="width" value="1440" />
     <option name="height" value="872" />
   </component>
@@ -260,16 +257,15 @@
       <workItem from="1558240304688" duration="111000" />
       <workItem from="1558240422784" duration="2257000" />
       <workItem from="1558246607816" duration="1211000" />
-      <workItem from="1558273544732" duration="1593000" />
+      <workItem from="1558273544732" duration="1752000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173435000" />
+    <option name="totallyTimeSpent" value="173594000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="35" y="95" width="1440" height="872" extended-state="0" />
-    <editor active="true" />
+    <frame x="210" y="190" width="1440" height="872" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19238901" />
       <window_info id="Structure" order="1" weight="0.25" />
