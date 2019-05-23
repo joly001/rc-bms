@@ -10,10 +10,17 @@ import com.zcsoft.rc.user.model.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
+import java.util.Locale;
 
 
 public interface UserService extends IBaseService<User, java.lang.String> {
 
+    /**
+     * 转换职位
+     * @param builderUserType
+     * @return
+     */
+    String convertBuilderUserType(String builderUserType);
     /**
      * 根据用户名查询用户
      * @param username

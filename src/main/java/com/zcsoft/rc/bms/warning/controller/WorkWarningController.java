@@ -3,9 +3,7 @@ package com.zcsoft.rc.bms.warning.controller;
 
 import com.zcsoft.rc.bms.api.http.HttpPaginationCondition;
 import com.zcsoft.rc.bms.api.http.HttpPaginationRepertory;
-import com.zcsoft.rc.bms.api.warning.entity.WorkWarningListReq;
-import com.zcsoft.rc.bms.api.warning.entity.WorkWarningListRsp;
-import com.zcsoft.rc.bms.api.warning.entity.WorkWarningWarningListRsp;
+import com.zcsoft.rc.bms.api.warning.entity.*;
 import com.zcsoft.rc.bms.warning.service.WorkWarningService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +22,14 @@ public class WorkWarningController {
 	@Resource
 	public void setWorkWarningService(WorkWarningService workWarningService) {
 		this.workWarningService = workWarningService;
+	}
+
+	/**
+	 *	用户警告记录
+	 */
+	@RequestMapping(value="userWarningList", method= RequestMethod.POST)
+	public UserWarningListRsp userWarningList(UserWarningListReq req) {
+		return workWarningService.userWarningList(req);
 	}
 
 	/**

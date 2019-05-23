@@ -20,27 +20,31 @@ import com.zcsoft.rc.user.model.entity.Role;
 import com.zcsoft.rc.user.model.entity.User;
 import com.zcsoft.rc.user.model.entity.UserRole;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
 
 @Service
-public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> implements UserService, ApplicationContextAware {
 	
 	private UserDAO userDAO;
 
 	private UserRoleService userRoleService;
 	private OrganizationService organizationService;
+	private ApplicationContext applicationContext;
 
 	@Resource
 	public void setUserDAO(UserDAO userDAO) {
 		super.setBaseDAO(userDAO);
 		this.userDAO = userDAO;
 	}
-
 	@Resource
 	public void setUserRoleService(UserRoleService userRoleService) {
 		this.userRoleService = userRoleService;
@@ -48,6 +52,15 @@ public class UserServiceImpl extends BaseServiceImpl<User, java.lang.String> imp
 	@Resource
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
+	}
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
+	@Override
+	public String convertBuilderUserType(String builderUserType) {
+		return applicationContext.getMessage(builderUserType, null, Locale.CHINESE);
 	}
 
 	@Override
