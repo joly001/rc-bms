@@ -59,6 +59,7 @@ public class ChainAutoconfigure {
         List<String> commomAuthority = new ArrayList<>();
         commomAuthority.add("user.controller.UserController.signOut");
         commomAuthority.add("user.controller.UserController.userAuthorities");
+        commomAuthority.add("warning.controller.WorkWarningController.userWarningList");
         commomAuthority.add("warning.controller.WorkWarningController.warningList");
         commomAuthority.add("warning.controller.WorkWarningController.list");
         commomAuthority.add("warning.controller.TrainWarningController.list");

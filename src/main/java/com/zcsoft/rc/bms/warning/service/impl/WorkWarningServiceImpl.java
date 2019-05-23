@@ -92,6 +92,8 @@ public class WorkWarningServiceImpl extends BaseServiceImpl<WorkWarning, String>
 			userWarningListListRsp.setType(workWarning.getType());
 			userWarningListListRsp.setCreateTime(workWarning.getCreateTime());
 			userWarningListListRsp.setWorkSegmentName(workWarning.getWorkSegmentName());
+
+			list.add(userWarningListListRsp);
 		});
 
 		return rsp;
