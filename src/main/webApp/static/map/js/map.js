@@ -244,6 +244,69 @@ var TrainMap = (function(){
 
         map.addLayer(vectorLayer);
 
+        map.on('pointermove',function(e){
+            var pixel = map.getEventPixel(e.originalEvent);
+            var hit = map.hasFeatureAtPixel(pixel);
+            if(hit){
+                map.getTargetElement().style.cursor = 'pointer';
+            }
+            else{
+                map.getTargetElement().style.cursor = '';
+            }
+        });
+
+        map.on("singleclick",function(e){
+            var pixel = e.pixel;
+            var map = e.map;
+            var f = map.getFeaturesAtPixel(pixel);
+            if(f){
+                f.forEach(function(fe){
+                    var  fId = fe.getId();
+                    var pointsFeature = sourceVector.getFeatureById(fId);
+                    if(pointsFeature){
+                        var manData = fId.split("_");
+                        if(manData.length != 2) return;
+                        console.log(manData);
+                        var manId =manData[0];
+                        var manType = manData[1];
+                        //baseUrl+
+                        axios.post(baseUrl+"/rc-bms/workWarning/userWarningList", {
+                            id: manId,
+                            type: manType
+                        }).then(function (response) {
+                                if(response.data._data){
+                                    $("#nickName").text(response.data._data.nick || "");
+                                    $("#depName").text(response.data._data.depName || "");
+                                    $("#mobile").text(response.data._data.mobile || "");
+                                    $("#roleName").text(response.data._data.roleName || "");
+                                    var textStr = "";
+                                    var listData = response.data._data.list;
+                                    for(var i=0;i<listData.length;i++){
+                                        if(i == 5) return;
+                                        var datetime = new Date();
+                                        datetime.setTime(listData[i].createTime);
+                                        var dYear = datetime.getFullYear();
+                                        var dMonth =datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+                                        var dDate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+                                        textStr+=
+                                            "<tr class='tableTr'>"+
+                                               "<td>"+listData[i].workSegmentName+"</td>"+
+                                                "<td>"+dYear+"."+dMonth+"."+dDate+"</td>"+
+                                            "<td>"+enumTypeForAlarm[listData[i].type]+"</td>"+
+                                            "</tr>"
+                                    }
+                                    $("#alarmTableTbody").html(textStr);
+                                    $(".personInfomation").show();
+                                }
+                        }).catch(function (error) {
+                                console.log(error);
+                            });
+
+                    }
+                })
+            }
+        })
+
         /*********************显示弹出层**************************/
         var container = document.getElementById("popup");
         var content = document.getElementById("popup-content");
@@ -400,6 +463,7 @@ var TrainMap = (function(){
                 waringObj[arr.properties.id] = false;
             }
         }else{
+
             f= addPoint(arr,this)
             sourceVector.addFeature(f);
         }
@@ -451,7 +515,7 @@ var TrainMap = (function(){
               geometry:new ol.geom.Point(param.geometry.coordinates),
               featuretype:'point'
           });
-          f.setId(param.properties.id);
+          f.setId(param.properties.id+"_"+param.properties.type);
           f.set("showType",param.properties.type);
           if($("#t"+param.properties.type).is(':checked')){
               f.setStyle(styleFunction(param.properties.type));
