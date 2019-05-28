@@ -30,7 +30,7 @@ var TrainMap = (function(){
         var visableResolution = [1.512478647543738E-4,7.56239323771869E-5,3.781196618859356E-5,1.890598309429666E-5,9.452991547148448E-6,4.726495773574106E-6,2.363247886787053E-6,1.1816239433935264E-6];
         var prjParamter =  "+proj=longlat +datum=WGS84 +no_defs";
         var attrib = 'Map data &copy; 2013 Lantm?teriet, Imagery &copy; 2013 SuperMap';
-        var projection = 'EPSG:4326';
+        var projection = 'EPSG:3857';
         var maxZoom = 18;
         var zoom = 0;
         this.container = document.getElementById('popup');
