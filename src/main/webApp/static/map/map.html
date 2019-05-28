@@ -410,12 +410,46 @@
   <!--  <span class="main-c nd-7">k12-k13</span>-->
   <!--</div>-->
 </div>
+<div class="personInfomation" style="display: none;">
+  <div style="text-align: center;background-color: #F5F5F5;height: 30px;">
+    <p style="line-height: 30px;">人员信息</p>
+  </div>
+  <table id="personTable" class="tableStlyle" >
+    <tr>
+        <td class="tableTdl">姓名</td>
+        <td id="nickName"></td>
+    </tr>
+    <tr>
+      <td class="tableTdl">部门</td>
+      <td id="depName"></td>
+    </tr>
+    <tr>
+      <td class="tableTdl">角色</td>
+      <td id="roleName"></td>
+    </tr>
+    <tr >
+      <td class="tableTdl">手机号</td>
+      <td id="mobile">陈力</td>
+    </tr>
+  </table>
+  <table id="alarmTable" class="alarmTable" >
+      <thead>
+      <tr class="tableTr">
+          <td>作业区间</td>
+          <td>告警时间</td>
+          <td>告警原因</td>
+      </tr>
+      </thead>
+      <tbody id="alarmTableTbody">
+
+      </tbody>
+  </table>
+  <div style="text-align: right;margin-top: 10px;">
+    <button class="closeBtn" onclick="showOrHideAlarmTable('hide')" >关闭</button>
+  </div>
+</div>
 </body>
 <style>
-  /*#navbox {*/
-  /*  opacity: 1 !important;*/
-  /*  height: 240px !important;*/
-  /*}*/
   .nav-menu__detail{
     display: none;
     width: 300px;

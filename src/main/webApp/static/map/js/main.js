@@ -1,12 +1,17 @@
 var url = "http://119.3.246.90:8090/iserver/services/map-ugcv5-DongZhan333DiTu/rest/maps/东站333底图",trainMap,
     messageControl,loadSon1,loadSon2,localPage,loadSon,fatherDivH,list1H,list1TbodyH从,cordonLine,redCable,kilometer;
 
+var enumTypeForAlarm = {
+    "00":"接近警告线",
+    "01":"碾压光缆",
+    "02":"线缆附近动土"
+}
 $(function(){
     init();
 })
 function init() {
     document.title="资源open layers3表述";
-   login();
+    // login();
     loadMap();
     loadMessage();
     selectEvent();
@@ -466,6 +471,13 @@ function showType(type,obj){
     trainMap.showForType(type,$(obj).is(':checked'));
 }
 
+function showOrHideAlarmTable(sts) {
+    if(sts == "hide"){
+        $(".personInfomation").hide();
+    }else{
+        $(".personInfomation").show();
+    }
+}
 
 function showLayer(type,obj){
     trainMap.showForLayer(type,$(obj).is(':checked'));
