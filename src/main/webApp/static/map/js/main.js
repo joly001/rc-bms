@@ -392,7 +392,7 @@ function loadWarning(){
     //列定义，注意是又层中括号
     var cols = [[
         {field:'id',title:'序号',displayTip:true, width:10, align:'center',formatter:function(value,row,index){ return index+1}},
-        {field:'nick',title:'司机',displayTip:true,width:70,align:'center'},
+        {field:'nick',title:'姓名',displayTip:true,width:70,align:'center'},
         {field:'type',title:'接近类型',displayTip:true,width:70,align:'center',formatter:function (value,row,index){
             if(value =="00" ){
                     return '列车临站';
