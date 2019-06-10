@@ -43,6 +43,7 @@ public class Bootstrap {
     @EnableAutoConfiguration(exclude={WebMvcAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
     @ComponentScan(
             basePackages = "com.zcsoft.rc.*.dao," +
+                    "com.zcsoft.rc.bms.*.dao," +
                     "com.zcsoft.rc.bms.*.service," +
                     "com.zcsoft.rc.common," +
                     "com.zcsoft.rc.bms.app," +
