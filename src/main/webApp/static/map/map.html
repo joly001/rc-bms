@@ -152,7 +152,8 @@
 </head>
 <body>
 <div id="map"></div>
-<button id="drawSafetyZone">设置安全区域</button>
+<button id="addSafetyZone">设置安全区域</button>
+<button id="deleteAllSafetyZone">清空安全区域</button>
 <div
   style="position:absolute;height:220px;width:230px;background:rgba(255,255,255,0.6);bottom: 249px;right:10px;border-radius:5px;">
   <p
@@ -507,10 +508,10 @@
   .nav-menu__detail .close:active{
     opacity: .7;
   }
-  #drawSafetyZone{
+  #addSafetyZone{
     position: absolute;
-    left: calc(50% - 50px);
-    top: 20px;
+    left: 50px;
+    top: 5px;
     width: 100px;
     height: 36px;
     background: #4680d9;
@@ -520,7 +521,20 @@
     cursor: pointer;
     outline:none;
   }
-  #drawSafetyZone:active{
+  #deleteAllSafetyZone{
+    position: absolute;
+    left: 155px;
+    top: 5px;
+    width: 100px;
+    height: 36px;
+    background: #4680d9;
+    color: #fff;
+    border-radius: 5px;
+    border-color: #4680d9;
+    cursor: pointer;
+    outline:none;
+  }
+  #addSafetyZone,#deleteAllSafetyZone:active{
     background: #5A8BD9;
     border-color: #5A8BD9;
   }
