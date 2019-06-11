@@ -43,13 +43,19 @@ public class SafetyZoneServiceImpl implements SafetyZoneService {
     }
 
     @Override
+    public void deleteAll() {
+        safetyZoneDAO.deleteAll();
+    }
+
+    @Override
     public SafetyZoneListRsp list() {
         List<Document> documentList = safetyZoneDAO.list();
 
         List<List<List<Double>>> safetyZoneList = new ArrayList<>(documentList.size());
 
         documentList.forEach(document -> {
-            List<List<Double>> safetyZone = document.get("geometry.coordinates", List.class);
+            Document geometry = document.get("geometry", Document.class);
+            List<List<Double>> safetyZone = geometry.get("coordinates", List.class);
             safetyZoneList.add(safetyZone);
         });
 

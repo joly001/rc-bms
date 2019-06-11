@@ -27,6 +27,16 @@ function init() {
         }
     });
 
+    $("#addSafetyZone").click(function(){
+        trainMap.addSafetyZone();
+    });
+
+    trainMap.listSafetyZone();
+
+    $("#deleteAllSafetyZone").click(function(){
+        trainMap.deleteAllSafetyZone();
+    });
+
 }
 
 function login(){

@@ -43,6 +43,11 @@ public class SafetyZoneDAOImpl extends CubeMongoDBDAOImpl implements SafetyZoneD
     }
 
     @Override
+    public void deleteAll() {
+        getCollection().deleteMany(new Document());
+    }
+
+    @Override
     public List<Document> list() {
         List<Document> documentList = new ArrayList<>(200);
 

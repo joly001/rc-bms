@@ -40,6 +40,15 @@ public class SafetyZoneController {
     }
 
     /**
+     * 安全区域删除所有
+     * @return
+     */
+    @RequestMapping(value="deleteAll", method= RequestMethod.POST)
+    public void deleteAll() {
+        safetyZoneService.deleteAll();
+    }
+
+    /**
      * 安全区域列表查询
      * @return
      */

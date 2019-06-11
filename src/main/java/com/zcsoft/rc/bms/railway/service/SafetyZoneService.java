@@ -19,6 +19,12 @@ public interface SafetyZoneService {
     SafetyZoneDeleteRsp delete(SafetyZoneDeleteReq req);
 
     /**
+     * 安全区域删除所有
+     * @return
+     */
+    void deleteAll();
+
+    /**
      * 安全区域列表查询
      * @return
      */

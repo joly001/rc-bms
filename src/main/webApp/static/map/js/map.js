@@ -262,6 +262,9 @@ var TrainMap = (function(){
             if(f){
                 f.forEach(function(fe){
                     var  fId = fe.getId();
+                    if(!fId){
+                        return;
+                    }
                     var pointsFeature = sourceVector.getFeatureById(fId);
                     if(pointsFeature){
                         var manData = fId.split("_");
@@ -508,8 +511,100 @@ var TrainMap = (function(){
 
     _.prototype.showForLayer = function (type,isShow){
 
+    };
+
+    var safetyZoneLayer;
+    var safetyZoneSource;
+    var safetyZoneDraw;
+    _.prototype.addSafetyZone = function (){
+        safetyZoneSource = new ol.source.Vector({wrapX: false});
+
+        var layer = new ol.layer.Vector({
+            source: safetyZoneSource,
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'blue',
+                    size: 3
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 255, 0.1)'
+                })
+            })
+        });
+
+        map.addLayer(layer);
+
+        safetyZoneDraw = new ol.interaction.Draw({
+            source: safetyZoneSource,
+            type: "Polygon",
+            snapTolerance: 20
+        });
+
+        map.addInteraction(safetyZoneDraw);
+
+        safetyZoneDraw.on("drawend", function(event){
+            if(confirm("是否保存？")) {
+                axios.post(baseUrl+"/rc-bms/safetyZone/add", {
+                    safetyZone: event.target.T
+                }).then(function (response) {
+                    map.removeInteraction(safetyZoneDraw);
+                    safetyZoneSource.clear();
+                    listSafetyZone();
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            } else {
+                map.removeInteraction(event.target);
+                event.target.getSource().clear();
+            }
+        });
+    };
+
+    _.prototype.deleteAllSafetyZone = function (){
+        axios.post(baseUrl+"/rc-bms/safetyZone/deleteAll", {
+        }).then(function (response) {
+            map.removeLayer(safetyZoneLayer);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    };
+
+    function listSafetyZone() {
+        axios.post(baseUrl+"/rc-bms/safetyZone/list", {
+        }).then(function (response) {
+            if(safetyZoneLayer) {
+                map.removeLayer(safetyZoneLayer);
+            }
+
+            var safetyZoneList = response.data._data.safetyZoneList;
+
+            var polygon = new ol.geom.Polygon(safetyZoneList);
+            var polygonSource = new ol.source.Vector({
+                features: [new ol.Feature(polygon)],
+                wrapX: false
+            });
+            safetyZoneLayer = new ol.layer.Vector({
+                source: polygonSource,
+                style: new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                })
+            });
+
+            map.addLayer(safetyZoneLayer);
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
+    _.prototype.listSafetyZone = function (){
+        listSafetyZone();
+    };
 
     function addPoint (param,o){
         var f =  new ol.Feature({
