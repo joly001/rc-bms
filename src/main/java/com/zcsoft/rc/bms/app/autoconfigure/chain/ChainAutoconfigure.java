@@ -63,6 +63,9 @@ public class ChainAutoconfigure {
         commomAuthority.add("warning.controller.WorkWarningController.warningList");
         commomAuthority.add("warning.controller.WorkWarningController.list");
         commomAuthority.add("warning.controller.TrainWarningController.list");
+        commomAuthority.add("railway.controller.SafetyZoneController.add");
+        commomAuthority.add("railway.controller.SafetyZoneController.delete");
+        commomAuthority.add("railway.controller.SafetyZoneController.list");
 
         UserAuthorityAccessDecisionChain noUserChain = new UserAuthorityAccessDecisionChain();
         noUserChain.setExcludeMethods(excludeMethods);
