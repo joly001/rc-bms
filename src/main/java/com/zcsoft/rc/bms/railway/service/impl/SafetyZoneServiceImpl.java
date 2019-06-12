@@ -56,8 +56,8 @@ public class SafetyZoneServiceImpl implements SafetyZoneService {
 
         documentList.forEach(document -> {
             Document geometry = document.get("geometry", Document.class);
-            List<List<Double>> safetyZone = geometry.get("coordinates", List.class);
-            safetyZoneList.add(safetyZone);
+            List<List<List<Double>>> safetyZone = geometry.get("coordinates", List.class);
+            safetyZoneList.add(safetyZone.get(0));
         });
 
         SafetyZoneListRsp rsp = new SafetyZoneListRsp();
