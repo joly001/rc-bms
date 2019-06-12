@@ -20,7 +20,7 @@ public class SafetyZoneDAOImpl extends CubeMongoDBDAOImpl implements SafetyZoneD
     }
 
     @Override
-    public String add(List<List<Double>> safetyZone) {
+    public String add(List<List<List<Double>>> safetyZone) {
         String id = UUIDUtils.generateUUID();
 
         Document geometry = new Document();

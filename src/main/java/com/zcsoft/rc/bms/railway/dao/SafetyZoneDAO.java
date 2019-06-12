@@ -11,7 +11,7 @@ public interface SafetyZoneDAO {
      * @param safetyZone
      * @return
      */
-    String add(List<List<Double>> safetyZone);
+    String add(List<List<List<Double>>> safetyZone);
 
     /**
      * 安全区域删除

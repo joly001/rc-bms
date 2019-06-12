@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class SafetyZoneServiceImpl implements SafetyZoneService {
     @Override
     public SafetyZoneAddRsp add(SafetyZoneAddReq req) {
 
-        String id = safetyZoneDAO.add(req.getSafetyZone());
+        String id = safetyZoneDAO.add(Arrays.asList(req.getSafetyZone()));
 
         SafetyZoneAddRsp rsp = new SafetyZoneAddRsp();
         rsp.setId(id);
