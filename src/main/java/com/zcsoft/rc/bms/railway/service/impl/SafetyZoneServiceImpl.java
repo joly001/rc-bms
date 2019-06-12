@@ -24,7 +24,10 @@ public class SafetyZoneServiceImpl implements SafetyZoneService {
     @Override
     public SafetyZoneAddRsp add(SafetyZoneAddReq req) {
 
-        String id = safetyZoneDAO.add(Arrays.asList(req.getSafetyZone()));
+        List<List<Double>> safetyZone = req.getSafetyZone();
+        safetyZone.add(safetyZone.get(0));
+
+        String id = safetyZoneDAO.add(Arrays.asList(safetyZone));
 
         SafetyZoneAddRsp rsp = new SafetyZoneAddRsp();
         rsp.setId(id);
