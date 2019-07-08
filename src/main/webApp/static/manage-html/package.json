@@ -1,0 +1,41 @@
+{
+  "name": "gy-html-manage",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "upload": "npm run build && gulp && npm run serve"
+  },
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "axios": "^0.18.0",
+    "cache-loader": "^1.2.5",
+    "child_process": "^1.0.2",
+    "compressing": "^1.4.0",
+    "dplayer": "^1.25.0",
+    "echarts": "^4.2.0-rc.2",
+    "el-tree-transfer": "^1.9.7",
+    "element-ui": "^2.4.9",
+    "fs": "0.0.1-security",
+    "gulp": "^3.9.1",
+    "gulp-scp2": "^0.2.0",
+    "gulp-sequence": "^1.0.0",
+    "normalize.css": "^8.0.0",
+    "path": "^0.12.7",
+    "ssh2": "^0.6.1",
+    "vue": "^2.5.17",
+    "vue-navigation": "^1.1.3",
+    "vue-router": "^3.0.1",
+    "vue-simple-uploader": "^0.5.4",
+    "vuex": "^3.0.1",
+    "wangeditor": "git+https://github.com/leekoho/wangEditor.git#v2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "node-sass": "^4.10.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.5.17"
+  }
+}

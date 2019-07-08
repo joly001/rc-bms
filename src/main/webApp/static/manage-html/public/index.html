@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="renderer" content="webkit">
+  <link rel="icon" href="<%= BASE_URL %>favicon.png">
+  <title id="title">铁路营业线施工安全防护平台</title>
+</head>
+<script>
+  function BrowserType() {
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    var isIE = window.ActiveXObject || "ActiveXObject" in window
+    if (isIE) {
+      var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+      reIE.test(userAgent);
+      return parseFloat(RegExp["$1"]);
+    }
+  }
+  if (parseInt(BrowserType()) < 9) {
+    location.href = 'https://yc-dev.yun-chang.cn/incompatible/'
+  }
+  function reLogin() {
+    alert('该账户已在别处登录')
+    window.location.href = location.href.split('wisdom/info')[0];
+  }
+</script>
+<body>
+<noscript>
+  <strong>We're sorry but gy-html-manage doesn't work properly without JavaScript enabled. Please enable it to
+    continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+</body>
+</html>
