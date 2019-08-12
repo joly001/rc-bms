@@ -93,9 +93,9 @@
       // 登录
       async loginFun () {
         // 登录限制 @author: 石墨鑫 @date: 2019-07-08
-        // if(new Date().getTime() > new Date('2019-07-30').getTime()){
-        //   return
-        // }
+        if(new Date().getTime() > new Date('2019-08-20').getTime()){
+           return
+        }
         await this.$refs.form.validate(async (valid) => {
           if (!valid) {
           } else {
