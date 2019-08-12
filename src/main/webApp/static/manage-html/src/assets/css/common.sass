@@ -1,0 +1,326 @@
+*
+  box-sizing: border-box
+
+body
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif
+  font-size: $font-normal
+  min-width: $min-width
+  overflow-x: auto
+  overflow-y: hidden
+  color: $fc-def
+
+.clear
+  clear: both
+
+.clearfix
+  @extend %clearfix
+
+.bold
+  font-weight: bold
+
+.main-c
+  color: $main-c
+
+.gray
+  color: $gray
+
+.gray-shallow
+  color: $gray-shallow
+
+.gary-dark
+  color: $gray-dark
+
+.f-small
+  font-size: $font-small
+
+.f-normal
+  font-size: $font-normal
+
+.font-large
+  font-size: $font-large
+.el-form-item
+  margin-bottom: 10px !important
+
+.text-overflow
+  @extend %text-overflow
+.el-range-editor--mini .el-range-input
+  font-size: 14px !important
+// dialog
+.el-dialog
+  border: 1px solid $main-c
+  border-radius: 10px !important
+  overflow: hidden
+
+  .el-dialog__header
+    background: #f5f5f5
+    padding: 12px
+  .el-dialog__headerbtn
+    top: 15px
+  .el-dialog__body
+      padding-top: 0
+  .el-input, .el-select , .el-textarea
+    width: 100% !important
+    input
+      border: 1px solid $main-c
+      border-radius: 5px
+      height: 28px
+      line-height: 28px
+      padding: 0 10px
+    textarea
+      border: 1px solid $main-c
+      border-radius: 5px
+  .el-radio.is-bordered
+    width: 138px
+    text-align: center
+    border: 1px solid $main-c
+    border-radius: 20px
+    height: 34px
+    line-height: 34px
+    padding-top: 0px
+  .el-form-item__label
+    color: $fc-def
+  .btns
+    text-align: right
+// 单选框
+.el-radio__inner
+  border-color: $main-c
+.is-checked .el-radio__inner::after
+    background: $main-c
+// 表格
+.table-box
+  margin: 0 auto
+  width: 1040px
+  .el-input
+    display: inline-block
+    width: 450px
+  .el-input input
+    border: 1px solid $main-c
+    height: 34px
+    border-radius: 15px
+  .table
+    margin-top: 20px
+  .pagination
+    float: right
+    margin-top: 15px
+    .el-input input
+      height: 20px
+      width: 40px
+      border-radius: 5px
+.el-date-editor .el-input__icon
+  display: none
+// 树
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content
+  color: #000
+  background: #f0f0f0
+// 按钮块
+.btn-block
+  position: absolute
+  z-index: 4
+  right: 15px
+  top: 6px
+// 按钮
+.btn-main
+  display: inline
+  position: relative
+  height: 32px
+  border-radius: 15px
+  text-align: center
+  overflow: hidden
+  color: #fff
+  background: $main-c
+  padding: 7px 18px
+  cursor: pointer
+  &:hover
+    opacity: .7
+  &:active
+    opacity: 1
+.btn-add
+  float: right
+.btn-main-deepen
+  @extend .btn-main
+  background: $main-c
+  color: #fff
+.btn-submit
+  display: inline-block
+  width: 120px
+  height: 40px
+  line-height: 40px
+  text-align: center
+  cursor: pointer
+  border-radius: $radius
+  background: $main-c
+  color: #fff
+  transition: all .4s
+  &:hover
+    opacity: .8
+  &:active
+    opacity: 1
+
+.btn-clear
+  @extend .btn-submit
+  background: #eee
+  color: $gray
+
+.btn-remove
+  @extend .btn-submit
+  background: $error-c
+.el-popover
+  .btns
+    text-align: right
+//表格样式
+.table
+  width: 100%
+  table-layout: fixed
+  border: 1px solid $main-c
+  overflow: hidden
+  border-radius: 10px
+  th
+    height: 52px
+    background: #f5f5f5
+    text-align: center
+  tr:hover td
+    background: rgba(245,245,245,1)
+  tr:last-child
+    td
+      border-color: #ddd
+
+  tr:nth-child(2) td
+    border-top-width: 0
+  tbody tr:nth-child(1) td
+    border-top-width: 0
+  td
+    width: 100%
+    text-align: center
+    border-width: 0
+    font-size: $font-small
+    border-bottom: 1px solid #ddd
+    height: 44px
+    padding: 0 5px
+    line-height: 1.3em
+    @extend %text-overflow
+    .oper
+      display: inline-block
+      padding: 0 5px
+      cursor: pointer
+      color: $main-c
+      opacity: 1
+      transition: all .3s
+      &:hover
+        opacity: .7
+      &:active
+        opacity: 1
+    .col
+      width: 1px
+      height: 14px
+      display: inline-block
+      background: #000
+      vertical-align: middle
+      margin: -3px 5px 0 5px
+  .left-justifying
+    text-align: left
+// 拉动表格样式
+.resizable-hold
+  position: absolute
+  left: 200px
+  top: 0
+  bottom: 0
+  width: 0
+  border-left: 1px solid $border
+  z-index: 10
+  display: none
+.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner, .el-radio__input.is-disabled+span.el-radio__label
+  color: $gray-dark !important
+.el-radio__input.is-disabled.is-checked .el-radio__inner::after
+  background: #fff !important
+.el-radio__input.is-checked .el-radio__inner
+  border-color: $main-c !important
+  background: $main-c !important
+// 标题样式
+.title-box
+  color: $main-c
+  span
+    color: $fc-def
+    display: inline-block
+// 分割线样式
+.separated-text
+  font-size: $font-small
+  color: $main-c
+  line-height: 34px
+  margin-bottom: 20px
+  border-bottom: 1px solid #eee
+//改变一些奇奇怪怪 莫名其妙的默认样式
+p, h1
+  margin: 0
+
+li
+  list-style: none
+
+textarea
+  resize: none !important
+
+a
+  color: $gray
+
+a:link
+  text-decoration: none
+
+a:active
+  text-decoration: none
+
+a:hover
+  text-decoration: none
+
+a:visited
+  text-decoration: none
+
+input::placeholder, textarea::placeholder
+  color: #8D9199 !important
+  font-size: 14px
+  font-weight: 300 !important
+.el-tree-node__label
+  @extend %text-overflow
+// 改变element-ui 中奇怪的样式
+.el-message-box__title span
+  display: block
+  margin-right: 20px
+  line-height: 1.2em
+
+.el-tabs__nav-wrap::after
+  height: 1px !important
+// 隐藏高德水印
+.amap-copyright, .amap-logo
+  opacity: 0
+//修改chrome记住密码后自动填充表单的背景
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill
+  background-color: rgba(250, 255, 189, 0)
+  background-image: none
+  color: $fc-def
+
+// 富文本编辑器
+.wangEditor-container
+  border-radius: 4px
+
+.card .wangEditor-menu-container
+  .menu-item
+    height: 35px
+    a
+      padding: 11px 0
+
+// element form 必填小红点
+.form-impt .el-form-item__label:before
+  content: '*'
+  color: $error-c
+  margin-right: 4px
+::-webkit-scrollbar
+  width: 8px
+  height: 8px
+::-webkit-scrollbar-track-piece
+  background-color: rgba(0, 0, 0, 0)
+
+::-webkit-scrollbar-thumb:vertical
+  height: 8px
+  background-color: #ddd
+
+::-webkit-scrollbar-thumb:horizontal
+  width: 8px
+  background-color: #ddd

@@ -1,0 +1,27 @@
+// 超出一行显示省略号
+%text-overflow
+  text-overflow: ellipsis
+  white-space: nowrap
+  overflow: hidden
+%btn
+  width: 120px
+  height: 38px
+  line-height: 38px
+  border: 1px solid $main-c
+  text-align: center
+  cursor: pointer
+  border-radius: $radius
+  &:hover
+    opacity: .8
+  &:active
+    opacity: 1
+
+%clearfix
+  &:before, &:after
+    content: " "
+    display: table
+  &:after
+    clear: both
+
+
+
