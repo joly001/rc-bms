@@ -55,6 +55,7 @@ public class PasswordAuthenticationHandler extends TextEncryptorPasswordAuthenti
 		user.setMobile(queryUser.getMobile());
 		user.setUserType(queryUser.getUserType());
 		user.setStatus(queryUser.getStatus());
+		user.setOrganizationId(queryUser.getOrganizationId());
 
 	}
 	

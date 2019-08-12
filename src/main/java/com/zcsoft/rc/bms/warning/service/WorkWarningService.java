@@ -19,14 +19,16 @@ public interface WorkWarningService extends IBaseService<WorkWarning, String> {
 
     /**
      * 警告记录,报警状态
+     * @return
      */
     WorkWarningWarningListRsp warningList();
 
     /**
      * 警告分页查询
+     * @param organizationId
      * @param req
      * @return
      */
-    HttpPaginationRepertory<WorkWarningListRsp> list(HttpPaginationCondition<WorkWarningListReq> req);
+    HttpPaginationRepertory<WorkWarningListRsp> list(HttpPaginationCondition<WorkWarningListReq> req, String organizationId);
 
 }

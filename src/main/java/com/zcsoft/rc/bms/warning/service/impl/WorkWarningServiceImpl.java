@@ -1,6 +1,7 @@
 package com.zcsoft.rc.bms.warning.service.impl;
 
 
+import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.persistence.database.pagination.PaginationCondition;
 import com.sharingif.cube.persistence.database.pagination.PaginationRepertory;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
@@ -125,8 +126,11 @@ public class WorkWarningServiceImpl extends BaseServiceImpl<WorkWarning, String>
 	}
 
 	@Override
-	public HttpPaginationRepertory<WorkWarningListRsp> list(HttpPaginationCondition<WorkWarningListReq> req) {
+	public HttpPaginationRepertory<WorkWarningListRsp> list(HttpPaginationCondition<WorkWarningListReq> req, String organizationId) {
 		WorkWarning queryWorkWarning = new WorkWarning();
+		if(!StringUtils.isTrimEmpty(organizationId)) {
+			queryWorkWarning.setOrgId(organizationId);
+		}
 		if(req.getCondition() != null) {
 			queryWorkWarning.setWorkWarningId(req.getCondition().getWorkWarningId());
 		}
