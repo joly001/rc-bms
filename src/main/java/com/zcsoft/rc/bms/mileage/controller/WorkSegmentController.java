@@ -59,8 +59,8 @@ public class WorkSegmentController {
 	 * 作业面分页查询
 	 */
 	@RequestMapping(value="list", method= RequestMethod.POST)
-	public HttpPaginationRepertory<WorkSegmentListRsp> list(@Valid HttpPaginationCondition<WorkSegmentListReq> req) {
-		return workSegmentService.list(req);
+	public HttpPaginationRepertory<WorkSegmentListRsp> list(@Valid HttpPaginationCondition<WorkSegmentListReq> req, @DataContainer User user) {
+		return workSegmentService.list(req, user.getOrganizationId());
 	}
 
 	/**
@@ -75,8 +75,8 @@ public class WorkSegmentController {
 	 * 作业面列表，根据里程查询
 	 */
 	@RequestMapping(value="mileageWorkSegment", method= RequestMethod.POST)
-	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req) {
-		return workSegmentService.mileageWorkSegment(req);
+	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req, @DataContainer User user) {
+		return workSegmentService.mileageWorkSegment(req, user.getOrganizationId());
 	}
 	
 }

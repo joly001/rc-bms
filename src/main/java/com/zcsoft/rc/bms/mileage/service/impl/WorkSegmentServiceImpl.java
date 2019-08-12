@@ -2,6 +2,7 @@ package com.zcsoft.rc.bms.mileage.service.impl;
 
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.persistence.database.pagination.PaginationCondition;
 import com.sharingif.cube.persistence.database.pagination.PaginationRepertory;
 import com.sharingif.cube.support.service.base.impl.BaseServiceImpl;
@@ -100,6 +101,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 		BeanUtils.copyProperties(req, workSegment);
 		workSegment.setSubmitUserId(user.getId());
 		workSegment.setSubmitUserName(user.getNick());
+		workSegment.setSubmitUserOrgId(user.getOrganizationId());
 		workSegment.setSubmitTime(new Date());
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
@@ -151,6 +153,7 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 		BeanUtils.copyProperties(req, workSegment);
 		workSegment.setSubmitUserId(user.getId());
 		workSegment.setSubmitUserName(user.getUsername());
+		workSegment.setSubmitUserOrgId(user.getOrganizationId());
 		workSegment.setSubmitTime(new Date());
 
 		handleMileageSegment(req.getStartMileageName(), req.getEndMileageName(), workSegment);
@@ -164,8 +167,11 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	}
 
 	@Override
-	public HttpPaginationRepertory<WorkSegmentListRsp> list(HttpPaginationCondition<WorkSegmentListReq> req) {
+	public HttpPaginationRepertory<WorkSegmentListRsp> list(HttpPaginationCondition<WorkSegmentListReq> req, String organizationId) {
 		WorkSegment queryWorkSegment = new WorkSegment();
+		if(!StringUtils.isTrimEmpty(organizationId)) {
+			queryWorkSegment.setSubmitUserOrgId(organizationId);
+		}
 		if(req.getCondition() != null) {
 			queryWorkSegment.setWorkSegmentName(req.getCondition().getCondition());
 			queryWorkSegment.setMileageSegmentName(req.getCondition().getCondition());
@@ -222,8 +228,11 @@ public class WorkSegmentServiceImpl extends BaseServiceImpl<WorkSegment, java.la
 	}
 
 	@Override
-	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req) {
+	public WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req, String organizationId) {
 		WorkSegment queryWorkSegment = new WorkSegment();
+		if(!StringUtils.isTrimEmpty(organizationId)) {
+			queryWorkSegment.setSubmitUserOrgId(organizationId);
+		}
 		queryWorkSegment.setMileageSegmentId(req.getMileageSegmentId());
 		List<WorkSegment> workSegmentList = workSegmentDAO.queryList(queryWorkSegment);
 

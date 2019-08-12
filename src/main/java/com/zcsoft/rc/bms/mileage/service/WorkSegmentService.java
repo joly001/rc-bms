@@ -46,9 +46,10 @@ public interface WorkSegmentService extends IBaseService<WorkSegment, java.lang.
     /**
      * 作业面分页查询
      * @param req
+     * @Param organizationId
      * @return
      */
-    HttpPaginationRepertory<WorkSegmentListRsp> list(HttpPaginationCondition<WorkSegmentListReq> req);
+    HttpPaginationRepertory<WorkSegmentListRsp> list(HttpPaginationCondition<WorkSegmentListReq> req, String organizationId);
 
     /**
      * 作业面作业时间查询
@@ -60,8 +61,9 @@ public interface WorkSegmentService extends IBaseService<WorkSegment, java.lang.
     /**
      * 作业面列表，根据里程查询
      * @param req
+     * @Param organizationId
      * @return
      */
-    WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req);
+    WorkSegmentListListRsp mileageWorkSegment(MileageWorkSegmentReq req, String organizationId);
 	
 }
