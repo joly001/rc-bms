@@ -46,10 +46,8 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 		}
 	}
 
-	protected void verifyOrgNameExistence(String id, String orgName) {
-		Organization queryOrganization = new Organization();
-		queryOrganization.setOrgName(orgName);
-		queryOrganization = organizationDAO.query(queryOrganization);
+	protected void verifyOrgNameExistence(String id, String parentId, String orgName) {
+		Organization queryOrganization = organizationDAO.queryByOrgNameParentId(orgName, parentId);
 
 		if(queryOrganization == null) {
 			return;
@@ -72,7 +70,7 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 	@Override
 	public OrganizationAddRsp add(OrganizationAddReq req) {
 
-		verifyOrgNameExistence(null, req.getOrgName());
+		verifyOrgNameExistence(null, req.getParentId(), req.getOrgName());
 
 		Integer maxSequenceNumber = getMaxSequenceNumber(req.getParentId());
 
@@ -133,7 +131,7 @@ public class OrganizationServiceImpl extends BaseServiceImpl<Organization, java.
 		Organization queryOrganization = organizationDAO.queryById(req.getId());
 		verifyOrgIdExistence(queryOrganization);
 
-		verifyOrgNameExistence(req.getId(), req.getOrgName());
+		verifyOrgNameExistence(req.getId(), queryOrganization.getParentId(), req.getOrgName());
 
 		Organization organization = new Organization();
 		BeanUtils.copyProperties(req, organization);
