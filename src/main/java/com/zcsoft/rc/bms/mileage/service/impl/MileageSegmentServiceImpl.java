@@ -143,7 +143,7 @@ public class MileageSegmentServiceImpl extends BaseServiceImpl<MileageSegment, j
 		verifyMileageSegmentIdExistence(queryMileageSegment);
 
 		List<WorkSegment> workSegmentList = workSegmentService.getByMileageSegmentId(queryMileageSegment.getEndMileageId());
-		if(workSegmentList != null) {
+		if(workSegmentList != null && workSegmentList.size()>0) {
 			throw new ValidationCubeException(ErrorConstants.MILEAGESEGMENT_HAS_MILEAGE_WORKSEGMENT_CAN_NOT_DELETE);
 		}
 
