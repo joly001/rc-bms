@@ -20,7 +20,7 @@
       <span class="input">
         <el-input-number
             controls-position="right"
-            :min="1" :max="10000"
+            :min="0" :max="10000"
             size="mini" v-model="query.value2"
         ></el-input-number>
         <!--<el-input v-model="query.value2" size="mini"></el-input>-->
@@ -55,7 +55,7 @@
       <span class="input">
         <el-input-number
             controls-position="right"
-            :min="1" :max="10000"
+            :min="0" :max="10000"
             size="mini" v-model="query.value5"
         ></el-input-number>
         <!--<el-input v-model="query.value5" size="mini"></el-input>-->
@@ -92,7 +92,7 @@
       <span class="input">
         <el-input-number
             controls-position="right"
-            :min="1" :max="10000"
+            :min="0" :max="10000"
             size="mini" v-model="query.value8"
         ></el-input-number>
         <!--<el-input v-model="query.value8" size="mini"></el-input>-->
@@ -104,7 +104,7 @@
       <span class="input">
         <el-input-number
             controls-position="right"
-            :min="1" :max="10000"
+            :min="0" :max="10000"
             size="mini" v-model="query.value9"
         ></el-input-number>
         <!--<el-input v-model="query.value9" size="mini"></el-input>-->
