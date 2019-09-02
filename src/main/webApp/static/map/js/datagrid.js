@@ -1,7 +1,7 @@
 /**
 *表格控件
 */
-(function($) { 
+(function($) {
 	$.fn.datagrid= function(opt,options) {
 		if(typeof opt != 'object'){
 			if(opt == 'loadData'){
@@ -11,9 +11,9 @@
 			}else if(opt=='options'){
 				 return $(this).data();
 			}else if(opt=='getSelected'){
-				return getSelected(this);				
+				return getSelected(this);
 			}else if(opt=='getSelections'){
-				return getSelections($(this));				
+				return getSelections($(this));
 			}else if(opt=='getRowIndex'){
 				 return getRowIndex(this, options);
 			}else if(opt=='getRowByIndex'){
@@ -33,7 +33,7 @@
 			}else if(opt=='isChecked'){
 				 return isChecked(this, options);
 			}else if(opt=='reSize'||opt=='resize'){
-				 reSize(options, this);		
+				 reSize(options, this);
 			}else if(opt=='getPager'){
 				 return getPager(this);
 			}else if(opt=='insertRow'){
@@ -48,7 +48,7 @@
 				var ids = getSelectIds(this);
 				var opts = $(this).data(); //得到原始定义
 				var datas = getRows(this);
-				$.extend(datas[options.index], options.row); 
+				$.extend(datas[options.index], options.row);
 				loadData(opts,this);
 				checkRecord(this,{id:ids,check:true});
 				selectRow(this,options.index);
@@ -72,13 +72,13 @@
 				checkRecord(this,{id:ids,check:true});
 				//selectRow(this,options.index);
 			}else if(opt=='getColumnFields'){
-				
+			
 			}else if(opt=='hideColumn'){
-				
+			
 			}else if(opt=='showColumn'){
-				
+			
 			}else if(opt=='getColumnOption'){
-				
+			
 			}else if(opt=='getHeadDefine'){
 				return getHeadDefine(this);
 			}
@@ -89,7 +89,7 @@
 	
 
 	function loadData(options, obj){
-		var div = $(obj); 
+		var div = $(obj);
 		
 	    div.data(options); //绑定原始定义数据
 		var columns = options.columns; //列定义
@@ -155,7 +155,7 @@
 			
 			var r = cdiv.attr("r");
 			var c = cdiv.attr("c");
-			var boo =  p.hasClass("sort_asc"); 
+			var boo =  p.hasClass("sort_asc");
 			var st = boo ? "desc" : "asc";
 			p.removeClass(boo?"sort_asc":"sort_desc");
 			p.addClass(boo?"sort_desc":"sort_asc");
@@ -168,14 +168,14 @@
 			}else{
 				localSort(options, obj);
 			}
-		}); 
+		});
 		//点击行
 		div.find("tbody tr").bind("click",function(){
 			select(div, this); //设置选中
 			if(options.onClickRow){ //单击事件
 				var index=$(this).attr("index")//div.find("."+selectCss).attr("index");
 				index=parseInt(index);
-				var data=getRowByIndex(div,index);	
+				var data=getRowByIndex(div,index);
 				options.onClickRow.call(this,index,data);
 			}
 		});
@@ -185,7 +185,7 @@
 				//获取被选中的行
 				var index=$(this).attr("index");//div.find("."+selectCss).attr("index");
 				index=parseInt(index);
-				var data=getRowByIndex(div,index);	
+				var data=getRowByIndex(div,index);
 				options.onDblClickRow.call(this,index,data);
 			}
 		});
@@ -194,9 +194,9 @@
 			div.find('thead').scrollLeft($(this).scrollLeft());
 		});
 		//重新加载复选框样式
-		if(checkbox){ 
-			div.find('.formStyle input').jqTransCheckBox(); 
-		} 
+		if(checkbox){
+			div.find('.formStyle input').jqTransCheckBox();
+		}
 		//点击全选框
 		getCheckBox(div.find("thead")).click(function(){
 			if(optCheckClass($(this), 3)){
@@ -248,7 +248,7 @@
      	firstReBuildColumns(tempArr, 'f'); //第1次重构，得出allArr
      	secondReBuildColumns(); //第二次重构 得出lastLeaf,lineArr
 	
-     	/* 
+     	/*
      	第一次重构, 得allArr, maxLevel
      	path: 层级标识
      	hasLeaf: 当前节点是否还有此节点
@@ -258,7 +258,7 @@
 	     		{path:'f_1_1', hasLeaf=1, level=2},
 	     			{path:'f_1_1_1', hasLeaf=0, level=3},
 	     			{path:'f_1_1_2',  hasLeaf=0, level=3},
-	     		{path:'f_1_2', hasLeaf=0, level=2},	     	
+	     		{path:'f_1_2', hasLeaf=0, level=2},
 	     	{path:'f_2', hasLeaf=0, level=1},
      	];
 
@@ -325,8 +325,8 @@
 			html.push('<tr>');
 			
 			if(i==0 && checkbox){//如果有复选框，加在第1行
-				html.push('<th style="width:10px" rowspan='+lineArr.length+'><div class="formStyle"><input type="checkbox" name="chbox"></div></th>');
-			}else if(i==0 && options.hasLevelDefine){ //i==0 && 
+				html.push('<th style="width:20px" rowspan='+lineArr.length+'><div class="formStyle"><input type="checkbox" name="chbox"></div></th>');
+			}else if(i==0 && options.hasLevelDefine){ //i==0 &&
 				html.push('<th style="width:2px" rowspan='+lineArr.length+'>&nbsp;</th>');
 			}
 			for(var j=0; j<lineArr[i].length; j++ ){
@@ -338,12 +338,12 @@
 				style.push('style="');
 				
 				if(!field.hasLeaf){
-					var initialWidth =(field.width+"")?field.width:200; 
+					var initialWidth =(field.width+"")?field.width:200;
 					var width= initialWidth+'px';
 					style.push("width:" + width+";");
 					style.push(field.width==0?"padding:0;":"");
 				}
-				style.push('"'); 
+				style.push('"');
 				
 				var text = field.headClick ? '<a '+(field.headClickTitle?'title="'+field.headClickTitle+'"':"")+'>'+field.title+'</a>' : field.title;
 				var currentSortCase = field.currentSortCase; //当前排序方式，记录下来，跨行分组列表时要用到。
@@ -371,7 +371,7 @@
     		if(field.rowLevel && !isNaN(field.rowLevel)){
     			levelDefine.push(field);
     		}
-    	} 
+    	}
     	levelDefine.sort(function(a,b){ return a.rowLevel - b.rowLevel;});
     	return levelDefine;
 	}
@@ -397,7 +397,7 @@
                     html.push('<tr class="formStyle" index="'+i+'" dataId="'+datas[i][options.idField]+'">');
 				}
 				if(checkbox){
-					html.push('<td width="10px"><div class="formStyle"><input index="'+i+'" type="checkbox" name="chbox"  '
+					html.push('<td width="20px"><div class="formStyle"><input index="'+i+'" type="checkbox" name="chbox"  '
 							+ (datas[i].disabled?"disabled":"")  +'  ></div></td>');
 				}else if(levelDefine.length>0){
 					html.push('<td width="2px">&nbsp;</td>'); //用于标识行选
@@ -414,7 +414,7 @@
 	    			var rowspan = boo ? flgs[fName][i+''] : 0;
 	    			if(!(!boo1 || rowspan>0)){continue;} //被跨行的列，不必绘制
 					
-					var initialWidth =(col.width+"")?col.width:200; 
+					var initialWidth =(col.width+"")?col.width:200;
 					var width= initialWidth+'px';
 					var padding = col.width==0 ?"padding:0;":"";
 					
@@ -443,7 +443,7 @@
 					html.push(dataValue);
 					html.push('</div>');
 					html.push('</td>');
-        			
+     
 				}
 				html.push('</tr>');
 			}
@@ -461,7 +461,7 @@
 									{groupName:"a2",children:[2,3]};
 									{groupName:"a3",children:[4]} ]
 				 },...
-			 ] 
+			 ]
 			 * */
 			
 			/*分组, 将数据转换成上方格式的--内部方法第2层
@@ -485,7 +485,7 @@
 					var arr = (v_i[groupName]!=null &&   v_i[groupName]!=undefined) ?  groupArr[v_i[groupName]] : null;
 					
 					if(!arr){
-						arr = []; 
+						arr = [];
 						v_i[groupName]=index;
 						i_v[index]=groupName;
 						groupArr.push(arr);
@@ -595,7 +595,7 @@
 							getLeaf(t.children);  //递归
 						}else{
 							allArr.push(t); //取出
-						}				
+						}
 					}
 				};
 				//执行
@@ -648,7 +648,7 @@
 	    			if(v1!=v2){
 	    				var rowspan = nextIndex - rowIndex;
 	    				temp[rowIndex+""]=rowspan;
-	    				rowIndex = nextIndex; 
+	    				rowIndex = nextIndex;
 	    			}
 	    		}
 	    	}
@@ -687,7 +687,7 @@
 	
 	/**判断是否为空*/
 	function IsEmpty(obj){
-		return !obj ? true : false;		
+		return !obj ? true : false;
 	}
 	
 	/**得行选行*/
@@ -792,8 +792,8 @@
 	}
 	
 	/**判断一行是否为勾选状态*/
-	function isChecked(div, options){ // {index:indexValue}|{id:idValue} 
-		var tr = options.id==undefined ? 
+	function isChecked(div, options){ // {index:indexValue}|{id:idValue}
+		var tr = options.id==undefined ?
 					 	  $(div).find("tbody tr[index='"+options.index+"']")
 						: $(div).find("tbody tr[dataId='"+options.id+"']");
 						
@@ -814,7 +814,7 @@
 		
 		var index = $(div).find("tbody tr[dataId='"+id+"']").attr("index");
 		
-		return index ? index*1 : -1; 
+		return index ? index*1 : -1;
 	}
 	
 	/**判断是否需要复选框*/
@@ -835,7 +835,7 @@
 	/**得到所有数据行*/
 	function getRows(div){
 		var datas = $(div).data().datas;
-		if(!datas){datas=[];  $(div).data().datas = datas;} 
+		if(!datas){datas=[];  $(div).data().datas = datas;}
 		return datas;
 	}
 	
@@ -901,7 +901,7 @@
 					tTD.oldWidth = tTD.offsetWidth;
 				}
 			}
-		);	
+		);
 		cols.bind("mouseup", function () {
 				//结束宽度调整
 				if (tTD == undefined){ tTD = this;}
@@ -911,7 +911,7 @@
 		 );
 		$(window).bind("mouseup", function () {
 				//结束宽度调整
-				if (window.datagrid_tTD){ 
+				if (window.datagrid_tTD){
 					var tTD = window.datagrid_tTD;
 					tTD.mouseDown = false;
 					tTD.style.cursor = 'default';
@@ -953,7 +953,7 @@
 	/**自适应最后一列宽度：如果所有列宽比不过容器宽度，则将最后一列宽度补足，做到界面满铺*/
 	function setLastColumnWidth(div){
 		//容器宽度
-		var content_w = $(div).width(); 
+		var content_w = $(div).width();
 		//列表宽度
 		var tby = $(div).find('tbody');
 		var trs = $(tby).find("tr");
@@ -976,14 +976,14 @@
 				
 				if(!colspan || colspan == 1){//没有跨列，说明已经是整个表头的最后一列
 					th.css(css);
-					th.find("div").css(divCss); 
+					th.find("div").css(divCss);
 					break;
 				}
 			}
 			
 			css["width"]=(lastCol_w-scorllWidth)+"px";
 			//表体设置
-			$(div).find("table tbody tr").each(function(){  
+			$(div).find("table tbody tr").each(function(){
 				$(this).children("td:last").css(css);
 				$(this).children("td:last").find("div").css(divCss);
 			});
@@ -997,10 +997,10 @@
 		    }
 			var css = {"width":(content_w-w)+"px", "text-align":"center"};
 			var divcss = {"width":(content_w-w-10)+"px", "text-align":"center"};
-		    
+		 
 			var td = $(tds[tds.length-1]);
 			td.css(css);
-			td.find("div").css(divcss); 
+			td.find("div").css(divcss);
 		}
 	}
 	
@@ -1040,8 +1040,8 @@
 		//算出列在行中的下标
 		function  setColumnIndex (line, c){
 			for(var i=0; i<line.length; i++){
-				var f = line[i];				
-				f.c = c;	
+				var f = line[i];
+				f.c = c;
 				if(f.children && f.children.length>0){
 					setColumnIndex(f.children, c);
 				}
