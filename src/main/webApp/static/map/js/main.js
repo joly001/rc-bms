@@ -157,11 +157,11 @@ function createParentList(firstDataList){
                     });
                 return;
             }
-            if($("#"+id+"_div").is(':hidden')){
-                $("#"+id+"_div").show();
-            }else{
-                $("#"+id+"_div").hide();
-            }
+            // if($("#"+id+"_div").is(':hidden')){
+            //     $("#"+id+"_div").show();
+            // }else{
+            //     $("#"+id+"_div").hide();
+            // }
             showSonDiv(id+"_div");
         }
     })
@@ -316,7 +316,7 @@ function showSonDiv(i){
 function dataList(){
     //列定义，注意是又层中括号
     var cols = [[
-        {field:'id',title:'序号',displayTip:true, width:10, align:'center',formatter:function(value,row,index){ return index+1}},
+        {field:'id',title:'序号',displayTip:true, width:15, align:'center',formatter:function(value,row,index){ return index+1}},
         {field:'createTime',title:'告警时间',displayTip:true,width:150,align:'center',formatter:function(value){
                 var date = new Date(Number(value));
                 return  date.toLocaleString();

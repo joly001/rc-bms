@@ -300,9 +300,12 @@ var TrainMap = (function(){
                                 }
                                 $("#alarmTableTbody").html(textStr);
                                 $(".personInfomation").show();
-                            }
+                            }else {
+															alert('数据返回错误')
+														}
                         }).catch(function (error) {
                             console.log(error);
+                            alert('数据返回错误')
                         });
 
                     }
