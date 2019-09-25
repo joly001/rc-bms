@@ -157,11 +157,11 @@ function createParentList(firstDataList){
                     });
                 return;
             }
-            // if($("#"+id+"_div").is(':hidden')){
-            //     $("#"+id+"_div").show();
-            // }else{
-            //     $("#"+id+"_div").hide();
-            // }
+             if($("#"+id+"_div").is(':hidden')){
+                 $("#"+id+"_div").show();
+             }else{
+                 $("#"+id+"_div").hide();
+             }
             showSonDiv(id+"_div");
         }
     })
