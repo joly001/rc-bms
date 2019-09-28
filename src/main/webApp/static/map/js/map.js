@@ -291,7 +291,7 @@ var TrainMap = (function(){
                                 var textStr = "";
                                 var listData = response.data._data.list;
                                 for(var i=0;i<listData.length;i++){
-                                    if(i == 5) return;
+                                    if(i == 5) break;
                                     var datetime = new Date();
                                     datetime.setTime(listData[i].createTime);
                                     var dYear = datetime.getFullYear();
